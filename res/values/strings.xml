@@ -1,0 +1,19 @@
+<resources>
+
+    <string name="app_name">GeocachePlacer</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">Geocache Placer</string>
+    <string name="button_run">Run</string>
+    <string name="button_pause">Pause</string>
+    <string name="button_stop">Stop</string>
+    <string name="button_save">Save</string>
+    <string name="current_position">Current Position</string>
+    <string name="average_position">Average Position</string>
+    <string name="delta_position">Delta Position</string>
+    <string name="number_of_runs">Runs</string>
+	<string name="webviewArea">WebView</string>
+	<string name="numberOfRuns">Number of positions</string>
+    
+    
+</resources>

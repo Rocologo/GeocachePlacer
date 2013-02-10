@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import dk.rocologo.geocacheplacer.GPSTracker;
 
@@ -23,15 +24,29 @@ public class MainActivity extends Activity implements OnClickListener {
 	double longitude; // Longitude
 	String url; // url to google maps
 
-	double averageLatitude = 0; // Average of Latitude for a number of locations
-	double averageLongitude = 0; // Average of Longitude for a number of locations
+	double averageLatitude = 0, previousAverageLatitude = 0,
+			deltaLatitude = 9999; // Average of Latitude for a number of
+									// locations
+	double averageLongitude = 0, previousAverageLongitude = 0,
+			deltaLongitude = 9999; // Average of Longitude for a number of
+									// locations
 	Integer numberOfLocations = 0;
+
+	TextView textView1;
+	TextView textView2;
+	TextView textView3;
+	TextView textView4;
 
 	@SuppressLint("SetJavaScriptEnabled")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		textView1 = (TextView) findViewById(R.id.textView1);
+		textView2 = (TextView) findViewById(R.id.textView2);
+		textView3 = (TextView) findViewById(R.id.textView3);
+		textView4 = (TextView) findViewById(R.id.textView4);
 
 		buttonRun = (Button) findViewById(R.id.buttonRun);
 		buttonPause = (Button) findViewById(R.id.buttonPause);
@@ -45,8 +60,8 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		position = (WebView) findViewById(R.id.webview);
 		position.getSettings().setJavaScriptEnabled(true);
-		
-		//gps.resetAverageLocation();
+
+		// gps.resetAverageLocation();
 	}
 
 	@Override
@@ -63,27 +78,37 @@ public class MainActivity extends Activity implements OnClickListener {
 			if (gps.canGetLocation()) {
 				latitude = gps.getLatitude();
 				longitude = gps.getLongitude();
+				textView1.setText("Current coordinates: " + latitude + ","
+						+ longitude);
+
+				previousAverageLatitude = averageLatitude;
+				previousAverageLongitude = averageLongitude;
 
 				averageLatitude = ((averageLatitude * numberOfLocations) + latitude)
 						/ (numberOfLocations + 1);
 				averageLongitude = ((averageLongitude * numberOfLocations) + longitude)
 						/ (numberOfLocations + 1);
+				textView2.setText("Average coordinates: " + averageLatitude
+						+ "," + averageLongitude);
+
+				deltaLatitude = averageLatitude - previousAverageLatitude;
+				deltaLongitude = averageLongitude - previousAverageLongitude;
+				textView3.setText("Delta Current coordinates: " + deltaLatitude
+						+ "," + deltaLongitude);
+
 				numberOfLocations++;
-			
-				
-				
-				//gps.updateAverageLocation(latitude, longitude);
-				Log.d(TAG, "n: " + numberOfLocations + " Lat,Lon: "
-						+ latitude + "," + longitude);
+				textView4.setText("Number of runs: " + numberOfLocations);
+
+				// gps.updateAverageLocation(latitude, longitude);
+				Log.d(TAG, "n: " + numberOfLocations + " Lat,Lon: " + latitude
+						+ "," + longitude);
 				Log.d(TAG, "n: " + numberOfLocations + " Avg. Lat,Lon: "
 						+ averageLatitude + "," + averageLongitude);
 				url = "http://maps.google.com/staticmap?center="
-						+ averageLatitude + ","
-						+ averageLongitude
+						+ averageLatitude + "," + averageLongitude
 						+ "&zoom=16&size=400x300&maptype=mobile/&markers="
-						+ averageLatitude + ","
-						+ averageLongitude;
-				//Log.d(TAG, "url= " + url);
+						+ averageLatitude + "," + averageLongitude;
+				// Log.d(TAG, "url= " + url);
 				position.loadUrl(url);
 				Toast.makeText(
 						this,
@@ -98,7 +123,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			}
 		} else if (clickedButton == buttonPause.getId()) {
 			Log.d(TAG, "onClicked ButtonPause:" + clickedButton.toString());
-			//gps.resetAverageLocation();
+			// gps.resetAverageLocation();
 			averageLatitude = 0;
 			averageLongitude = 0;
 			numberOfLocations = 0;

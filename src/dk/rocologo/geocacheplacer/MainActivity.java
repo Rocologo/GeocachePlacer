@@ -22,6 +22,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	double latitude; // Latitude
 	double longitude; // Longitude
+	double altitude;
 	String url; // url to google maps
 
 	double averageLatitude = 0, previousAverageLatitude = 0,
@@ -30,12 +31,16 @@ public class MainActivity extends Activity implements OnClickListener {
 	double averageLongitude = 0, previousAverageLongitude = 0,
 			deltaLongitude = 9999; // Average of Longitude for a number of
 									// locations
+	double averageAltitude = 0, previousAverageAltitude = 0,
+			deltaAltitude = 9999; // Average of Alitude for a number of
+									// locations
 	Integer numberOfLocations = 0;
 
 	TextView textView1;
 	TextView textView2;
 	TextView textView3;
 	TextView textView4;
+	TextView textView5;
 
 	@SuppressLint("SetJavaScriptEnabled")
 	@Override
@@ -47,6 +52,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		textView2 = (TextView) findViewById(R.id.textView2);
 		textView3 = (TextView) findViewById(R.id.textView3);
 		textView4 = (TextView) findViewById(R.id.textView4);
+		textView5 = (TextView) findViewById(R.id.textView5);
 
 		buttonRun = (Button) findViewById(R.id.buttonRun);
 		buttonPause = (Button) findViewById(R.id.buttonPause);
@@ -78,28 +84,35 @@ public class MainActivity extends Activity implements OnClickListener {
 			if (gps.canGetLocation()) {
 				latitude = gps.getLatitude();
 				longitude = gps.getLongitude();
-				textView1.setText("Current coordinates: " + latitude + ","
-						+ longitude);
+				altitude = gps.getAltitude();
+				textView1.setText("Current coordinates: "
+						+ gps.decimalToDM(latitude, longitude));
 
 				previousAverageLatitude = averageLatitude;
 				previousAverageLongitude = averageLongitude;
+				previousAverageAltitude = averageAltitude;
 
 				averageLatitude = ((averageLatitude * numberOfLocations) + latitude)
 						/ (numberOfLocations + 1);
 				averageLongitude = ((averageLongitude * numberOfLocations) + longitude)
 						/ (numberOfLocations + 1);
-				textView2.setText("Average coordinates: " + averageLatitude
-						+ "," + averageLongitude);
+				averageAltitude = ((averageAltitude * numberOfLocations) + altitude)
+						/ (numberOfLocations + 1);
+				textView2.setText("Average coordinates: "
+						+ gps.decimalToDM(averageLatitude, averageLongitude));
 
 				deltaLatitude = averageLatitude - previousAverageLatitude;
 				deltaLongitude = averageLongitude - previousAverageLongitude;
-				textView3.setText("Delta Current coordinates: " + deltaLatitude
-						+ "," + deltaLongitude);
+				deltaAltitude = averageAltitude - previousAverageAltitude;
+				textView3.setText("Delta coordinates: "
+						+ gps.decimalToDM(deltaLatitude, deltaLongitude));
 
 				numberOfLocations++;
 				textView4.setText("Number of runs: " + numberOfLocations);
 
-				// gps.updateAverageLocation(latitude, longitude);
+				textView5.setText("Altitude: " + averageAltitude + " +- "
+						+ deltaAltitude);
+
 				Log.d(TAG, "n: " + numberOfLocations + " Lat,Lon: " + latitude
 						+ "," + longitude);
 				Log.d(TAG, "n: " + numberOfLocations + " Avg. Lat,Lon: "
@@ -127,6 +140,11 @@ public class MainActivity extends Activity implements OnClickListener {
 			averageLatitude = 0;
 			averageLongitude = 0;
 			numberOfLocations = 0;
+			textView1.setText("Current coordinates: 0,0");
+			textView2.setText("Average coordinates: 0,0");
+			textView3.setText("Delta coordinates: 9999");
+			textView4.setText("Number of runs: 0");
+
 		}
 
 	}

@@ -14,6 +14,7 @@
     <string name="number_of_runs">Runs</string>
 	<string name="webviewArea">WebView</string>
 	<string name="numberOfRuns">Number of positions</string>
+    <string name="latitude">Latitude</string>
     
     
 </resources>

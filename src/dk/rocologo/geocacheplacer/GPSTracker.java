@@ -276,8 +276,8 @@ public class GPSTracker extends Service implements LocationListener {
 
 
 	public String decimalToDM(double coord1, double coord2) {
-        String output1, degrees1, minutes1, output2, degrees2, minutes2;
-        //, seconds;
+        String output1, output2;
+        //int degrees1,degrees2;
  
         // gets the modulus the coordinate divided by one (MOD1).
         // in other words gets all the numbers after the decimal point.
@@ -285,81 +285,47 @@ public class GPSTracker extends Service implements LocationListener {
         //
         // next get the integer part of the coord. On other words the whole number part.
         // e.g. intPart = 87
- 
-        double mod1 = coord1 % 1;
-        int intPart1 = (int)coord1;
-        
-        double mod2 = coord2 % 1;
-        int intPart2 = (int)coord2;
- 
-        //set degrees to the value of intPart
-        //e.g. degrees = "87"
- 
-        degrees1 = String.valueOf(intPart1);
-        degrees2 = String.valueOf(intPart2);
-        
- 
+        //
         // next times the MOD1 of degrees by 60 so we can find the integer part for minutes.
         // get the MOD1 of the new coord to find the numbers after the decimal point.
         // e.g. coord = 0.728056 * 60 == 43.68336
         //      mod = 43.68336 % 1 == 0.68336
-        //
-        // next get the value of the integer part of the coord.
-        // e.g. intPart = 43
- 
-        coord1 = mod1 * 60;
-        mod1 = coord1 % 1;
-        intPart1 = (int)coord1;
         
-        coord2 = mod2 * 60;
-        mod2 = coord2 % 1;
-        intPart2 = (int)coord2;
+        double decimalMinutes1 = (coord1 % 1)*60;
+        int degrees1 = (int)coord1;
+        double decimalMinutes2 = (coord2 % 1)*60;
+        int degrees2 = (int)coord2;
  
-        String.valueOf(coord1);
-		// set minutes to the value of intPart.
-        // e.g. minutes = "43"
-        //minutes1 = String.valueOf(coord1);
-        DecimalFormat df = new DecimalFormat("00.###");
-        minutes1=df.format(coord1);
-        //minutes1 = String.format("%2.3f", coord1);
-        //String.valueOf(coord2);
-        minutes2=df.format(coord2);
-		//minutes2 = String.format("%2.3f", coord2);
+        //coord1 = mod1 * 60;
+        //coord2 = mod2 * 60;
         
         //do the same again for minutes
         //e.g. coord = 0.68336 * 60 == 41.0016
         //e.g. intPart = 41
-        //coord = mod * 60;
+        //coord = mod * 60; 
         //intPart = (int)coord;
- 
         // set seconds to the value of intPart.
         // e.g. seconds = "41"
         // seconds = String.valueOf(intPart);
- 
-        // I used this format for android but you can change it 
-        // to return in whatever format you like
-        // e.g. output = "87/1,43/1,41/1"
-        //output = degrees + "/1," + minutes + "/1," + seconds + "/1";
- 
-        //Standard output of D°M′S″
-        //output = degrees + "°" + minutes + "'" + seconds + "\"";
         
+ 
         // Type   Dir.   Sign    Test
         // Lat.   N      +       > 0
         // Lat.   S      -       < 0
         // Long.  E      +       > 0
         // Long.  W      -       < 0        
-        
+
+        DecimalFormat df = new DecimalFormat("00.00000");
         if (coord1<0) {
-        	output1 = "S "+degrees1 + "° " + minutes1 ;
+        	output1 = "S "+ (-degrees1) + "° " + df.format(-decimalMinutes1);
         } else {
-        	output1 = "N "+degrees1 + "° " + minutes1 ;
+        	output1 = "N "+degrees1 + "° " + df.format(decimalMinutes1) ;
         }
 
         if (coord2<0) {
-        	output2 = "W "+degrees2 + "° " + minutes2 ;
+        	output2 = "W "+ (-degrees2) + "° " + df.format(-decimalMinutes2);
         } else {
-        	output2 = "E "+degrees2 + "° " + minutes2 ;
+        	output2 = "E "+degrees2 + "° " + df.format(decimalMinutes2) ;
         }
  
         return output1+" "+output2;

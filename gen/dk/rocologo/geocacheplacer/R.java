@@ -20,11 +20,11 @@ public final class R {
         public static final int ic_launcher=0x7f020001;
     }
     public static final class id {
-        public static final int buttonPause=0x7f090006;
+        public static final int buttonReset=0x7f090006;
         public static final int buttonRun=0x7f090005;
-        public static final int buttonSave=0x7f090008;
-        public static final int buttonStop=0x7f090007;
-        public static final int menu_settings=0x7f09000b;
+        public static final int buttonSave=0x7f090007;
+        public static final int buttonStop=0x7f090008;
+        public static final int menu_settings=0x7f09000c;
         public static final int progressBar1=0x7f090009;
         public static final int textView1=0x7f090000;
         public static final int textView2=0x7f090001;
@@ -32,6 +32,7 @@ public final class R {
         public static final int textView4=0x7f090003;
         public static final int textView5=0x7f090004;
         public static final int webview=0x7f09000a;
+        public static final int zoomControls1=0x7f09000b;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -42,7 +43,7 @@ public final class R {
     public static final class string {
         public static final int app_name=0x7f060000;
         public static final int average_position=0x7f060009;
-        public static final int button_pause=0x7f060005;
+        public static final int button_reset=0x7f060005;
         public static final int button_run=0x7f060004;
         public static final int button_save=0x7f060007;
         public static final int button_stop=0x7f060006;

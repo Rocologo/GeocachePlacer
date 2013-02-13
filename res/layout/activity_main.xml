@@ -61,22 +61,13 @@
         android:text="@string/button_run" />
 
     <Button
-        android:id="@+id/buttonPause"
+        android:id="@+id/buttonReset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/buttonRun"
         android:layout_alignBottom="@+id/buttonRun"
         android:layout_toRightOf="@+id/buttonRun"
-        android:text="@string/button_pause" />
-
-    <Button
-        android:id="@+id/buttonStop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/buttonPause"
-        android:layout_alignBottom="@+id/buttonPause"
-        android:layout_toRightOf="@+id/buttonPause"
-        android:text="@string/button_stop" />
+        android:text="@string/button_reset" />
 
     <Button
         android:id="@+id/buttonSave"
@@ -93,7 +84,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/buttonSave"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/buttonRun" />
 
     <WebView
@@ -104,5 +95,19 @@
         android:layout_below="@+id/progressBar1"
         android:layout_marginTop="15dp" />
 
-    
+    <Button
+        android:id="@+id/buttonStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/progressBar1"
+        android:layout_toRightOf="@+id/buttonReset"
+        android:text="@string/button_stop" />
+
+    <ZoomControls
+        android:id="@+id/zoomControls1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

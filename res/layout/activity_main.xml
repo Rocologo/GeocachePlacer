@@ -7,16 +7,6 @@
     android:layout_height="match_parent" >
 
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView2"
-        android:layout_marginTop="10dp"
-        android:text="@string/delta_position"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -93,6 +83,34 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+    
+    <com.google.ads.AdView android:id="@+id/adView"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         ads:adUnitId="41329efae7754e33"
+                         ads:adSize="BANNER"
+                         ads:testDevices="TEST_EMULATOR, TEST_DEVICE_ID, E8F87B6F49AB0A290619DB9574EE5733"
+                         ads:loadAdOnCreate="true"/>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/adView"
+        android:layout_marginTop="10dp"
+        android:text="@string/current_position"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView2"
+        android:layout_marginTop="10dp"
+        android:text="@string/delta_position"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
         android:id="@+id/textView2"
@@ -103,24 +121,6 @@
         android:layout_marginTop="10dp"
         android:text="@string/average_position"
         android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="84dp"
-        android:text="@string/current_position"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-    
-    <com.google.ads.AdView android:id="@+id/adView"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         ads:adUnitId="41329efae7754e33"
-                         ads:adSize="BANNER"
-                         ads:testDevices="TEST_EMULATOR, TEST_DEVICE_ID, E8F87B6F49AB0A290619DB9574EE5733"
-                         ads:loadAdOnCreate="true"/>
 
 </RelativeLayout>
 

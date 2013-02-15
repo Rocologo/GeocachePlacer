@@ -13,16 +13,14 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-//import android.widget.ZoomButtonsController;
 import android.widget.ZoomControls;
-//import dk.rocologo.geocacheplacer.BannerAds;
 
 public class MainActivity extends Activity implements OnClickListener {
 
 	static final String TAG = "GeocachePlacer";
 	Button buttonRun, buttonReset, buttonStop, buttonSave;
 	ProgressBar progressBar;
-	WebView position;
+	WebView webView;
 	GPSTracker gps;
 	ZoomControls zoomControls1;
 
@@ -49,8 +47,8 @@ public class MainActivity extends Activity implements OnClickListener {
 	TextView textView5;
 
 	int zoomFactor = 16;
-	
-	//private BannerAds adView;
+
+	// private BannerAds adView;
 
 	@SuppressLint("SetJavaScriptEnabled")
 	@Override
@@ -65,27 +63,78 @@ public class MainActivity extends Activity implements OnClickListener {
 		textView5 = (TextView) findViewById(R.id.textView5);
 
 		buttonRun = (Button) findViewById(R.id.buttonRun);
-		buttonReset = (Button) findViewById(R.id.buttonReset);
-		buttonStop = (Button) findViewById(R.id.buttonStop);
-		buttonSave = (Button) findViewById(R.id.buttonSave);
-
 		buttonRun.setOnClickListener(this);
+		buttonReset = (Button) findViewById(R.id.buttonReset);
 		buttonReset.setOnClickListener(this);
+		buttonStop = (Button) findViewById(R.id.buttonStop);
 		buttonStop.setOnClickListener(this);
+		buttonSave = (Button) findViewById(R.id.buttonSave);
 		buttonSave.setOnClickListener(this);
 
-		position = (WebView) findViewById(R.id.webview);
-		position.getSettings().setJavaScriptEnabled(true);
-		// position.getSettings().setBuiltInZoomControls(true);
-		// position.getSettings().setDisplayZoomControls(true);
+		webView = (WebView) findViewById(R.id.webview);
+		webView.getSettings().setJavaScriptEnabled(true);
+		webView.getSettings().setBuiltInZoomControls(true);
+		webView.getSettings().setDisplayZoomControls(true);
+		
+		url = "http://maps.google.com/staticmap?center="
+				+ averageLatitude + "," + averageLongitude
+				+ "&zoom=0&size=400x300&maptype=mobile/";
+		webView.loadUrl(url);
 
 		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
 
 		zoomControls1 = (ZoomControls) findViewById(R.id.zoomControls1);
-		
-		//adView = (AdView) findViewById(R.id.adView);
-//		adView = new BannerAds(this);
-	
+		// zoom spped in milliseconds 
+		zoomControls1.setZoomSpeed(10);
+		zoomControls1.setOnZoomInClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// max is 21
+				final int MAX_ZOOM = 21;
+				if (zoomFactor < MAX_ZOOM) {
+					zoomControls1.setIsZoomInEnabled(true);
+					zoomFactor++;
+					url = "http://maps.google.com/staticmap?center="
+							+ averageLatitude + "," + averageLongitude
+							+ "&zoom=" + zoomFactor
+							+ "&size=400x300&maptype=mobile/&markers="
+							+ averageLatitude + "," + averageLongitude;
+					webView.loadUrl(url);
+					Log.d(TAG, "ZoomIn: factor is set to "+zoomFactor);
+				} 
+				if (zoomFactor==MAX_ZOOM) {
+					zoomControls1.setIsZoomInEnabled(false);
+				}
+				zoomControls1.setIsZoomOutEnabled(true);
+				// webView.zoomIn();
+
+			}
+		});
+
+		zoomControls1.setOnZoomOutClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				final int MIN_ZOOM = 12;
+				// min is 0
+				if (zoomFactor > MIN_ZOOM) {
+					zoomControls1.setIsZoomOutEnabled(true);
+					zoomFactor--;
+					url = "http://maps.google.com/staticmap?center="
+							+ averageLatitude + "," + averageLongitude
+							+ "&zoom=" + zoomFactor
+							+ "&size=400x300&maptype=mobile/&markers="
+							+ averageLatitude + "," + averageLongitude;
+					webView.loadUrl(url);
+					Log.d(TAG, "ZoomOut: factor is set to "+zoomFactor);
+				}
+				if (zoomFactor==MIN_ZOOM) {
+					zoomControls1.setIsZoomOutEnabled(false);
+				}
+				zoomControls1.setIsZoomInEnabled(true);
+				// webView.zoomOut();
+
+			}
+		});
 
 	}
 
@@ -99,13 +148,12 @@ public class MainActivity extends Activity implements OnClickListener {
 		Integer clickedButton = v.getId();
 		final String status = "";
 
-		// Log.d(TAG, "onClicked Button:" + clickedButton.toString());
+		Log.d(TAG, "onClicked Button:" + clickedButton.toString());
 		Log.d(TAG, "ZoomControls1: " + zoomControls1.toString());
 		if (clickedButton == buttonRun.getId()) {
 			gps = new GPSTracker(this);
 			if (gps.canGetLocation()) {
 				new MessureAverageLocation().execute(status);
-
 			} else {
 				// can't get location
 				// GPS or Network is not enabled
@@ -159,10 +207,6 @@ public class MainActivity extends Activity implements OnClickListener {
 				Log.d(TAG, "n: " + numberOfLocations + " Alt: " + altitude
 						+ " Avg. Alt: " + averageAltitude);
 
-				url = "http://maps.google.com/staticmap?center="
-						+ averageLatitude + "," + averageLongitude
-						+ "&zoom=18&size=400x300&maptype=mobile/&markers="
-						+ averageLatitude + "," + averageLongitude;
 				n++;
 				progressBar.setProgress(n);
 				// progressBar.set
@@ -195,7 +239,11 @@ public class MainActivity extends Activity implements OnClickListener {
 			textView4.setText("Number of runs: " + numberOfLocations);
 			textView5.setText("Altitude: " + averageAltitude + " +- "
 					+ deltaAltitude);
-			position.loadUrl(url);
+			url = "http://maps.google.com/staticmap?center=" + averageLatitude
+					+ "," + averageLongitude + "&zoom=" + zoomFactor
+					+ "&size=400x300&maptype=mobile/&markers="
+					+ averageLatitude + "," + averageLongitude;
+			webView.loadUrl(url);
 			Toast.makeText(
 					MainActivity.this,
 					"Average of " + numberOfLocations
@@ -204,45 +252,5 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 
 	}
-
-	/*
-	public class zoomListener implements OnZoomListener {
-
-		// public zoomButtonsController zoomy;
-		// private WebView myWebView;
-
-		public zoomListener() {
-			// zBC = new ZoomButtonsController(this);
-			zoomButtonsController.setOnZoomListener(this);
-			zoomButtonsController.setZoomSpeed(500);
-			zoomButtonsController.setAutoDismissed(false);
-		}
-
-		@Override
-		public void onZoom(boolean zoomIn) {
-			if (zoomIn) {
-				position.zoomIn();
-			} else {
-				position.zoomOut();
-			}
-		}
-
-		public void toggleZoom() {
-			if (!zoomButtonsController.isVisible()) {
-				zoomButtonsController.setVisible(true);
-			} else {
-				zoomButtonsController.setVisible(false);
-			}
-		}
-
-		@Override
-		public void onVisibilityChanged(boolean visible) {
-			// TODO Auto-generated method stub
-
-		}
-
-	}
-	*/
-	
 
 }

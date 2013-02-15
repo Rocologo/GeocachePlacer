@@ -1,7 +1,5 @@
 package dk.rocologo.geocacheplacer;
 
-import java.util.ArrayList;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
@@ -15,10 +13,9 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ZoomButtonsController;
-import android.widget.ZoomButtonsController.OnZoomListener;
+//import android.widget.ZoomButtonsController;
 import android.widget.ZoomControls;
-import dk.rocologo.geocacheplacer.GPSTracker;
+//import dk.rocologo.geocacheplacer.BannerAds;
 
 public class MainActivity extends Activity implements OnClickListener {
 
@@ -27,7 +24,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	ProgressBar progressBar;
 	WebView position;
 	GPSTracker gps;
-	ZoomButtonsController zoomButtonsController;	
+	ZoomControls zoomControls1;
 
 	double latitude; // Latitude
 	double longitude; // Longitude
@@ -50,8 +47,10 @@ public class MainActivity extends Activity implements OnClickListener {
 	TextView textView3;
 	TextView textView4;
 	TextView textView5;
+
+	int zoomFactor = 16;
 	
-	int zoomFactor=16;
+	//private BannerAds adView;
 
 	@SuppressLint("SetJavaScriptEnabled")
 	@Override
@@ -77,12 +76,15 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		position = (WebView) findViewById(R.id.webview);
 		position.getSettings().setJavaScriptEnabled(true);
-		//position.getSettings().setBuiltInZoomControls(true);
-		//position.getSettings().setDisplayZoomControls(true);
+		// position.getSettings().setBuiltInZoomControls(true);
+		// position.getSettings().setDisplayZoomControls(true);
 
 		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
+
+		zoomControls1 = (ZoomControls) findViewById(R.id.zoomControls1);
 		
-		//zoomButtonsController = (ZoomButtonsController) findViewById(R.id.zoomControls1).get;
+		//adView = (AdView) findViewById(R.id.adView);
+//		adView = new BannerAds(this);
 	
 
 	}
@@ -95,11 +97,10 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	public void onClick(View v) {
 		Integer clickedButton = v.getId();
-		//ArrayList<View> clickedZoomControl = v.get
 		final String status = "";
 
-		//Log.d(TAG, "onClicked Button:" + clickedButton.toString());
-		//Log.d(TAG,"Array:"+clickedZoomControl.toString());
+		// Log.d(TAG, "onClicked Button:" + clickedButton.toString());
+		Log.d(TAG, "ZoomControls1: " + zoomControls1.toString());
 		if (clickedButton == buttonRun.getId()) {
 			gps = new GPSTracker(this);
 			if (gps.canGetLocation()) {
@@ -121,7 +122,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			textView3.setText("Delta coordinates: 0");
 			textView4.setText("Number of runs: 0");
 			progressBar.setProgress(0);
-		} 
+		}
 
 	}
 
@@ -155,9 +156,8 @@ public class MainActivity extends Activity implements OnClickListener {
 
 				numberOfLocations++;
 
-				Log.d(TAG, "n: " + numberOfLocations + " Lat,Lon: " + latitude
-						+ "," + longitude + " Avg. Lat,Lon: " + averageLatitude
-						+ "," + averageLongitude);
+				Log.d(TAG, "n: " + numberOfLocations + " Alt: " + altitude
+						+ " Avg. Alt: " + averageAltitude);
 
 				url = "http://maps.google.com/staticmap?center="
 						+ averageLatitude + "," + averageLongitude
@@ -204,42 +204,45 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 
 	}
-	
-	public class zoomListener implements OnZoomListener{
 
-	     //public zoomButtonsController zoomy;
-	     //private WebView myWebView;
+	/*
+	public class zoomListener implements OnZoomListener {
 
-	     public zoomListener(){
-	      //zBC = new ZoomButtonsController(this);
-	      zoomButtonsController.setOnZoomListener(this);
-	      zoomButtonsController.setZoomSpeed(500);
-	      zoomButtonsController.setAutoDismissed(false);
-	     }
+		// public zoomButtonsController zoomy;
+		// private WebView myWebView;
 
-	    @Override
-	    public void onZoom(boolean zoomIn) {
-	        if(zoomIn){
-	            position.zoomIn();
-	        }else{
-	            position.zoomOut();
-	        }
-	    }
+		public zoomListener() {
+			// zBC = new ZoomButtonsController(this);
+			zoomButtonsController.setOnZoomListener(this);
+			zoomButtonsController.setZoomSpeed(500);
+			zoomButtonsController.setAutoDismissed(false);
+		}
 
-	    public void toggleZoom(){
-	       if(!zoomButtonsController.isVisible()){
-	    	   zoomButtonsController.setVisible(true);
-	       }else{
-	    	   zoomButtonsController.setVisible(false);
-	       }
-	    }
+		@Override
+		public void onZoom(boolean zoomIn) {
+			if (zoomIn) {
+				position.zoomIn();
+			} else {
+				position.zoomOut();
+			}
+		}
+
+		public void toggleZoom() {
+			if (!zoomButtonsController.isVisible()) {
+				zoomButtonsController.setVisible(true);
+			} else {
+				zoomButtonsController.setVisible(false);
+			}
+		}
 
 		@Override
 		public void onVisibilityChanged(boolean visible) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 	}
+	*/
+	
 
 }

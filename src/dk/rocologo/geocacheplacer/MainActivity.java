@@ -66,13 +66,7 @@ public class MainActivity extends Activity implements OnClickListener,
 
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		prefs.registerOnSharedPreferenceChangeListener(MainActivity.this);
-		try {
-			numberOfRuns = Integer
-					.valueOf(prefs.getString("numberOfRuns", "5"));
-		} catch (NumberFormatException e) {
-			numberOfRuns = 5;
-			e.printStackTrace();
-		}
+		numberOfRuns = prefs.getInt("numberOfRuns", 5);
 
 		textView1 = (TextView) findViewById(R.id.textView1);
 		textView2 = (TextView) findViewById(R.id.textView2);
@@ -283,13 +277,7 @@ public class MainActivity extends Activity implements OnClickListener,
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
-		try {
-			numberOfRuns = Integer
-					.valueOf(prefs.getString("numberOfRuns", "5"));
-		} catch (NumberFormatException e) {
-			numberOfRuns = 5;
-			e.printStackTrace();
-		}
+		numberOfRuns = prefs.getInt("numberOfRuns", 5);
 		Log.d(TAG, "onSharedPreferenceChanged: numberOfRuns=" + numberOfRuns);
 
 	}

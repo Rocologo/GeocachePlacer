@@ -14,11 +14,15 @@
     <string name="number_of_runs">Runs</string>
     <string name="webviewArea">WebView</string>
     <string name="latitude">Latitude</string>
-    <string name="numberOfRuns">Number of positions</string>
-    <string name="numberOfRuns_summay">Enter the number of runs used for each average messurement.</string>
+    <string name="numberOfRunsTitle">Number of positions</string>
+    <string name="numberOfRunsTitle_summay">Enter the number of runs used for each average messurement.</string>
     <string name="email">Emailadress</string>
     <string name="email_summary">Please enter your emailadress</string>
     <string name="menuitem_settings">Settings</string>
     <string name="menuitem_about">About</string>
+    <string name="about_button_return">Back</string>
+    <string name="about_textview_body">Geocache Placer is a tool to help Geocachers getting a precise position for the Geocache they want to place. \n \nPress \"Run\" a couple of times until the Delta coordinates are close to 0.0000. The app is free to use and paid by the ADS, so please click on the ADS if you find them interesting. \n \nDeveloped by Rocologo@hotmail.com</string>
+    <string name="about_title">About</string>
+    <string name="about_activity_title">Geocache Placer</string>
 
 </resources>

@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,15 +20,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ZoomControls;
 
-public class MainActivity extends Activity implements OnClickListener {
+public class MainActivity extends Activity implements OnClickListener,
+		OnSharedPreferenceChangeListener {
 
 	static final String TAG = "GeocachePlacer";
-	SharedPreferences prefs;  
-	Button buttonRun, buttonReset, buttonStop, buttonSave;
+	SharedPreferences prefs;
+	private Button buttonRun, buttonReset, buttonStop, buttonSave;
 	ProgressBar progressBar;
 	WebView webView;
 	GPSTracker gps;
-	ZoomControls zoomControls1;
+	ZoomControls zoomControls;
 
 	double latitude; // Latitude
 	double longitude; // Longitude
@@ -61,9 +63,16 @@ public class MainActivity extends Activity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		numberOfRuns = (int) prefs.getLong("numberOfRuns", 5);
+		prefs.registerOnSharedPreferenceChangeListener(MainActivity.this);
+		try {
+			numberOfRuns = Integer
+					.valueOf(prefs.getString("numberOfRuns", "5"));
+		} catch (NumberFormatException e) {
+			numberOfRuns = 5;
+			e.printStackTrace();
+		}
 
 		textView1 = (TextView) findViewById(R.id.textView1);
 		textView2 = (TextView) findViewById(R.id.textView2);
@@ -83,7 +92,6 @@ public class MainActivity extends Activity implements OnClickListener {
 		webView = (WebView) findViewById(R.id.webview);
 		webView.getSettings().setJavaScriptEnabled(true);
 		webView.getSettings().setBuiltInZoomControls(false);
-		// webView.getSettings().setDisplayZoomControls(true);
 
 		url = "http://maps.google.com/staticmap?center=" + averageLatitude
 				+ "," + averageLongitude
@@ -92,16 +100,16 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
 
-		zoomControls1 = (ZoomControls) findViewById(R.id.zoomControls1);
+		zoomControls = (ZoomControls) findViewById(R.id.zoomControls1);
 		// zoom speed in milliseconds
-		zoomControls1.setZoomSpeed(10);
-		zoomControls1.setOnZoomInClickListener(new View.OnClickListener() {
+		zoomControls.setZoomSpeed(10);
+		zoomControls.setOnZoomInClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// max is 21
 				final int MAX_ZOOM = 21;
 				if (zoomFactor < MAX_ZOOM) {
-					zoomControls1.setIsZoomInEnabled(true);
+					zoomControls.setIsZoomInEnabled(true);
 					zoomFactor++;
 					url = "http://maps.google.com/staticmap?center="
 							+ averageLatitude + "," + averageLongitude
@@ -112,21 +120,19 @@ public class MainActivity extends Activity implements OnClickListener {
 					Log.d(TAG, "ZoomIn: factor is set to " + zoomFactor);
 				}
 				if (zoomFactor == MAX_ZOOM) {
-					zoomControls1.setIsZoomInEnabled(false);
+					zoomControls.setIsZoomInEnabled(false);
 				}
-				zoomControls1.setIsZoomOutEnabled(true);
-				// webView.zoomIn();
-
+				zoomControls.setIsZoomOutEnabled(true);
 			}
 		});
 
-		zoomControls1.setOnZoomOutClickListener(new View.OnClickListener() {
+		zoomControls.setOnZoomOutClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				final int MIN_ZOOM = 12;
 				// min is 0
 				if (zoomFactor > MIN_ZOOM) {
-					zoomControls1.setIsZoomOutEnabled(true);
+					zoomControls.setIsZoomOutEnabled(true);
 					zoomFactor--;
 					url = "http://maps.google.com/staticmap?center="
 							+ averageLatitude + "," + averageLongitude
@@ -137,22 +143,18 @@ public class MainActivity extends Activity implements OnClickListener {
 					Log.d(TAG, "ZoomOut: factor is set to " + zoomFactor);
 				}
 				if (zoomFactor == MIN_ZOOM) {
-					zoomControls1.setIsZoomOutEnabled(false);
+					zoomControls.setIsZoomOutEnabled(false);
 				}
-				zoomControls1.setIsZoomInEnabled(true);
-				// webView.zoomOut();
-
+				zoomControls.setIsZoomInEnabled(true);
 			}
 		});
-
 	}
 
 	public void onClick(View v) {
 		Integer clickedButton = v.getId();
 		final String status = "";
-
 		Log.d(TAG, "onClicked Button:" + clickedButton.toString());
-		Log.d(TAG, "ZoomControls1: " + zoomControls1.toString());
+		Log.d(TAG, "ZoomControls: " + zoomControls.toString());
 		if (clickedButton == buttonRun.getId()) {
 			gps = new GPSTracker(this);
 			if (gps.canGetLocation()) {
@@ -174,13 +176,10 @@ public class MainActivity extends Activity implements OnClickListener {
 			textView4.setText("Number of runs: 0");
 			progressBar.setProgress(0);
 		}
-
 	}
 
 	public class MessureAverageLocation extends AsyncTask<String, Void, String> {
-
 		int n = 0;
-		//, numberOfRuns = 5;
 
 		@Override
 		protected String doInBackground(String... params) {
@@ -265,18 +264,34 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intentSettings = new Intent(this, PrefsActivity.class);
+		Intent intentAbout = new Intent(this, AboutActivity.class);
 		switch (item.getItemId()) {
 		case R.id.item_settings:
 			startActivity(intentSettings);
 			return true;
 
 		case R.id.item_about:
-
+			Log.d(TAG, "Getting About");
+			startActivity(intentAbout);
 			return true;
 
 		default:
 			return false;
 		}
+	}
+
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+			String key) {
+		try {
+			numberOfRuns = Integer
+					.valueOf(prefs.getString("numberOfRuns", "5"));
+		} catch (NumberFormatException e) {
+			numberOfRuns = 5;
+			e.printStackTrace();
+		}
+		Log.d(TAG, "onSharedPreferenceChanged: numberOfRuns=" + numberOfRuns);
+
 	}
 
 }

@@ -3,8 +3,8 @@
 
     <EditTextPreference
         android:key="numberOfRuns"
-        android:summary="@string/numberOfRuns_summay"
-        android:title="@string/numberOfRuns" />
+        android:summary="@string/numberOfRunsTitle_summay"
+        android:title="@string/numberOfRunsTitle" />
     <EditTextPreference
         android:key="email"
         android:summary="@string/email_summary"

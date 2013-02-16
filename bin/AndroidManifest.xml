@@ -26,8 +26,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="dk.rocologo.geocacheplacer.PrefsActivity"
+        <activity
+            android:name="dk.rocologo.geocacheplacer.PrefsActivity"
             android:label="@string/title_activity_settings" >
+        </activity>
+        <activity android:name="dk.rocologo.geocacheplacer.AboutActivity" android:label="@string/about_activity_title">
+            android:name="dk.rocologo.geocacheplacer.AboutActivity"
+            android:label="@string/about_activity_title" >
         </activity>
         <activity
             android:name="com.google.ads.AdActivity"

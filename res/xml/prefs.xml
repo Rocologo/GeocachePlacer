@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-    <EditTextPreference android:key="numberOfRuns" android:title="@string/numberOfRuns"/>
-    
+
+    <EditTextPreference
+        android:key="numberOfRuns"
+        android:summary="@string/numberOfRuns_summay"
+        android:title="@string/numberOfRuns" />
+    <EditTextPreference
+        android:key="email"
+        android:summary="@string/email_summary"
+        android:title="@string/email" />
 
 </PreferenceScreen>

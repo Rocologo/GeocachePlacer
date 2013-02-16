@@ -12,9 +12,13 @@
     <string name="average_position">Average Position</string>
     <string name="delta_position">Delta Position</string>
     <string name="number_of_runs">Runs</string>
-	<string name="webviewArea">WebView</string>
-	<string name="numberOfRuns">Number of positions</string>
+    <string name="webviewArea">WebView</string>
     <string name="latitude">Latitude</string>
-    
-    
+    <string name="numberOfRuns">Number of positions</string>
+    <string name="numberOfRuns_summay">Enter the number of runs used for each average messurement.</string>
+    <string name="email">Emailadress</string>
+    <string name="email_summary">Please enter your emailadress</string>
+    <string name="menuitem_settings">Settings</string>
+    <string name="menuitem_about">About</string>
+
 </resources>

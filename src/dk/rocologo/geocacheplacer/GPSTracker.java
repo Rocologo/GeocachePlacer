@@ -274,80 +274,83 @@ public class GPSTracker extends Service implements LocationListener {
 		return null;
 	}
 
-
 	public String decimalToDM(double coord1, double coord2) {
-        String output1, output2;
-        //int degrees1,degrees2;
- 
-        // gets the modulus the coordinate divided by one (MOD1).
-        // in other words gets all the numbers after the decimal point.
-        // e.g. mod = 87.728056 % 1 == 0.728056
-        //
-        // next get the integer part of the coord. On other words the whole number part.
-        // e.g. intPart = 87
-        //
-        // next times the MOD1 of degrees by 60 so we can find the integer part for minutes.
-        // get the MOD1 of the new coord to find the numbers after the decimal point.
-        // e.g. coord = 0.728056 * 60 == 43.68336
-        //      mod = 43.68336 % 1 == 0.68336
-        
-        double decimalMinutes1 = (coord1 % 1)*60;
-        int degrees1 = (int)coord1;
-        double decimalMinutes2 = (coord2 % 1)*60;
-        int degrees2 = (int)coord2;
- 
-        //coord1 = mod1 * 60;
-        //coord2 = mod2 * 60;
-        
-        //do the same again for minutes
-        //e.g. coord = 0.68336 * 60 == 41.0016
-        //e.g. intPart = 41
-        //coord = mod * 60; 
-        //intPart = (int)coord;
-        // set seconds to the value of intPart.
-        // e.g. seconds = "41"
-        // seconds = String.valueOf(intPart);
-        
- 
-        // Type   Dir.   Sign    Test
-        // Lat.   N      +       > 0
-        // Lat.   S      -       < 0
-        // Long.  E      +       > 0
-        // Long.  W      -       < 0        
+		String output1, output2;
+		// int degrees1,degrees2;
 
-        DecimalFormat df = new DecimalFormat("00.00000");
-        if (coord1<0) {
-        	output1 = "S "+ (-degrees1) + "° " + df.format(-decimalMinutes1);
-        } else {
-        	output1 = "N "+degrees1 + "° " + df.format(decimalMinutes1) ;
-        }
+		// gets the modulus the coordinate divided by one (MOD1).
+		// in other words gets all the numbers after the decimal point.
+		// e.g. mod = 87.728056 % 1 == 0.728056
+		//
+		// next get the integer part of the coord. On other words the whole
+		// number part.
+		// e.g. intPart = 87
+		//
+		// next times the MOD1 of degrees by 60 so we can find the integer part
+		// for minutes.
+		// get the MOD1 of the new coord to find the numbers after the decimal
+		// point.
+		// e.g. coord = 0.728056 * 60 == 43.68336
+		// mod = 43.68336 % 1 == 0.68336
 
-        if (coord2<0) {
-        	output2 = "W "+ (-degrees2) + "° " + df.format(-decimalMinutes2);
-        } else {
-        	output2 = "E "+degrees2 + "° " + df.format(decimalMinutes2) ;
-        }
- 
-        return output1+" "+output2;
-}
- 
-       /*
-        * Conversion DMS to decimal 
-        *
-        * Input: latitude or longitude in the DMS format ( example: N 43° 36' 15.894")
-        * Return: latitude or longitude in decimal format   
-        * hemisphereOUmeridien => {W,E,S,N}
-        *
-        */
-        public double DMSToDecimal(String hemisphereOUmeridien,double degres,double minutes,double secondes)
-        {
-                double LatOrLon=0;
-                double signe=1.0;
- 
-                if((hemisphereOUmeridien=="W")||(hemisphereOUmeridien=="S")) {signe=-1.0;}              
-                LatOrLon = signe*(Math.floor(degres) + Math.floor(minutes)/60.0 + secondes/3600.0);
- 
-                return(LatOrLon);               
-        }
-	
+		double decimalMinutes1 = (coord1 % 1) * 60;
+		int degrees1 = (int) coord1;
+		double decimalMinutes2 = (coord2 % 1) * 60;
+		int degrees2 = (int) coord2;
+
+		// coord1 = mod1 * 60;
+		// coord2 = mod2 * 60;
+
+		// do the same again for minutes
+		// e.g. coord = 0.68336 * 60 == 41.0016
+		// e.g. intPart = 41
+		// coord = mod * 60;
+		// intPart = (int)coord;
+		// set seconds to the value of intPart.
+		// e.g. seconds = "41"
+		// seconds = String.valueOf(intPart);
+
+		// Type Dir. Sign Test
+		// Lat. N + > 0
+		// Lat. S - < 0
+		// Long. E + > 0
+		// Long. W - < 0
+
+		DecimalFormat df = new DecimalFormat("00.00000");
+		if (coord1 < 0) {
+			output1 = "S " + (-degrees1) + "° " + df.format(-decimalMinutes1);
+		} else {
+			output1 = "N " + degrees1 + "° " + df.format(decimalMinutes1);
+		}
+
+		if (coord2 < 0) {
+			output2 = "W " + (-degrees2) + "° " + df.format(-decimalMinutes2);
+		} else {
+			output2 = "E " + degrees2 + "° " + df.format(decimalMinutes2);
+		}
+
+		return output1 + " " + output2;
+	}
+
+	/*
+	 * Conversion DMS to decimal
+	 * 
+	 * Input: latitude or longitude in the DMS format ( example: N 43° 36'
+	 * 15.894") Return: latitude or longitude in decimal format
+	 * hemisphereOUmeridien => {W,E,S,N}
+	 */
+	public double DMSToDecimal(String hemisphereOUmeridien, double degres,
+			double minutes, double secondes) {
+		double LatOrLon = 0;
+		double signe = 1.0;
+
+		if ((hemisphereOUmeridien == "W") || (hemisphereOUmeridien == "S")) {
+			signe = -1.0;
+		}
+		LatOrLon = signe
+				* (Math.floor(degres) + Math.floor(minutes) / 60.0 + secondes / 3600.0);
+
+		return (LatOrLon);
+	}
+
 }

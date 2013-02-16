@@ -2,10 +2,14 @@ package dk.rocologo.geocacheplacer;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
@@ -18,6 +22,7 @@ import android.widget.ZoomControls;
 public class MainActivity extends Activity implements OnClickListener {
 
 	static final String TAG = "GeocachePlacer";
+	SharedPreferences prefs;  
 	Button buttonRun, buttonReset, buttonStop, buttonSave;
 	ProgressBar progressBar;
 	WebView webView;
@@ -47,6 +52,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	TextView textView5;
 
 	int zoomFactor = 16;
+	int numberOfRuns;
 
 	// private BannerAds adView;
 
@@ -55,6 +61,9 @@ public class MainActivity extends Activity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		numberOfRuns = (int) prefs.getLong("numberOfRuns", 5);
 
 		textView1 = (TextView) findViewById(R.id.textView1);
 		textView2 = (TextView) findViewById(R.id.textView2);
@@ -73,18 +82,18 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		webView = (WebView) findViewById(R.id.webview);
 		webView.getSettings().setJavaScriptEnabled(true);
-		webView.getSettings().setBuiltInZoomControls(true);
-		webView.getSettings().setDisplayZoomControls(true);
-		
-		url = "http://maps.google.com/staticmap?center="
-				+ averageLatitude + "," + averageLongitude
+		webView.getSettings().setBuiltInZoomControls(false);
+		// webView.getSettings().setDisplayZoomControls(true);
+
+		url = "http://maps.google.com/staticmap?center=" + averageLatitude
+				+ "," + averageLongitude
 				+ "&zoom=0&size=400x300&maptype=mobile/";
 		webView.loadUrl(url);
 
 		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
 
 		zoomControls1 = (ZoomControls) findViewById(R.id.zoomControls1);
-		// zoom spped in milliseconds 
+		// zoom speed in milliseconds
 		zoomControls1.setZoomSpeed(10);
 		zoomControls1.setOnZoomInClickListener(new View.OnClickListener() {
 			@Override
@@ -100,9 +109,9 @@ public class MainActivity extends Activity implements OnClickListener {
 							+ "&size=400x300&maptype=mobile/&markers="
 							+ averageLatitude + "," + averageLongitude;
 					webView.loadUrl(url);
-					Log.d(TAG, "ZoomIn: factor is set to "+zoomFactor);
-				} 
-				if (zoomFactor==MAX_ZOOM) {
+					Log.d(TAG, "ZoomIn: factor is set to " + zoomFactor);
+				}
+				if (zoomFactor == MAX_ZOOM) {
 					zoomControls1.setIsZoomInEnabled(false);
 				}
 				zoomControls1.setIsZoomOutEnabled(true);
@@ -125,9 +134,9 @@ public class MainActivity extends Activity implements OnClickListener {
 							+ "&size=400x300&maptype=mobile/&markers="
 							+ averageLatitude + "," + averageLongitude;
 					webView.loadUrl(url);
-					Log.d(TAG, "ZoomOut: factor is set to "+zoomFactor);
+					Log.d(TAG, "ZoomOut: factor is set to " + zoomFactor);
 				}
-				if (zoomFactor==MIN_ZOOM) {
+				if (zoomFactor == MIN_ZOOM) {
 					zoomControls1.setIsZoomOutEnabled(false);
 				}
 				zoomControls1.setIsZoomInEnabled(true);
@@ -136,12 +145,6 @@ public class MainActivity extends Activity implements OnClickListener {
 			}
 		});
 
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_main, menu);
-		return true;
 	}
 
 	public void onClick(View v) {
@@ -176,7 +179,8 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	public class MessureAverageLocation extends AsyncTask<String, Void, String> {
 
-		int n = 0, numberOfRuns = 5;
+		int n = 0;
+		//, numberOfRuns = 5;
 
 		@Override
 		protected String doInBackground(String... params) {
@@ -209,7 +213,6 @@ public class MainActivity extends Activity implements OnClickListener {
 
 				n++;
 				progressBar.setProgress(n);
-				// progressBar.set
 
 				// Wait 0,5 sec before messuring next location.
 				try {
@@ -241,7 +244,7 @@ public class MainActivity extends Activity implements OnClickListener {
 					+ deltaAltitude);
 			url = "http://maps.google.com/staticmap?center=" + averageLatitude
 					+ "," + averageLongitude + "&zoom=" + zoomFactor
-					+ "&size=400x300&maptype=mobile/&markers="
+					+ "&size=400x300&&maptype=mobile/&markers="
 					+ averageLatitude + "," + averageLongitude;
 			webView.loadUrl(url);
 			Toast.makeText(
@@ -251,6 +254,29 @@ public class MainActivity extends Activity implements OnClickListener {
 					.show();
 		}
 
+	}
+
+	// implemention the menu
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu, menu);
+		// return super.onCreateOptionsMenu(menu);
+		return true;
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intentSettings = new Intent(this, PrefsActivity.class);
+		switch (item.getItemId()) {
+		case R.id.item_settings:
+			startActivity(intentSettings);
+			return true;
+
+		case R.id.item_about:
+
+			return true;
+
+		default:
+			return false;
+		}
 	}
 
 }

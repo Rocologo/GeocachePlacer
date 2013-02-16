@@ -9,10 +9,12 @@ package dk.rocologo.geocacheplacer;
 
 public final class R {
     public static final class array {
-        public static final int pref_example_list_titles=0x7f070000;
-        public static final int pref_example_list_values=0x7f070001;
-        public static final int pref_sync_frequency_titles=0x7f070002;
-        public static final int pref_sync_frequency_values=0x7f070003;
+        public static final int numberOfRunNames=0x7f070000;
+        public static final int numberOfRunValues=0x7f070001;
+        public static final int pref_example_list_titles=0x7f070002;
+        public static final int pref_example_list_values=0x7f070003;
+        public static final int pref_sync_frequency_titles=0x7f070004;
+        public static final int pref_sync_frequency_values=0x7f070005;
     }
     public static final class attr {
     }
@@ -26,23 +28,23 @@ public final class R {
         public static final int ic_launcher=0x7f020001;
     }
     public static final class id {
-        public static final int adView=0x7f0a000d;
+        public static final int adView=0x7f0a0005;
         public static final int adView1=0x7f0a0002;
         public static final int adView2=0x7f0a0004;
         public static final int button1=0x7f0a0000;
-        public static final int buttonReset=0x7f0a0009;
-        public static final int buttonRun=0x7f0a0008;
-        public static final int buttonSave=0x7f0a000a;
-        public static final int buttonStop=0x7f0a000b;
+        public static final int buttonPause=0x7f0a000a;
+        public static final int buttonReset=0x7f0a000c;
+        public static final int buttonRun=0x7f0a0009;
+        public static final int buttonSave=0x7f0a000b;
         public static final int item_about=0x7f0a0012;
         public static final int item_settings=0x7f0a0011;
         public static final int menu_settings=0x7f0a0010;
-        public static final int progressBar1=0x7f0a000c;
+        public static final int progressBar1=0x7f0a000d;
         public static final int textView1=0x7f0a0003;
         public static final int textView2=0x7f0a0001;
         public static final int textView3=0x7f0a0006;
-        public static final int textView4=0x7f0a0005;
-        public static final int textView5=0x7f0a0007;
+        public static final int textView4=0x7f0a0007;
+        public static final int textView5=0x7f0a0008;
         public static final int webview=0x7f0a000e;
         public static final int zoomControls1=0x7f0a000f;
     }
@@ -61,10 +63,10 @@ public final class R {
         public static final int about_title=0x7f060016;
         public static final int app_name=0x7f060000;
         public static final int average_position=0x7f060009;
+        public static final int button_pause=0x7f060006;
         public static final int button_reset=0x7f060005;
         public static final int button_run=0x7f060004;
         public static final int button_save=0x7f060007;
-        public static final int button_stop=0x7f060006;
         public static final int current_position=0x7f060008;
         public static final int delta_position=0x7f06000a;
         public static final int email=0x7f060010;

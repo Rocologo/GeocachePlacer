@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ZoomControls;
 
+
 public class MainActivity extends Activity implements OnClickListener,
 		OnSharedPreferenceChangeListener {
 
@@ -30,6 +31,7 @@ public class MainActivity extends Activity implements OnClickListener,
 	WebView webView;
 	GPSTracker gps;
 	ZoomControls zoomControls;
+	Boolean averageRunning = false;
 
 	double latitude; // Latitude
 	double longitude; // Longitude
@@ -52,9 +54,14 @@ public class MainActivity extends Activity implements OnClickListener,
 	TextView textView3;
 	TextView textView4;
 	TextView textView5;
-
+	final static String label1 = "Coordinates: ";
+	final static String label2 = "Avg.Coordinates: ";
+	final static String label3 = "Deviation : ";
+	final static String label4 = "Number of coordinates: ";
+	final static String label5 = "Altitude:  ";
+	
 	int zoomFactor = 16;
-	int numberOfRuns;
+	int numberOfRuns, currentRun;
 
 	// private BannerAds adView;
 
@@ -66,7 +73,8 @@ public class MainActivity extends Activity implements OnClickListener,
 
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		prefs.registerOnSharedPreferenceChangeListener(MainActivity.this);
-		numberOfRuns = prefs.getInt("numberOfRuns", 5);
+		numberOfRuns = Integer.valueOf(prefs.getString("numberOfRuns", "5"));
+		currentRun=0;
 
 		textView1 = (TextView) findViewById(R.id.textView1);
 		textView2 = (TextView) findViewById(R.id.textView2);
@@ -78,7 +86,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		buttonRun.setOnClickListener(this);
 		buttonReset = (Button) findViewById(R.id.buttonReset);
 		buttonReset.setOnClickListener(this);
-		buttonStop = (Button) findViewById(R.id.buttonStop);
+		buttonStop = (Button) findViewById(R.id.buttonPause);
 		buttonStop.setOnClickListener(this);
 		buttonSave = (Button) findViewById(R.id.buttonSave);
 		buttonSave.setOnClickListener(this);
@@ -148,38 +156,40 @@ public class MainActivity extends Activity implements OnClickListener,
 		Integer clickedButton = v.getId();
 		final String status = "";
 		Log.d(TAG, "onClicked Button:" + clickedButton.toString());
-		Log.d(TAG, "ZoomControls: " + zoomControls.toString());
 		if (clickedButton == buttonRun.getId()) {
 			gps = new GPSTracker(this);
 			if (gps.canGetLocation()) {
+				averageRunning = true;
 				new MessureAverageLocation().execute(status);
 			} else {
 				// can't get location
 				// GPS or Network is not enabled
 				// Ask user to enable GPS/network in settings
+				averageRunning = false;
 				gps.showSettingsAlert();
 			}
 		} else if (clickedButton == buttonReset.getId()) {
-			Log.d(TAG, "onClicked ButtonPause:" + clickedButton.toString());
 			averageLatitude = 0;
 			averageLongitude = 0;
 			numberOfLocations = 0;
-			textView1.setText("Current coordinates: 0,0");
-			textView2.setText("Average coordinates: 0,0");
-			textView3.setText("Delta coordinates: 0");
-			textView4.setText("Number of runs: 0");
+			textView1.setText(label1+"0,0");
+			textView2.setText(label2+"0,0");
+			textView3.setText(label3+"0");
+			textView4.setText(label4+"0");
+			textView5.setText(label5+"0");
 			progressBar.setProgress(0);
+			averageRunning = false;
+		} else if (clickedButton == buttonStop.getId()) {
+			averageRunning = false;
 		}
 	}
 
 	public class MessureAverageLocation extends AsyncTask<String, Void, String> {
-		int n = 0;
-
+		
 		@Override
 		protected String doInBackground(String... params) {
 
-			while (n < numberOfRuns) {
-
+			while (currentRun < numberOfRuns && averageRunning) {
 				latitude = gps.getLatitude();
 				longitude = gps.getLongitude();
 				altitude = gps.getAltitude();
@@ -204,8 +214,8 @@ public class MainActivity extends Activity implements OnClickListener,
 				Log.d(TAG, "n: " + numberOfLocations + " Alt: " + altitude
 						+ " Avg. Alt: " + averageAltitude);
 
-				n++;
-				progressBar.setProgress(n);
+				currentRun++;
+				progressBar.setProgress(currentRun);
 
 				// Wait 0,5 sec before messuring next location.
 				try {
@@ -215,6 +225,7 @@ public class MainActivity extends Activity implements OnClickListener,
 					e.printStackTrace();
 				}
 			}
+			if (currentRun==numberOfRuns) currentRun=0;
 			return params[0];
 		}
 
@@ -226,14 +237,12 @@ public class MainActivity extends Activity implements OnClickListener,
 
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
-			textView1.setText("Current coordinates: "
-					+ gps.decimalToDM(latitude, longitude));
-			textView2.setText("Average coordinates: "
-					+ gps.decimalToDM(averageLatitude, averageLongitude));
-			textView3.setText("Delta coordinates: "
+			textView1.setText(label1+gps.decimalToDM(latitude, longitude));
+			textView2.setText(label2+ gps.decimalToDM(averageLatitude, averageLongitude));
+			textView3.setText(label3
 					+ gps.decimalToDM(deltaLatitude, deltaLongitude));
-			textView4.setText("Number of runs: " + numberOfLocations);
-			textView5.setText("Altitude: " + averageAltitude + " +- "
+			textView4.setText(label4+ numberOfLocations);
+			textView5.setText(label5 + averageAltitude + " +- "
 					+ deltaAltitude);
 			url = "http://maps.google.com/staticmap?center=" + averageLatitude
 					+ "," + averageLongitude + "&zoom=" + zoomFactor
@@ -243,7 +252,7 @@ public class MainActivity extends Activity implements OnClickListener,
 			Toast.makeText(
 					MainActivity.this,
 					"Average of " + numberOfLocations
-							+ " locations is messured.", Toast.LENGTH_LONG)
+							+ " locations is calculated.", Toast.LENGTH_LONG)
 					.show();
 		}
 
@@ -252,7 +261,6 @@ public class MainActivity extends Activity implements OnClickListener,
 	// implemention the menu
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu, menu);
-		// return super.onCreateOptionsMenu(menu);
 		return true;
 	}
 
@@ -277,9 +285,8 @@ public class MainActivity extends Activity implements OnClickListener,
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
-		numberOfRuns = prefs.getInt("numberOfRuns", 5);
+		numberOfRuns = Integer.valueOf(prefs.getString("numberOfRuns", "5"));
 		Log.d(TAG, "onSharedPreferenceChanged: numberOfRuns=" + numberOfRuns);
-
 	}
 
 }

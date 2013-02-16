@@ -1,14 +1,9 @@
 package dk.rocologo.geocacheplacer;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.webkit.WebView;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.ZoomControls;
 
 public class MyZoomControls extends ZoomControls implements OnClickListener {
@@ -27,7 +22,6 @@ public class MyZoomControls extends ZoomControls implements OnClickListener {
 		// TODO Auto-generated method stub
 		Integer clickedButton = v.getId();
 
-		
 		zoomControls1 = (ZoomControls) findViewById(R.id.zoomControls1);
 		zoomControls1.setOnClickListener(this);
 		

@@ -6,7 +6,7 @@
     <string name="title_activity_main">Geocache Placer</string>
     <string name="button_run">Run</string>
     <string name="button_reset">Reset</string>
-    <string name="button_stop">Stop</string>
+    <string name="button_pause">Pause</string>
     <string name="button_save">Save</string>
     <string name="current_position">Current Position</string>
     <string name="average_position">Average Position</string>
@@ -24,5 +24,26 @@
     <string name="about_textview_body">Geocache Placer is a tool to help Geocachers getting a precise position for the Geocache they want to place. \n \nPress \"Run\" a couple of times until the Delta coordinates are close to 0.0000. The app is free to use and paid by the ADS, so please click on the ADS if you find them interesting. \n \nDeveloped by Rocologo@hotmail.com</string>
     <string name="about_title">About</string>
     <string name="about_activity_title">Geocache Placer</string>
+
+    <string-array name="numberOfRunNames">
+        <item>Until Delta Position is 0</item>
+        <item>1 position</item>
+        <item>Average of 5 positions</item>
+        <item>Average of 10 positions</item>
+        <item>Average of 25 positions</item>
+        <item>Average of 50 positions</item>
+        <item>Average of 100 positions</item>
+        <item>Average of 200 positions</item>
+    </string-array>
+    <string-array name="numberOfRunValues">
+        <item>1000</item>
+        <item>1</item>
+        <item>5</item>
+        <item>10</item>
+        <item>25</item>
+        <item>50</item>
+        <item>100</item>
+        <item>200</item>
+    </string-array>
 
 </resources>

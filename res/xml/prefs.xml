@@ -13,5 +13,6 @@
         android:key="email"
         android:summary="@string/email_summary"
         android:title="@string/email" />
+    <ListPreference android:key="delay" android:title="@string/delay" android:summary="@string/delay_summary" android:entries="@array/delayNames" android:entryValues="@array/delayValues" android:defaultValue="500"/>
 
 </PreferenceScreen>

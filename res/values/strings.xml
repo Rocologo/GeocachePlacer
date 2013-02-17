@@ -7,13 +7,13 @@
     <string name="button_run">Run</string>
     <string name="button_reset">Reset</string>
     <string name="button_pause">Pause</string>
-    <string name="button_save">Save</string>
-    <string name="current_position">Current Position</string>
-    <string name="average_position">Average Position</string>
-    <string name="delta_position">Delta Position</string>
-    <string name="number_of_runs">Runs</string>
+    <string name="button_send">Send</string>
+    <string name="current_position">Coordinates: </string>
+    <string name="average_position">Avg.Coordinates: </string>
+    <string name="delta_position">Deviation :</string>
+    <string name="number_of_runs">Number of coordinates:</string>
     <string name="webviewArea">WebView</string>
-    <string name="latitude">Latitude</string>
+    <string name="latitude">Altitude:</string>
     <string name="numberOfRunsTitle">Number of positions</string>
     <string name="numberOfRunsTitle_summay">Enter the number of runs used for each average messurement.</string>
     <string name="email">Emailadress</string>
@@ -44,6 +44,22 @@
         <item>50</item>
         <item>100</item>
         <item>200</item>
+    </string-array>
+
+    <string name="delay">Delay</string>
+    <string name="delay_summary">Set the delay between the messurements og coordinates.</string>
+
+    <string-array name="delayNames">
+        <item>500 milliseconds</item>
+        <item>1 second</item>
+        <item>5 seconds</item>
+        <item>10 seconds</item>
+    </string-array>
+    <string-array name="delayValues">
+        <item>500</item>
+        <item>1000</item>
+        <item>5000</item>
+        <item>10000</item>
     </string-array>
 
 </resources>

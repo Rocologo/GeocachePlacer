@@ -1,5 +1,7 @@
 package dk.rocologo.geocacheplacer;
 
+import java.text.DecimalFormat;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -20,13 +22,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ZoomControls;
 
-
 public class MainActivity extends Activity implements OnClickListener,
 		OnSharedPreferenceChangeListener {
 
 	static final String TAG = "GeocachePlacer";
 	SharedPreferences prefs;
-	private Button buttonRun, buttonReset, buttonStop, buttonSave;
+	private Button buttonRun, buttonReset, buttonStop, buttonSend;
 	ProgressBar progressBar;
 	WebView webView;
 	GPSTracker gps;
@@ -59,9 +60,10 @@ public class MainActivity extends Activity implements OnClickListener,
 	final static String label3 = "Deviation : ";
 	final static String label4 = "Number of coordinates: ";
 	final static String label5 = "Altitude:  ";
-	
+
 	int zoomFactor = 16;
 	int numberOfRuns, currentRun;
+	int delay;
 
 	// private BannerAds adView;
 
@@ -74,7 +76,8 @@ public class MainActivity extends Activity implements OnClickListener,
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		prefs.registerOnSharedPreferenceChangeListener(MainActivity.this);
 		numberOfRuns = Integer.valueOf(prefs.getString("numberOfRuns", "5"));
-		currentRun=0;
+		delay = Integer.valueOf(prefs.getString("delay", "500"));
+		currentRun = 0;
 
 		textView1 = (TextView) findViewById(R.id.textView1);
 		textView2 = (TextView) findViewById(R.id.textView2);
@@ -88,8 +91,8 @@ public class MainActivity extends Activity implements OnClickListener,
 		buttonReset.setOnClickListener(this);
 		buttonStop = (Button) findViewById(R.id.buttonPause);
 		buttonStop.setOnClickListener(this);
-		buttonSave = (Button) findViewById(R.id.buttonSave);
-		buttonSave.setOnClickListener(this);
+		buttonSend = (Button) findViewById(R.id.buttonSend);
+		buttonSend.setOnClickListener(this);
 
 		webView = (WebView) findViewById(R.id.webview);
 		webView.getSettings().setJavaScriptEnabled(true);
@@ -172,20 +175,38 @@ public class MainActivity extends Activity implements OnClickListener,
 			averageLatitude = 0;
 			averageLongitude = 0;
 			numberOfLocations = 0;
-			textView1.setText(label1+"0,0");
-			textView2.setText(label2+"0,0");
-			textView3.setText(label3+"0");
-			textView4.setText(label4+"0");
-			textView5.setText(label5+"0");
+			currentRun = 0;
+			textView1.setText(label1 + "0,0");
+			textView2.setText(label2 + "0,0");
+			textView3.setText(label3 + "0");
+			textView4.setText(label4 + "0");
+			textView5.setText(label5 + "0");
 			progressBar.setProgress(0);
 			averageRunning = false;
 		} else if (clickedButton == buttonStop.getId()) {
 			averageRunning = false;
+		} else if (clickedButton == buttonSend.getId()) {
+			Intent sendIntent = new Intent();
+			sendIntent.setAction(Intent.ACTION_SEND);
+			sendIntent
+					.putExtra(
+							Intent.EXTRA_TEXT,
+							"The position was: "
+									+ gps.decimalToDM(averageLatitude,
+											averageLongitude)
+									+ "\n\n\n Google maps: " + url);
+			sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Geocache Placer");
+			sendIntent.setType("text/plain");
+			// startActivity(Intent.createChooser(sendIntent,
+			// getResources().getText(R.string.send_to)));
+			// startActivity(sendIntent);
+			startActivity(Intent.createChooser(sendIntent, ""));
 		}
+
 	}
 
 	public class MessureAverageLocation extends AsyncTask<String, Void, String> {
-		
+
 		@Override
 		protected String doInBackground(String... params) {
 
@@ -211,21 +232,22 @@ public class MainActivity extends Activity implements OnClickListener,
 
 				numberOfLocations++;
 
-				Log.d(TAG, "n: " + numberOfLocations + " Alt: " + altitude
-						+ " Avg. Alt: " + averageAltitude);
+				// Log.d(TAG, "n: " + numberOfLocations + " Alt: " + altitude+
+				// " Avg. Alt: " + averageAltitude);
 
 				currentRun++;
 				progressBar.setProgress(currentRun);
 
 				// Wait 0,5 sec before messuring next location.
 				try {
-					Thread.sleep(500);
+					Thread.sleep(delay);
 				} catch (InterruptedException e) {
 
 					e.printStackTrace();
 				}
 			}
-			if (currentRun==numberOfRuns) currentRun=0;
+			if (currentRun == numberOfRuns)
+				currentRun = 0;
 			return params[0];
 		}
 
@@ -237,13 +259,15 @@ public class MainActivity extends Activity implements OnClickListener,
 
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
-			textView1.setText(label1+gps.decimalToDM(latitude, longitude));
-			textView2.setText(label2+ gps.decimalToDM(averageLatitude, averageLongitude));
+			textView1.setText(label1 + gps.decimalToDM(latitude, longitude));
+			textView2.setText(label2
+					+ gps.decimalToDM(averageLatitude, averageLongitude));
 			textView3.setText(label3
 					+ gps.decimalToDM(deltaLatitude, deltaLongitude));
-			textView4.setText(label4+ numberOfLocations);
-			textView5.setText(label5 + averageAltitude + " +- "
-					+ deltaAltitude);
+			textView4.setText(label4 + numberOfLocations);
+			DecimalFormat df = new DecimalFormat("###0.00");
+			textView5.setText(label5 + df.format(averageAltitude) + " +- "
+					+ df.format(deltaAltitude));
 			url = "http://maps.google.com/staticmap?center=" + averageLatitude
 					+ "," + averageLongitude + "&zoom=" + zoomFactor
 					+ "&size=400x300&&maptype=mobile/&markers="
@@ -286,6 +310,7 @@ public class MainActivity extends Activity implements OnClickListener,
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
 		numberOfRuns = Integer.valueOf(prefs.getString("numberOfRuns", "5"));
+		delay = Integer.valueOf(prefs.getString("delay", "500"));
 		Log.d(TAG, "onSharedPreferenceChanged: numberOfRuns=" + numberOfRuns);
 	}
 

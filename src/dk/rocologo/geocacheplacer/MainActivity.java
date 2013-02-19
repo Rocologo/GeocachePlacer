@@ -46,7 +46,7 @@ public class MainActivity extends Activity implements OnClickListener,
 	double latitude; // Latitude
 	double longitude; // Longitude
 	double altitude;
-	String url=""; // url to google maps
+	String url = ""; // url to google maps
 
 	double averageLatitude = 0, previousAverageLatitude = 0,
 			deltaLatitude = 9999; // Average of Latitude for a number of
@@ -73,7 +73,7 @@ public class MainActivity extends Activity implements OnClickListener,
 	int zoomFactor = 16;
 	int numberOfRuns, currentRun;
 	int delay;
-	
+
 	private ShareActionProvider shareActionProvider;
 
 	@SuppressLint("SetJavaScriptEnabled")
@@ -90,8 +90,8 @@ public class MainActivity extends Activity implements OnClickListener,
 		prefs.registerOnSharedPreferenceChangeListener(MainActivity.this);
 		numberOfRuns = Integer.valueOf(prefs.getString("numberOfRuns", "5"));
 		delay = Integer.valueOf(prefs.getString("delay", "500"));
-		currentRun = 0;	
-		
+		currentRun = 0;
+
 		textView1 = (TextView) findViewById(R.id.textView1);
 		textView2 = (TextView) findViewById(R.id.textView2);
 		textView3 = (TextView) findViewById(R.id.textView3);
@@ -117,9 +117,9 @@ public class MainActivity extends Activity implements OnClickListener,
 		webView.loadUrl(url);
 
 		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
-		
+
 		gps = new GPSTracker(this);
-		
+
 		setShareIntent(shareTheResult());
 
 		zoomControls = (ZoomControls) findViewById(R.id.zoomControls1);
@@ -178,7 +178,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		final String status = "";
 		Log.d(TAG, "onClicked Button:" + clickedButton.toString());
 		if (clickedButton == buttonRun.getId()) {
-			
+
 			if (gps.canGetLocation()) {
 				averageRunning = true;
 				new MessureAverageLocation().execute(status);
@@ -204,21 +204,17 @@ public class MainActivity extends Activity implements OnClickListener,
 		} else if (clickedButton == buttonStop.getId()) {
 			averageRunning = false;
 		} else if (clickedButton == buttonSend.getId()) {
-			startActivity(Intent.createChooser(shareTheResult(), "Share via"));			
+			startActivity(Intent.createChooser(shareTheResult(), "Share via"));
 		}
 
 	}
-	
-	public Intent shareTheResult(){
+
+	public Intent shareTheResult() {
 		Intent sendIntent = new Intent();
 		sendIntent.setAction(Intent.ACTION_SEND);
-		sendIntent
-				.putExtra(
-						Intent.EXTRA_TEXT,
-						"The average position was: \n"
-								+ gps.decimalToDM(averageLatitude,
-										averageLongitude)
-								+ "\n\n\nGoogle maps: " + url);
+		sendIntent.putExtra(Intent.EXTRA_TEXT, "The average position was: \n"
+				+ gps.decimalToDM(averageLatitude, averageLongitude)
+				+ "\n\n\nGoogle maps: " + url);
 		sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Geocache Placer");
 		sendIntent.setType("text/plain");
 		return sendIntent;
@@ -299,46 +295,35 @@ public class MainActivity extends Activity implements OnClickListener,
 	}
 
 	// implemention the menu
-	  @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+
+	@SuppressLint("NewApi")
 	public boolean onCreateOptionsMenu(Menu menu) {
-	
+
+		// Inflate options menu
+		getMenuInflater().inflate(R.menu.settings_menu, menu);
+
 		// Inflate activity menu resource file.
-		getMenuInflater().inflate(R.menu.activity_main, menu);
+		getMenuInflater().inflate(R.menu.action_bar_menu, menu);
 
 		// Locate MenuItem with ShareActionProvider
 		MenuItem menuItem = menu.findItem(R.id.menu_item_share);
-	/*	
-		 menuItem.setOnActionExpandListener(new OnActionExpandListener() {
-		        @Override
-		        public boolean onMenuItemActionCollapse(MenuItem item) {
-		            // Do something when collapsed
-		            return true;  // Return true to collapse action view
-		        }
-
-		        @Override
-		        public boolean onMenuItemActionExpand(MenuItem item) {
-		            // Do something when expanded
-		            return true;  // Return true to expand action view
-		        }
-		    });
-*/
+		
 		// Fetch and store ShareActionProvider
-		shareActionProvider = (ShareActionProvider) menuItem.getActionProvider();
+		shareActionProvider = (ShareActionProvider) menuItem
+				.getActionProvider();
 		shareActionProvider
-		.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
+				.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
 
-		// Inflate options menu
-		getMenuInflater().inflate(R.menu.menu, menu);
-	// Return true to display menu
+		// Return true to display menu
 		return true;
 	}
 
 	// Call to update the share intent
-	
+
 	private void setShareIntent(Intent shareIntent) {
 		if (shareActionProvider != null) {
 			shareActionProvider.setShareIntent(shareIntent);
-		} 
+		}
 	}
 
 	/*
@@ -356,12 +341,12 @@ public class MainActivity extends Activity implements OnClickListener,
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intentSettings = new Intent(this, PrefsActivity.class);
 		Intent intentAbout = new Intent(this, AboutActivity.class);
-		//Intent intentShare = new Intent(this, ShareActivity.class);
+		// Intent intentShare = new Intent(this, ShareActivity.class);
 		switch (item.getItemId()) {
 		case R.id.item_share:
-			Intent intentShare=shareTheResult();
+			Intent intentShare = shareTheResult();
 			startActivity(intentShare);
-			//startActivity(shareTheResult());
+			// startActivity(shareTheResult());
 			return true;
 
 		case R.id.item_settings:

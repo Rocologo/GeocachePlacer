@@ -43,8 +43,8 @@ public final class R {
         public static final int item_about=0x7f0a0017;
         public static final int item_settings=0x7f0a0016;
         public static final int item_share=0x7f0a0015;
-        public static final int menu_item_share=0x7f0a0014;
-        public static final int menu_settings=0x7f0a0013;
+        public static final int menu_item_share=0x7f0a0013;
+        public static final int menu_settings=0x7f0a0014;
         public static final int progressBar1=0x7f0a0010;
         public static final int textView1=0x7f0a0004;
         public static final int textView2=0x7f0a0003;
@@ -60,16 +60,17 @@ public final class R {
         public static final int activity_main=0x7f030001;
     }
     public static final class menu {
-        public static final int activity_main=0x7f090000;
-        public static final int menu=0x7f090001;
+        public static final int action_bar_menu=0x7f090000;
+        public static final int activity_main_menu=0x7f090001;
+        public static final int settings_menu=0x7f090002;
     }
     public static final class string {
-        public static final int about_activity_title=0x7f060019;
-        public static final int about_button_return=0x7f060014;
-        public static final int about_problem_report=0x7f060017;
-        public static final int about_rate_app=0x7f060016;
-        public static final int about_textview_body=0x7f060015;
-        public static final int about_title=0x7f060018;
+        public static final int about_activity_title=0x7f060017;
+        public static final int about_button_return=0x7f060012;
+        public static final int about_problem_report=0x7f060015;
+        public static final int about_rate_app=0x7f060014;
+        public static final int about_textview_body=0x7f060013;
+        public static final int about_title=0x7f060016;
         public static final int activity_main_title=0x7f060001;
         public static final int app_name=0x7f060000;
         public static final int average_position=0x7f060007;
@@ -81,15 +82,15 @@ public final class R {
         public static final int delay=0x7f06001d;
         public static final int delay_summary=0x7f06001e;
         public static final int delta_position=0x7f060008;
-        public static final int email=0x7f06000e;
-        public static final int email_summary=0x7f06000f;
+        public static final int email=0x7f06000c;
+        public static final int email_summary=0x7f06000d;
         public static final int latitude=0x7f06000a;
-        public static final int menu_item_share_title=0x7f060010;
-        public static final int menuitem_about=0x7f060013;
-        public static final int menuitem_settings=0x7f060012;
-        public static final int menuitem_share=0x7f060011;
-        public static final int numberOfRunsTitle=0x7f06000c;
-        public static final int numberOfRunsTitle_summay=0x7f06000d;
+        public static final int menu_item_share_title=0x7f06000e;
+        public static final int menuitem_about=0x7f060011;
+        public static final int menuitem_settings=0x7f060010;
+        public static final int menuitem_share=0x7f06000f;
+        public static final int numberOfRunsTitle=0x7f06001b;
+        public static final int numberOfRunsTitle_summay=0x7f06001c;
         public static final int number_of_runs=0x7f060009;
         public static final int pref_default_display_name=0x7f060024;
         public static final int pref_description_social_recommendations=0x7f060022;
@@ -112,10 +113,10 @@ public final class R {
         public static final int pref_title_sync_frequency=0x7f060027;
         public static final int pref_title_system_sync_settings=0x7f060028;
         public static final int pref_title_vibrate=0x7f06002d;
-        public static final int problem_report=0x7f06001a;
-        public static final int problem_report_body=0x7f06001b;
+        public static final int problem_report=0x7f060018;
+        public static final int problem_report_body=0x7f060019;
         public static final int title_activity_settings=0x7f06001f;
-        public static final int version=0x7f06001c;
+        public static final int version=0x7f06001a;
         public static final int webviewArea=0x7f06000b;
     }
     public static final class style {

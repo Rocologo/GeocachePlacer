@@ -6,11 +6,6 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title=""/>
-    <item
-        android:id="@+id/menu_item_share"
-        android:actionProviderClass="android.widget.ShareActionProvider"
-        android:orderInCategory="10"
-        android:showAsAction="ifRoom"
-        android:title="@string/menu_item_share_title"/>
+
 
 </menu>

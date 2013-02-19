@@ -65,7 +65,8 @@ public class GPSTracker extends Service implements LocationListener {
 					.isProviderEnabled(LocationManager.GPS_PROVIDER);
 			// getting network status
 
-			//isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+			// isNetworkEnabled =
+			// locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 			if (!isGPSEnabled && !isNetworkEnabled) {
 				// no network provider is enabled
 			} else {
@@ -91,27 +92,27 @@ public class GPSTracker extends Service implements LocationListener {
 				// if GPS Enabled get lat/long using GPS Services
 				if (isGPSEnabled) {
 					GpsStatus gps = locationManager.getGpsStatus(null);
-				    Iterable<GpsSatellite> sats = gps.getSatellites();
-				    Iterator<GpsSatellite> satI = sats.iterator();
-				    int maxSatellites = gps.getMaxSatellites();
-				    int getTimeToFirstFix = gps.getTimeToFirstFix();
-				    Log.d(TAG, "MaxSatellites:" + maxSatellites+ " getTimeToFirstFix: "+ getTimeToFirstFix);
-				    try {
-						Thread.sleep(getTimeToFirstFix);
-					} catch (InterruptedException e) {
-
-						e.printStackTrace();
+					Iterable<GpsSatellite> sats = gps.getSatellites();
+					Iterator<GpsSatellite> satI = sats.iterator();
+					int maxSatellites = gps.getMaxSatellites();
+					int getTimeToFirstFix = gps.getTimeToFirstFix();
+					Log.d(TAG, "MaxSatellites:" + maxSatellites
+							+ " getTimeToFirstFix: " + getTimeToFirstFix);
+					// try {
+					// Thread.sleep(getTimeToFirstFix);
+					// } catch (InterruptedException e) {
+					// e.printStackTrace();
+					// }
+					int count = 0;
+					while (satI.hasNext()) {
+						GpsSatellite gpssatellite = (GpsSatellite) satI.next();
+						if (gpssatellite.usedInFix()) {
+							count++;
+						}
 					}
-				    int count = 0;
-				    while(satI.hasNext()){
-				        GpsSatellite gpssatellite = (GpsSatellite) satI.next();
-				        if (gpssatellite.usedInFix()){
-				        count++;
-				        }
-				    }
-				    int satellites = count;
-					
-				    if (location == null) {
+					int satellites = count;
+
+					if (location == null) {
 						locationManager.requestLocationUpdates(
 								LocationManager.GPS_PROVIDER,
 								MIN_TIME_BW_UPDATES,
@@ -128,9 +129,9 @@ public class GPSTracker extends Service implements LocationListener {
 								Log.d(TAG,
 										"Location has Altityde: "
 												+ location.hasAltitude());
-								Log.d(TAG,
-										"Satellites : "+  satellites + "Max: "+maxSatellites);
-						
+								Log.d(TAG, "Satellites : " + satellites
+										+ "Max: " + maxSatellites);
+
 							}
 						}
 					}
@@ -378,19 +379,23 @@ public class GPSTracker extends Service implements LocationListener {
 
 		return (LatOrLon);
 	}
-	
+
 	public void onGpsStatusChanged(int event) {
-	    int Satellites = 0;
-	    int SatellitesInFix = 0;
-	    int timetofix = locationManager.getGpsStatus(null).getTimeToFirstFix();
-	    Log.d(TAG, "Time to first fix = "+String.valueOf(timetofix));
-	    for (GpsSatellite sat : locationManager.getGpsStatus(null).getSatellites()) {
-	        if(sat.usedInFix()) {
-	            SatellitesInFix++;              
-	        }
-	        Satellites++;
-	    }
-	    Log.d(TAG, String.valueOf(Satellites) + " Used In Last Fix ("+SatellitesInFix+")"); 
+		int Satellites = 0;
+		int SatellitesInFix = 0;
+		int timetofix = locationManager.getGpsStatus(null).getTimeToFirstFix();
+		Log.d(TAG, "Time to first fix = " + String.valueOf(timetofix));
+		for (GpsSatellite sat : locationManager.getGpsStatus(null)
+				.getSatellites()) {
+			if (sat.usedInFix()) {
+				SatellitesInFix++;
+			}
+			Satellites++;
+		}
+		Log.d(TAG, String.valueOf(Satellites) + " Used In Last Fix ("
+				+ SatellitesInFix + ")");
 	}
+	
+	
 
 }

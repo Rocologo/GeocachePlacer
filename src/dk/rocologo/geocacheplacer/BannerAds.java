@@ -18,6 +18,7 @@ import android.widget.Toast;
  */
 public class BannerAds extends Activity implements AdListener {
 	/** The log tag. */
+	private static final String TAG = "Geocache Placer";
 	private static final String LOG_TAG = "GeocachePlacer.BannerAds";
 	private static final String AD_UNIT_ID = "41329efae7754e33";
 	private static final String TEST_DEVICE_ID = "E8F87B6F49AB0A290619DB9574EE5733";
@@ -34,6 +35,7 @@ public class BannerAds extends Activity implements AdListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		Log.d(TAG, "BannerAds - onCreate");
 
 		// Create an ad.
 		adView = new AdView(this, AdSize.BANNER, AD_UNIT_ID);
@@ -49,6 +51,8 @@ public class BannerAds extends Activity implements AdListener {
 		// Create an ad request. Check logcat output for the hashed device ID to
 		// get test ads on a physical device.
 		AdRequest adRequest = new AdRequest();
+		adRequest.addKeyword("geocaching");
+		adRequest.addKeyword("gps");
 		adRequest.addTestDevice(AdRequest.TEST_EMULATOR);
 		adRequest.addTestDevice(TEST_DEVICE_ID);
 

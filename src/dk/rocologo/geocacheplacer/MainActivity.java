@@ -3,24 +3,33 @@ package dk.rocologo.geocacheplacer;
 import java.text.DecimalFormat;
 
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.graphics.Point;
 import android.util.Log;
+import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MenuItem.OnActionExpandListener;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ZoomControls;
+import dk.rocologo.geocacheplacer.*;
 
 public class MainActivity extends Activity implements OnClickListener,
 		OnSharedPreferenceChangeListener {
@@ -37,7 +46,7 @@ public class MainActivity extends Activity implements OnClickListener,
 	double latitude; // Latitude
 	double longitude; // Longitude
 	double altitude;
-	String url; // url to google maps
+	String url=""; // url to google maps
 
 	double averageLatitude = 0, previousAverageLatitude = 0,
 			deltaLatitude = 9999; // Average of Latitude for a number of
@@ -64,8 +73,8 @@ public class MainActivity extends Activity implements OnClickListener,
 	int zoomFactor = 16;
 	int numberOfRuns, currentRun;
 	int delay;
-
-	// private BannerAds adView;
+	
+	private ShareActionProvider shareActionProvider;
 
 	@SuppressLint("SetJavaScriptEnabled")
 	@Override
@@ -73,12 +82,16 @@ public class MainActivity extends Activity implements OnClickListener,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		int screenwidth = getScreenWidth();
+		int screenheight = getScreenHeight();
+		Log.d(TAG, "ScreenWidth+Height=" + screenwidth + "," + screenheight);
+
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		prefs.registerOnSharedPreferenceChangeListener(MainActivity.this);
 		numberOfRuns = Integer.valueOf(prefs.getString("numberOfRuns", "5"));
 		delay = Integer.valueOf(prefs.getString("delay", "500"));
-		currentRun = 0;
-
+		currentRun = 0;	
+		
 		textView1 = (TextView) findViewById(R.id.textView1);
 		textView2 = (TextView) findViewById(R.id.textView2);
 		textView3 = (TextView) findViewById(R.id.textView3);
@@ -104,6 +117,10 @@ public class MainActivity extends Activity implements OnClickListener,
 		webView.loadUrl(url);
 
 		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
+		
+		gps = new GPSTracker(this);
+		
+		setShareIntent(shareTheResult());
 
 		zoomControls = (ZoomControls) findViewById(R.id.zoomControls1);
 		// zoom speed in milliseconds
@@ -153,6 +170,7 @@ public class MainActivity extends Activity implements OnClickListener,
 				zoomControls.setIsZoomInEnabled(true);
 			}
 		});
+
 	}
 
 	public void onClick(View v) {
@@ -160,7 +178,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		final String status = "";
 		Log.d(TAG, "onClicked Button:" + clickedButton.toString());
 		if (clickedButton == buttonRun.getId()) {
-			gps = new GPSTracker(this);
+			
 			if (gps.canGetLocation()) {
 				averageRunning = true;
 				new MessureAverageLocation().execute(status);
@@ -186,23 +204,24 @@ public class MainActivity extends Activity implements OnClickListener,
 		} else if (clickedButton == buttonStop.getId()) {
 			averageRunning = false;
 		} else if (clickedButton == buttonSend.getId()) {
-			Intent sendIntent = new Intent();
-			sendIntent.setAction(Intent.ACTION_SEND);
-			sendIntent
-					.putExtra(
-							Intent.EXTRA_TEXT,
-							"The position was: "
-									+ gps.decimalToDM(averageLatitude,
-											averageLongitude)
-									+ "\n\n\n Google maps: " + url);
-			sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Geocache Placer");
-			sendIntent.setType("text/plain");
-			// startActivity(Intent.createChooser(sendIntent,
-			// getResources().getText(R.string.send_to)));
-			// startActivity(sendIntent);
-			startActivity(Intent.createChooser(sendIntent, ""));
+			startActivity(Intent.createChooser(shareTheResult(), "Share via"));			
 		}
 
+	}
+	
+	public Intent shareTheResult(){
+		Intent sendIntent = new Intent();
+		sendIntent.setAction(Intent.ACTION_SEND);
+		sendIntent
+				.putExtra(
+						Intent.EXTRA_TEXT,
+						"The average position was: \n"
+								+ gps.decimalToDM(averageLatitude,
+										averageLongitude)
+								+ "\n\n\nGoogle maps: " + url);
+		sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Geocache Placer");
+		sendIntent.setType("text/plain");
+		return sendIntent;
 	}
 
 	public class MessureAverageLocation extends AsyncTask<String, Void, String> {
@@ -232,17 +251,12 @@ public class MainActivity extends Activity implements OnClickListener,
 
 				numberOfLocations++;
 
-				// Log.d(TAG, "n: " + numberOfLocations + " Alt: " + altitude+
-				// " Avg. Alt: " + averageAltitude);
-
 				currentRun++;
 				progressBar.setProgress(currentRun);
 
-				// Wait 0,5 sec before messuring next location.
 				try {
 					Thread.sleep(delay);
 				} catch (InterruptedException e) {
-
 					e.printStackTrace();
 				}
 			}
@@ -259,6 +273,7 @@ public class MainActivity extends Activity implements OnClickListener,
 
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
+			Log.d(TAG, "onPostExecute");
 			textView1.setText(label1 + gps.decimalToDM(latitude, longitude));
 			textView2.setText(label2
 					+ gps.decimalToDM(averageLatitude, averageLongitude));
@@ -278,20 +293,82 @@ public class MainActivity extends Activity implements OnClickListener,
 					"Average of " + numberOfLocations
 							+ " locations is calculated.", Toast.LENGTH_LONG)
 					.show();
+			setShareIntent(shareTheResult());
 		}
 
 	}
 
 	// implemention the menu
+	  @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate options menu
 		getMenuInflater().inflate(R.menu.menu, menu);
+
+		// Inflate activity menu resource file.
+		getMenuInflater().inflate(R.menu.activity_main, menu);
+
+		// Locate MenuItem with ShareActionProvider
+		MenuItem menuItem = menu.findItem(R.id.menu_item_share);
+	/*	
+		 menuItem.setOnActionExpandListener(new OnActionExpandListener() {
+		        @Override
+		        public boolean onMenuItemActionCollapse(MenuItem item) {
+		            // Do something when collapsed
+		            return true;  // Return true to collapse action view
+		        }
+
+		        @Override
+		        public boolean onMenuItemActionExpand(MenuItem item) {
+		            // Do something when expanded
+		            return true;  // Return true to expand action view
+		        }
+		    });
+*/
+		// Fetch and store ShareActionProvider
+		shareActionProvider = (ShareActionProvider) menuItem.getActionProvider();
+		shareActionProvider
+		.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
+
+		// Return true to display menu
 		return true;
 	}
+
+	// Call to update the share intent
+	
+	private void setShareIntent(Intent shareIntent) {
+		if (shareActionProvider != null) {
+			shareActionProvider.setShareIntent(shareIntent);
+		} else {
+			Toast.makeText(
+					MainActivity.this,
+					"mShareActionProvider is null????", Toast.LENGTH_LONG);
+		}
+	}
+
+	/*
+	 * public View onCreateActionView() { // Inflate the action view to be shown
+	 * on the action bar. LayoutInflater layoutInflater =
+	 * LayoutInflater.from(mContext); View view =
+	 * layoutInflater.inflate(R.layout.action_provider, null); ImageButton
+	 * button = (ImageButton) view.findViewById(R.id.button);
+	 * button.setOnClickListener(new View.OnClickListener() {
+	 * 
+	 * @Override public void onClick(View v) { // Do something... } }); return
+	 * view; }
+	 */
 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intentSettings = new Intent(this, PrefsActivity.class);
 		Intent intentAbout = new Intent(this, AboutActivity.class);
+		//Intent intentShare = new Intent(this, ShareActivity.class);
 		switch (item.getItemId()) {
+		case R.id.item_share:
+			Intent intentShare=shareTheResult();
+			startActivity(intentShare);
+			
+			//startActivity(shareTheResult());
+			
+			return true;
 		case R.id.item_settings:
 			startActivity(intentSettings);
 			return true;
@@ -312,6 +389,40 @@ public class MainActivity extends Activity implements OnClickListener,
 		numberOfRuns = Integer.valueOf(prefs.getString("numberOfRuns", "5"));
 		delay = Integer.valueOf(prefs.getString("delay", "500"));
 		Log.d(TAG, "onSharedPreferenceChanged: numberOfRuns=" + numberOfRuns);
+	}
+
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+	@SuppressWarnings("deprecation")
+	public int getScreenWidth() {
+		int screenWidth = 0;
+		Point size = new Point();
+		WindowManager w = getWindowManager();
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+			// getSize implemented in API-13
+			w.getDefaultDisplay().getSize(size);
+			screenWidth = size.x;
+		} else {
+			Display d = w.getDefaultDisplay();
+			screenWidth = d.getWidth();
+		}
+		return screenWidth;
+	}
+
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+	@SuppressWarnings("deprecation")
+	public int getScreenHeight() {
+		int screenHeight = 0;
+		Point size = new Point();
+		WindowManager w = getWindowManager();
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+			// getSize implemented in API-13
+			w.getDefaultDisplay().getSize(size);
+			screenHeight = size.y;
+		} else {
+			Display d = w.getDefaultDisplay();
+			screenHeight = d.getHeight();
+		}
+		return screenHeight;
 	}
 
 }

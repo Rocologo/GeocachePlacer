@@ -2,6 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
+        android:id="@+id/item_share"
+        android:title="@string/menuitem_share">
+    </item>
+    <item
         android:id="@+id/item_settings"
         android:title="@string/menuitem_settings">
     </item>

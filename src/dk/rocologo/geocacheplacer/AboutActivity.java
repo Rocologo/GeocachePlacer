@@ -16,11 +16,11 @@ import android.widget.TextView;
 public class AboutActivity extends Activity implements OnClickListener {
 
 	private String version;
-	private Button buttonBack;
+	private Button buttonBack, buttonProblemReport, buttonRateApp;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.about_dialog);
+		setContentView(R.layout.about);
 		
 		try {
 			version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
@@ -31,6 +31,10 @@ public class AboutActivity extends Activity implements OnClickListener {
 
 		buttonBack = (Button) findViewById(R.id.button_return);
 		buttonBack.setOnClickListener(this);
+		buttonProblemReport = (Button) findViewById(R.id.button_problem_report);
+		buttonProblemReport.setOnClickListener(this);
+		buttonRateApp = (Button) findViewById(R.id.button_rate_app);
+		buttonRateApp.setOnClickListener(this);
 	}
 
 	public void onClick(View v) {
@@ -38,11 +42,11 @@ public class AboutActivity extends Activity implements OnClickListener {
 		if (clickedButton == buttonBack.getId()) {
 			finish();
 		} 
-		else if (clickedButton == buttonBack.getId()) {
+		else if (clickedButton == buttonProblemReport.getId()) {
 			mailButtonClicked(v);
 		}
 		
-		else if (clickedButton == buttonBack.getId()) {
+		else if (clickedButton == buttonRateApp.getId()) {
 			rateButtonClicked(v);
 		}
 		

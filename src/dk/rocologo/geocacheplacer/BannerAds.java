@@ -34,7 +34,7 @@ public class BannerAds extends Activity implements AdListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.main);
 		Log.d(TAG, "BannerAds - onCreate");
 
 		// Create an ad.

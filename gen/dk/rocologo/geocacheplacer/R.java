@@ -33,12 +33,12 @@ public final class R {
         public static final int adView=0x7f0a0008;
         public static final int adView1=0x7f0a0000;
         public static final int adView2=0x7f0a0001;
-        public static final int button1=0x7f0a0005;
-        public static final int button2=0x7f0a0006;
         public static final int buttonPause=0x7f0a000d;
         public static final int buttonReset=0x7f0a000e;
         public static final int buttonRun=0x7f0a000c;
         public static final int buttonSend=0x7f0a000f;
+        public static final int button_problem_report=0x7f0a0005;
+        public static final int button_rate_app=0x7f0a0006;
         public static final int button_return=0x7f0a0007;
         public static final int item_about=0x7f0a0017;
         public static final int item_settings=0x7f0a0016;
@@ -56,13 +56,13 @@ public final class R {
         public static final int zoomControls1=0x7f0a0012;
     }
     public static final class layout {
-        public static final int about_dialog=0x7f030000;
-        public static final int activity_main=0x7f030001;
+        public static final int about=0x7f030000;
+        public static final int main=0x7f030001;
     }
     public static final class menu {
-        public static final int action_bar_menu=0x7f090000;
-        public static final int activity_main_menu=0x7f090001;
-        public static final int settings_menu=0x7f090002;
+        public static final int action_bar=0x7f090000;
+        public static final int activity_main=0x7f090001;
+        public static final int settings=0x7f090002;
     }
     public static final class string {
         public static final int about_activity_title=0x7f060017;

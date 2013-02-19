@@ -80,7 +80,7 @@ public class MainActivity extends Activity implements OnClickListener,
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.main);
 
 		int screenwidth = getScreenWidth();
 		int screenheight = getScreenHeight();
@@ -300,10 +300,10 @@ public class MainActivity extends Activity implements OnClickListener,
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		// Inflate options menu
-		getMenuInflater().inflate(R.menu.settings_menu, menu);
+		getMenuInflater().inflate(R.menu.settings, menu);
 
 		// Inflate activity menu resource file.
-		getMenuInflater().inflate(R.menu.action_bar_menu, menu);
+		getMenuInflater().inflate(R.menu.action_bar, menu);
 
 		// Locate MenuItem with ShareActionProvider
 		MenuItem menuItem = menu.findItem(R.id.menu_item_share);

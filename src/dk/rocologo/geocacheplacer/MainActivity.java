@@ -301,9 +301,7 @@ public class MainActivity extends Activity implements OnClickListener,
 	// implemention the menu
 	  @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate options menu
-		getMenuInflater().inflate(R.menu.menu, menu);
-
+	
 		// Inflate activity menu resource file.
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 
@@ -329,7 +327,9 @@ public class MainActivity extends Activity implements OnClickListener,
 		shareActionProvider
 		.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
 
-		// Return true to display menu
+		// Inflate options menu
+		getMenuInflater().inflate(R.menu.menu, menu);
+	// Return true to display menu
 		return true;
 	}
 
@@ -338,11 +338,7 @@ public class MainActivity extends Activity implements OnClickListener,
 	private void setShareIntent(Intent shareIntent) {
 		if (shareActionProvider != null) {
 			shareActionProvider.setShareIntent(shareIntent);
-		} else {
-			Toast.makeText(
-					MainActivity.this,
-					"mShareActionProvider is null????", Toast.LENGTH_LONG);
-		}
+		} 
 	}
 
 	/*
@@ -365,10 +361,9 @@ public class MainActivity extends Activity implements OnClickListener,
 		case R.id.item_share:
 			Intent intentShare=shareTheResult();
 			startActivity(intentShare);
-			
 			//startActivity(shareTheResult());
-			
 			return true;
+
 		case R.id.item_settings:
 			startActivity(intentSettings);
 			return true;

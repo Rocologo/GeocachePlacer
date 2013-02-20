@@ -8,6 +8,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Criteria;
 import android.location.GpsSatellite;
 import android.location.GpsStatus;
 import android.location.Location;
@@ -37,16 +38,15 @@ public class GPSTracker extends Service implements LocationListener {
 	private double latitude; // latitude
 	private double longitude; // longitude
 	private double altitude; // altitude
-	// private double averageLatitude; // Average latitude
-	// private double averageLongitude; // Average longitude
-	// private Integer numberOfLocations; // the number of locations used in the
-	// average
+	//private double averageLatitude; // Average latitude
+	//private double averageLongitude; // Average longitude
+	//private Integer numberOfLocations; 
 
 	// The minimum distance to change Updates in meters
-	private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
+	private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 0; // 0 meters
 
 	// The minimum time between updates in milliseconds
-	private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
+	private static final long MIN_TIME_BW_UPDATES = 5000; // = 1 min 
 
 	// Declaring a Location Manager
 	protected LocationManager locationManager;
@@ -64,11 +64,10 @@ public class GPSTracker extends Service implements LocationListener {
 			isGPSEnabled = locationManager
 					.isProviderEnabled(LocationManager.GPS_PROVIDER);
 			// getting network status
-
-			// isNetworkEnabled =
-			// locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+			//isNetworkEnabled =locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 			if (!isGPSEnabled && !isNetworkEnabled) {
 				// no network provider is enabled
+				Log.d(TAG, "GPS and/or NetWORK is not enabled");
 			} else {
 				this.canGetLocation = true;
 				// First get location from Network Provider
@@ -81,7 +80,7 @@ public class GPSTracker extends Service implements LocationListener {
 					if (locationManager != null) {
 						location = locationManager
 								.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-						Log.d(TAG, "getLocation: " + location.toString());
+						Log.d(TAG, "getLocation (NETWORK): " + location.toString());
 						if (location != null) {
 							latitude = location.getLatitude();
 							longitude = location.getLongitude();
@@ -91,47 +90,24 @@ public class GPSTracker extends Service implements LocationListener {
 				}
 				// if GPS Enabled get lat/long using GPS Services
 				if (isGPSEnabled) {
-					GpsStatus gps = locationManager.getGpsStatus(null);
-					Iterable<GpsSatellite> sats = gps.getSatellites();
-					Iterator<GpsSatellite> satI = sats.iterator();
-					int maxSatellites = gps.getMaxSatellites();
-					int getTimeToFirstFix = gps.getTimeToFirstFix();
-					Log.d(TAG, "MaxSatellites:" + maxSatellites
-							+ " getTimeToFirstFix: " + getTimeToFirstFix);
-					// try {
-					// Thread.sleep(getTimeToFirstFix);
-					// } catch (InterruptedException e) {
-					// e.printStackTrace();
-					// }
-					int count = 0;
-					while (satI.hasNext()) {
-						GpsSatellite gpssatellite = (GpsSatellite) satI.next();
-						if (gpssatellite.usedInFix()) {
-							count++;
-						}
-					}
-					int satellites = count;
-
 					if (location == null) {
 						locationManager.requestLocationUpdates(
 								LocationManager.GPS_PROVIDER,
 								MIN_TIME_BW_UPDATES,
-								MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+								MIN_DISTANCE_CHANGE_FOR_UPDATES, this);						
 						Log.d(TAG, "getLocation: Location determined by GPS");
 						if (locationManager != null) {
+							
+							//location = locationManager
+								//	.getLastKnownLocation(provider);
 							location = locationManager
 									.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-							Log.d(TAG, "getLocation: " + location.toString());
+							
+							Log.d(TAG, "getLocation (GPS): " + location.toString());
 							if (location != null) {
 								latitude = location.getLatitude();
 								longitude = location.getLongitude();
 								altitude = location.getAltitude();
-								Log.d(TAG,
-										"Location has Altityde: "
-												+ location.hasAltitude());
-								Log.d(TAG, "Satellites : " + satellites
-										+ "Max: " + maxSatellites);
-
 							}
 						}
 					}
@@ -152,6 +128,8 @@ public class GPSTracker extends Service implements LocationListener {
 	public double getLatitude() {
 		if (location != null) {
 			latitude = location.getLatitude();
+		} else {
+			Log.d(TAG,"Latitude was NULL!");
 		}
 		return latitude;
 	}
@@ -276,13 +254,17 @@ public class GPSTracker extends Service implements LocationListener {
 
 	@Override
 	public void onLocationChanged(Location location) {
-		Log.d(TAG, "onLocationChanged");
+		//TODO: remove this
+		//latitude = location.getLatitude();
+		//longitude = location.getLongitude();
+		//altitude = location.getAltitude();
+		//Log.d(TAG, "onLocationChanged: Lat:"+latitude);
+		
 	}
 
 	@Override
 	public void onProviderDisabled(String provider) {
 		Log.d(TAG, "onProviderDisabled");
-		Toast.makeText(this, "GPS Disabled!", Toast.LENGTH_LONG).show();
 	}
 
 	@Override
@@ -380,7 +362,7 @@ public class GPSTracker extends Service implements LocationListener {
 		return (LatOrLon);
 	}
 
-	public void onGpsStatusChanged(int event) {
+/*	public void onGpsStatusChanged(int event) {
 		int Satellites = 0;
 		int SatellitesInFix = 0;
 		int timetofix = locationManager.getGpsStatus(null).getTimeToFirstFix();
@@ -395,7 +377,5 @@ public class GPSTracker extends Service implements LocationListener {
 		Log.d(TAG, String.valueOf(Satellites) + " Used In Last Fix ("
 				+ SatellitesInFix + ")");
 	}
-	
-	
-
+*/
 }

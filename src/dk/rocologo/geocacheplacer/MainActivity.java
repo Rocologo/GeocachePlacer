@@ -151,7 +151,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		zoomControls.setOnZoomOutClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				final int MIN_ZOOM = 12;
+				final int MIN_ZOOM = 10;
 				// min is 0
 				if (zoomFactor > MIN_ZOOM) {
 					zoomControls.setIsZoomOutEnabled(true);
@@ -178,7 +178,6 @@ public class MainActivity extends Activity implements OnClickListener,
 		final String status = "";
 		Log.d(TAG, "onClicked Button:" + clickedButton.toString());
 		if (clickedButton == buttonRun.getId()) {
-
 			if (gps.canGetLocation()) {
 				averageRunning = true;
 				new MessureAverageLocation().execute(status);
@@ -201,6 +200,7 @@ public class MainActivity extends Activity implements OnClickListener,
 			textView5.setText(label5 + "0");
 			progressBar.setProgress(0);
 			averageRunning = false;
+			setShareIntent(shareTheResult());
 		} else if (clickedButton == buttonStop.getId()) {
 			averageRunning = false;
 		} else if (clickedButton == buttonSend.getId()) {
@@ -244,6 +244,8 @@ public class MainActivity extends Activity implements OnClickListener,
 				deltaLatitude = averageLatitude - previousAverageLatitude;
 				deltaLongitude = averageLongitude - previousAverageLongitude;
 				deltaAltitude = averageAltitude - previousAverageAltitude;
+				
+				Log.d(TAG, "Number:"+numberOfLocations+" Lat:"+latitude+" Avg.lat:"+averageLatitude);
 
 				numberOfLocations++;
 
@@ -298,22 +300,17 @@ public class MainActivity extends Activity implements OnClickListener,
 
 	@SuppressLint("NewApi")
 	public boolean onCreateOptionsMenu(Menu menu) {
-
 		// Inflate options menu
 		getMenuInflater().inflate(R.menu.settings, menu);
-
 		// Inflate activity menu resource file.
 		getMenuInflater().inflate(R.menu.action_bar, menu);
-
 		// Locate MenuItem with ShareActionProvider
 		MenuItem menuItem = menu.findItem(R.id.menu_item_share);
-		
 		// Fetch and store ShareActionProvider
 		shareActionProvider = (ShareActionProvider) menuItem
 				.getActionProvider();
 		shareActionProvider
 				.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
-
 		// Return true to display menu
 		return true;
 	}
@@ -326,17 +323,6 @@ public class MainActivity extends Activity implements OnClickListener,
 		}
 	}
 
-	/*
-	 * public View onCreateActionView() { // Inflate the action view to be shown
-	 * on the action bar. LayoutInflater layoutInflater =
-	 * LayoutInflater.from(mContext); View view =
-	 * layoutInflater.inflate(R.layout.action_provider, null); ImageButton
-	 * button = (ImageButton) view.findViewById(R.id.button);
-	 * button.setOnClickListener(new View.OnClickListener() {
-	 * 
-	 * @Override public void onClick(View v) { // Do something... } }); return
-	 * view; }
-	 */
 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intentSettings = new Intent(this, PrefsActivity.class);
@@ -348,16 +334,13 @@ public class MainActivity extends Activity implements OnClickListener,
 			startActivity(intentShare);
 			// startActivity(shareTheResult());
 			return true;
-
 		case R.id.item_settings:
 			startActivity(intentSettings);
 			return true;
-
 		case R.id.item_about:
 			Log.d(TAG, "Getting About");
 			startActivity(intentAbout);
 			return true;
-
 		default:
 			return false;
 		}
@@ -403,6 +386,13 @@ public class MainActivity extends Activity implements OnClickListener,
 			screenHeight = d.getHeight();
 		}
 		return screenHeight;
+	}
+	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		gps.stopUsingGPS();
 	}
 
 }

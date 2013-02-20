@@ -1,16 +1,11 @@
 package dk.rocologo.geocacheplacer;
 
 import java.text.DecimalFormat;
-import java.util.Iterator;
-
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Criteria;
-import android.location.GpsSatellite;
-import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -18,7 +13,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
-import android.widget.Toast;
 
 public class GPSTracker extends Service implements LocationListener {
 
@@ -43,10 +37,10 @@ public class GPSTracker extends Service implements LocationListener {
 	//private Integer numberOfLocations; 
 
 	// The minimum distance to change Updates in meters
-	private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 0; // 0 meters
+	private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 0; 
 
 	// The minimum time between updates in milliseconds
-	private static final long MIN_TIME_BW_UPDATES = 5000; // = 1 min 
+	private static final long MIN_TIME_BW_UPDATES = 0;  
 
 	// Declaring a Location Manager
 	protected LocationManager locationManager;
@@ -65,6 +59,7 @@ public class GPSTracker extends Service implements LocationListener {
 					.isProviderEnabled(LocationManager.GPS_PROVIDER);
 			// getting network status
 			//isNetworkEnabled =locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+			isNetworkEnabled=false;
 			if (!isGPSEnabled && !isNetworkEnabled) {
 				// no network provider is enabled
 				Log.d(TAG, "GPS and/or NetWORK is not enabled");
@@ -97,12 +92,8 @@ public class GPSTracker extends Service implements LocationListener {
 								MIN_DISTANCE_CHANGE_FOR_UPDATES, this);						
 						Log.d(TAG, "getLocation: Location determined by GPS");
 						if (locationManager != null) {
-							
-							//location = locationManager
-								//	.getLastKnownLocation(provider);
 							location = locationManager
 									.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-							
 							Log.d(TAG, "getLocation (GPS): " + location.toString());
 							if (location != null) {
 								latitude = location.getLatitude();
@@ -122,15 +113,20 @@ public class GPSTracker extends Service implements LocationListener {
 		return location;
 	}
 
+	public Location getNextLocation(){
+		location = locationManager
+				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		return location;
+	}
+	
 	/**
 	 * Function to get latitude
 	 * */
 	public double getLatitude() {
 		if (location != null) {
-			latitude = location.getLatitude();
-		} else {
-			Log.d(TAG,"Latitude was NULL!");
-		}
+			latitude = location.getLatitude();		
+		} 
+		//Log.d(TAG,"getLatitude - Latitude:"+latitude + " location:"+location.toString());
 		return latitude;
 	}
 
@@ -253,13 +249,8 @@ public class GPSTracker extends Service implements LocationListener {
 	}
 
 	@Override
-	public void onLocationChanged(Location location) {
-		//TODO: remove this
-		//latitude = location.getLatitude();
-		//longitude = location.getLongitude();
-		//altitude = location.getAltitude();
-		//Log.d(TAG, "onLocationChanged: Lat:"+latitude);
-		
+	public void onLocationChanged(Location loc) {
+		//ignore
 	}
 
 	@Override
@@ -274,7 +265,7 @@ public class GPSTracker extends Service implements LocationListener {
 
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		Log.d(TAG, "onStatusChanged");
+		//Log.d(TAG, "onStatusChanged");
 	}
 
 	@Override
@@ -361,21 +352,4 @@ public class GPSTracker extends Service implements LocationListener {
 
 		return (LatOrLon);
 	}
-
-/*	public void onGpsStatusChanged(int event) {
-		int Satellites = 0;
-		int SatellitesInFix = 0;
-		int timetofix = locationManager.getGpsStatus(null).getTimeToFirstFix();
-		Log.d(TAG, "Time to first fix = " + String.valueOf(timetofix));
-		for (GpsSatellite sat : locationManager.getGpsStatus(null)
-				.getSatellites()) {
-			if (sat.usedInFix()) {
-				SatellitesInFix++;
-			}
-			Satellites++;
-		}
-		Log.d(TAG, String.valueOf(Satellites) + " Used In Last Fix ("
-				+ SatellitesInFix + ")");
-	}
-*/
 }

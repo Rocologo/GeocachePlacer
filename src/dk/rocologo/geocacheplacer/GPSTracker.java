@@ -6,6 +6,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -57,6 +58,9 @@ public class GPSTracker extends Service implements LocationListener {
 			// getting GPS status
 			isGPSEnabled = locationManager
 					.isProviderEnabled(LocationManager.GPS_PROVIDER);
+			//Criteria criteria = new Criteria();
+		    //criteria.setAccuracy(Criteria.ACCURACY_FINE);
+		    //String provider = locationManager.getBestProvider(criteria,true);
 			// getting network status
 			//isNetworkEnabled =locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 			isNetworkEnabled=false;

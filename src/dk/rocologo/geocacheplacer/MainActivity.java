@@ -2,28 +2,21 @@ package dk.rocologo.geocacheplacer;
 
 import java.text.DecimalFormat;
 
-import android.location.Location;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.graphics.Point;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MenuItem.OnActionExpandListener;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -31,14 +24,13 @@ import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ZoomControls;
-import dk.rocologo.geocacheplacer.*;
 
 public class MainActivity extends Activity implements OnClickListener,
 		OnSharedPreferenceChangeListener {
 
 	static final String TAG = "GeocachePlacer";
 	SharedPreferences prefs;
-	private Button buttonRun, buttonReset, buttonPause, buttonSend;
+	private Button buttonRun, buttonReset, buttonSend;
 	ProgressBar progressBar;
 	WebView webView;
 	GPSTracker gps;
@@ -66,15 +58,17 @@ public class MainActivity extends Activity implements OnClickListener,
 	TextView textView3;
 	TextView textView4;
 	TextView textView5;
-	final static String label1 = "Coordinates: ";
-	final static String label2 = "Avg.Coordinates: ";
-	final static String label3 = "Deviation : ";
-	final static String label4 = "Number of coordinates: ";
-	final static String label5 = "Altitude:  ";
-	String mapsize = "400x300";
-	Integer currentRun=0;
+	// final static String label1 = "Coordinates: ";
+	// final static String label2 = "Avg.Coordinates: ";
+	// final static String label3 = "Deviation : ";
+	// final static String label4 = "Number of coordinates: ";
+	// final static String label5 = "Altitude:  ";
 
-	int zoomFactor = 16;
+	String mapsize = "400x300";
+	String maptype;
+	int zoomFactor = 15;
+
+	Integer currentRun = 0;
 
 	private ShareActionProvider shareActionProvider;
 
@@ -84,22 +78,20 @@ public class MainActivity extends Activity implements OnClickListener,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		Display display = getWindowManager().getDefaultDisplay();
-	    DisplayMetrics outMetrics = new DisplayMetrics ();
-	    display.getMetrics(outMetrics);
-
-	    int density  = (int) getResources().getDisplayMetrics().density;
-	    int dpHeight = outMetrics.heightPixels / density;
-	    int dpWidth  = outMetrics.widthPixels / density;
-		mapsize=dpWidth+"x"+dpHeight/2;
-		Log.d(TAG, "dpWidth+Height=" + dpWidth + "," + dpHeight+" mapsize="+mapsize);
-	    //int screenwidth = getScreenWidth();
-		//int screenheight = getScreenHeight();
-		//Log.d(TAG, "ScreenWidth+Height=" + screenwidth + "," + screenheight+ " MAPSIZE="+mapsize);
-		
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		prefs.registerOnSharedPreferenceChangeListener(MainActivity.this);
+		maptype = prefs.getString("maptype", "mobile");
 
+		Display display = getWindowManager().getDefaultDisplay();
+		DisplayMetrics outMetrics = new DisplayMetrics();
+		display.getMetrics(outMetrics);
+		int density = (int) getResources().getDisplayMetrics().density;
+		int dpHeight = outMetrics.heightPixels / density;
+		int dpWidth = outMetrics.widthPixels / density;
+		mapsize = dpWidth + "x" + dpHeight / 2;
+		Log.d(TAG, "dpWidth+Height=" + dpWidth + "," + dpHeight + " mapsize="
+				+ mapsize);
+		Log.d(TAG, "Label1:"+R.string.textView1);
 
 		textView1 = (TextView) findViewById(R.id.textView1);
 		textView2 = (TextView) findViewById(R.id.textView2);
@@ -107,12 +99,10 @@ public class MainActivity extends Activity implements OnClickListener,
 		textView4 = (TextView) findViewById(R.id.textView4);
 		textView5 = (TextView) findViewById(R.id.textView5);
 
-		buttonRun = (Button) findViewById(R.id.buttonRun);
+		buttonRun = (Button) findViewById(R.id.buttonRunStop);
 		buttonRun.setOnClickListener(this);
 		buttonReset = (Button) findViewById(R.id.buttonReset);
 		buttonReset.setOnClickListener(this);
-		buttonPause = (Button) findViewById(R.id.buttonPause);
-		buttonPause.setOnClickListener(this);
 		buttonSend = (Button) findViewById(R.id.buttonSend);
 		buttonSend.setOnClickListener(this);
 
@@ -120,16 +110,24 @@ public class MainActivity extends Activity implements OnClickListener,
 		webView.getSettings().setJavaScriptEnabled(true);
 		webView.getSettings().setBuiltInZoomControls(false);
 
-		//TODO: set size to ????
-		url = "http://maps.google.com/staticmap?center=" + averageLatitude
-				+ "," + averageLongitude
-				+ "&zoom=0&size="+mapsize+"&maptype=mobile/";
+		gps = new GPSTracker(this);
+		gps.getLocation();
+		averageLatitude = gps.getLatitude();
+		averageLongitude = gps.getLongitude();
+
+		url = "http://maps.googleapis.com/maps/api/staticmap?center="
+				+ averageLatitude + "," + averageLongitude + "&zoom=0&size="
+				+ mapsize + "&maptype=" + maptype + "&sensor=true";
 		webView.loadUrl(url);
 
+		textView1.setText(getString(R.string.textView1)
+				+ gps.decimalToDM(averageLatitude, averageLongitude));
+		textView2.setText(getString(R.string.textView2) + "0,0");
+		textView3.setText(getString(R.string.textView3) + "0");
+		textView4.setText(getString(R.string.textView4) + "0");
+		textView5.setText(getString(R.string.textView5) + "0");
+
 		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
-
-
-		gps = new GPSTracker(this);
 
 		setShareIntent(shareTheResult());
 
@@ -144,10 +142,17 @@ public class MainActivity extends Activity implements OnClickListener,
 				if (zoomFactor < MAX_ZOOM) {
 					zoomControls.setIsZoomInEnabled(true);
 					zoomFactor++;
-					url = "http://maps.google.com/staticmap?center="
-							+ averageLatitude + "," + averageLongitude
-							+ "&zoom=" + zoomFactor
-							+ "&size="+mapsize+"&maptype=mobile/&markers="
+					url = "http://maps.googleapis.com/maps/api/staticmap?center="
+							+ averageLatitude
+							+ ","
+							+ averageLongitude
+							+ "&zoom="
+							+ zoomFactor
+							+ "&size="
+							+ mapsize
+							+ "&maptype="
+							+ maptype
+							+ "&sensor=true&markers="
 							+ averageLatitude + "," + averageLongitude;
 					webView.loadUrl(url);
 					Log.d(TAG, "ZoomIn: factor is set to " + zoomFactor);
@@ -162,15 +167,23 @@ public class MainActivity extends Activity implements OnClickListener,
 		zoomControls.setOnZoomOutClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				final int MIN_ZOOM = 10;
+				final int MIN_ZOOM = 5;
 				// min is 0
 				if (zoomFactor > MIN_ZOOM) {
 					zoomControls.setIsZoomOutEnabled(true);
 					zoomFactor--;
-					url = "http://maps.google.com/staticmap?center="
-							+ averageLatitude + "," + averageLongitude
-							+ "&zoom=" + zoomFactor
-							+ "&size="+mapsize+"&maptype=mobile/&markers="
+					// http://maps.google.com/staticmap?center=55.224617,11.759217&zoom=17&size=512x512&maptype=terrain/&markers=55.224617,11.759217
+					url = "http://maps.googleapis.com/maps/api/staticmap?center="
+							+ averageLatitude
+							+ ","
+							+ averageLongitude
+							+ "&zoom="
+							+ zoomFactor
+							+ "&size="
+							+ mapsize
+							+ "&maptype="
+							+ maptype
+							+ "&sensor=true&markers="
 							+ averageLatitude + "," + averageLongitude;
 					webView.loadUrl(url);
 					Log.d(TAG, "ZoomOut: factor is set to " + zoomFactor);
@@ -190,8 +203,14 @@ public class MainActivity extends Activity implements OnClickListener,
 		Log.d(TAG, "onClicked Button:" + clickedButton.toString());
 		if (clickedButton == buttonRun.getId()) {
 			if (gps.canGetLocation()) {
-				averageRunning = true;
-				new MessureAverageLocation().execute(status);
+				if (averageRunning) {
+					averageRunning = false;
+					buttonRun.setText(R.string.button_run_start);
+				} else {
+					averageRunning = true;
+					buttonRun.setText(R.string.button_run_stop);
+					new MessureAverageLocation().execute(status);
+				}
 			} else {
 				// can't get location
 				// GPS or Network is not enabled
@@ -200,22 +219,23 @@ public class MainActivity extends Activity implements OnClickListener,
 				gps.showSettingsAlert();
 			}
 		} else if (clickedButton == buttonReset.getId()) {
-			averageLatitude = 0;
-			averageLongitude = 0;
-			averageAltitude = 0;
+			buttonRun.setText(R.string.button_run_start);
+			averageLatitude = gps.getLatitude();
+			averageLongitude = gps.getLongitude();
+			averageAltitude = gps.getAltitude();
 			numberOfLocations = 0;
-			currentRun=0;
-	
-			textView1.setText(label1 + "0,0");
-			textView2.setText(label2 + "0,0");
-			textView3.setText(label3 + "0");
-			textView4.setText(label4 + "0");
-			textView5.setText(label5 + "0");
+			currentRun = 0;
+			zoomFactor = 15;
+
+			textView1.setText(getString(R.string.textView1)
+					+ gps.decimalToDM(latitude, longitude));
+			textView2.setText(getString(R.string.textView2) + "0,0");
+			textView3.setText(getString(R.string.textView3) + "0");
+			textView4.setText(getString(R.string.textView4) + "0");
+			textView5.setText(getString(R.string.textView5) + "0");
 			progressBar.setProgress(0);
 			averageRunning = false;
 			setShareIntent(shareTheResult());
-		} else if (clickedButton == buttonPause.getId()) {
-			averageRunning = false;
 		} else if (clickedButton == buttonSend.getId()) {
 			startActivity(Intent.createChooser(shareTheResult(), "Share via"));
 		}
@@ -235,12 +255,13 @@ public class MainActivity extends Activity implements OnClickListener,
 
 	public class MessureAverageLocation extends AsyncTask<String, Void, String> {
 
-		Integer numberOfRunsPrefs = Integer.valueOf(prefs.getString("numberOfRuns", "5"));
+		Integer numberOfRunsPrefs = Integer.valueOf(prefs.getString(
+				"numberOfRuns", "5"));
 		Integer delay = Integer.valueOf(prefs.getString("delay", "500"));
-		
+
 		@Override
-		protected String doInBackground(String... params) {		
-			
+		protected String doInBackground(String... params) {
+
 			while (currentRun < numberOfRunsPrefs && averageRunning) {
 				gps.getNextLocation();
 				latitude = gps.getLatitude();
@@ -261,8 +282,9 @@ public class MainActivity extends Activity implements OnClickListener,
 				deltaLatitude = averageLatitude - previousAverageLatitude;
 				deltaLongitude = averageLongitude - previousAverageLongitude;
 				deltaAltitude = averageAltitude - previousAverageAltitude;
-				
-				Log.d(TAG, "Number:"+numberOfLocations+" Lat:"+latitude+" Avg.lat:"+averageLatitude);
+
+				Log.d(TAG, "Number:" + numberOfLocations + " Lat:" + latitude
+						+ " Avg.lat:" + averageLatitude);
 
 				numberOfLocations++;
 				currentRun++;
@@ -273,9 +295,11 @@ public class MainActivity extends Activity implements OnClickListener,
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-			} 
-			if (currentRun == numberOfRunsPrefs)
+			}
+			if (currentRun == numberOfRunsPrefs) {
 				currentRun = 0;
+				averageRunning = false;
+			}
 			return params[0];
 		}
 
@@ -288,19 +312,22 @@ public class MainActivity extends Activity implements OnClickListener,
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 			Log.d(TAG, "onPostExecute");
-			textView1.setText(label1 + gps.decimalToDM(latitude, longitude));
-			textView2.setText(label2
+			textView1.setText(getString(R.string.textView1)
+					+ gps.decimalToDM(latitude, longitude));
+			textView2.setText(getString(R.string.textView2)
 					+ gps.decimalToDM(averageLatitude, averageLongitude));
-			textView3.setText(label3
+			textView3.setText(getString(R.string.textView3)
 					+ gps.decimalToDM(deltaLatitude, deltaLongitude));
-			textView4.setText(label4 + numberOfLocations);
+			textView4.setText(getString(R.string.textView4) + numberOfLocations);
 			DecimalFormat df = new DecimalFormat("###0.00");
-			textView5.setText(label5 + df.format(averageAltitude) + " +- "
-					+ df.format(deltaAltitude));
-			url = "http://maps.google.com/staticmap?center=" + averageLatitude
-					+ "," + averageLongitude + "&zoom=" + zoomFactor
-					+ "&size="+mapsize+"&&maptype=mobile/&markers="
-					+ averageLatitude + "," + averageLongitude;
+			textView5.setText(getString(R.string.textView5) + df.format(averageAltitude)
+					+ " ± " + df.format(Math.abs(deltaAltitude)));
+			maptype = prefs.getString("maptype", "Mobile");
+			url = "http://maps.googleapis.com/maps/api/staticmap?center="
+					+ averageLatitude + "," + averageLongitude + "&zoom="
+					+ zoomFactor + "&size=" + mapsize + "&&maptype=" + maptype
+					+ "&sensor=true&markers=" + averageLatitude + ","
+					+ averageLongitude;
 			webView.loadUrl(url);
 			Toast.makeText(
 					MainActivity.this,
@@ -308,6 +335,7 @@ public class MainActivity extends Activity implements OnClickListener,
 							+ " locations is calculated.", Toast.LENGTH_LONG)
 					.show();
 			setShareIntent(shareTheResult());
+			buttonRun.setText(R.string.button_run_start);
 		}
 
 	}
@@ -339,7 +367,6 @@ public class MainActivity extends Activity implements OnClickListener,
 		}
 	}
 
-
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intentSettings = new Intent(this, PrefsActivity.class);
 		Intent intentAbout = new Intent(this, AboutActivity.class);
@@ -365,46 +392,17 @@ public class MainActivity extends Activity implements OnClickListener,
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
-		//TODO: set summary to new text.
+		// TODO: set summary to new text.
+		url = "http://maps.googleapis.com/maps/api/staticmap?center="
+				+ averageLatitude + "," + averageLongitude + "&zoom="
+				+ zoomFactor + "&size=" + mapsize + "&maptype=" + maptype
+				+ "&sensor=true&markers=" + averageLatitude + ","
+				+ averageLongitude;
+		webView.loadUrl(url);
 	}
 
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-	@SuppressWarnings("deprecation")
-	public int getScreenWidth() {
-		int screenWidth = 0;
-		Point size = new Point();
-		WindowManager w = getWindowManager();
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-			// getSize implemented in API-13
-			w.getDefaultDisplay().getSize(size);
-			screenWidth = size.x;
-		} else {
-			Display d = w.getDefaultDisplay();
-			screenWidth = d.getWidth();
-		}
-		return screenWidth;
-	}
-
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-	@SuppressWarnings("deprecation")
-	public int getScreenHeight() {
-		int screenHeight = 0;
-		Point size = new Point();
-		WindowManager w = getWindowManager();
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-			// getSize implemented in API-13
-			w.getDefaultDisplay().getSize(size);
-			screenHeight = size.y;
-		} else {
-			Display d = w.getDefaultDisplay();
-			screenHeight = d.getHeight();
-		}
-		return screenHeight;
-	}
-	
 	@Override
 	protected void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
 		gps.stopUsingGPS();
 	}

@@ -2,17 +2,34 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <ListPreference
+        android:defaultValue="5"
         android:entries="@array/numberOfRunNames"
         android:entryValues="@array/numberOfRunValues"
         android:key="numberOfRuns"
         android:summary="@string/numberOfRunsTitle_summay"
-        android:title="@string/numberOfRunsTitle" android:defaultValue="5"/>
+        android:title="@string/numberOfRunsTitle" />
 
     <EditTextPreference
         android:inputType="textEmailAddress"
         android:key="email"
         android:summary="@string/email_summary"
         android:title="@string/email" />
-    <ListPreference android:key="delay" android:title="@string/delay" android:summary="@string/delay_summary" android:entries="@array/delayNames" android:entryValues="@array/delayValues" android:defaultValue="500"/>
+
+    <ListPreference
+        android:defaultValue="500"
+        android:entries="@array/delayNames"
+        android:entryValues="@array/delayValues"
+        android:key="delay"
+        android:summary="@string/delay_summary"
+        android:title="@string/delay" />
+    
+        <ListPreference
+        android:defaultValue="mobile"
+        android:entries="@array/maptypeNames"
+        android:entryValues="@array/maptypeValues"
+        android:key="maptype"
+        android:summary="@string/maptype_summary"
+        android:title="@string/maptype" />
+    
 
 </PreferenceScreen>

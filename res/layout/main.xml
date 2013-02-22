@@ -69,31 +69,14 @@
         android:text="@string/latitude" />
 
     <Button
-        android:id="@+id/buttonRun"
+        android:id="@+id/buttonRunStop"
+        style="@style/AppTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textView5"
         android:layout_below="@+id/textView5"
         android:layout_marginTop="10dp"
-        android:text="@string/button_run" />
-
-    <Button
-        android:id="@+id/buttonPause"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView5"
-        android:layout_marginTop="10dp"
-        android:layout_toRightOf="@+id/buttonRun"
-        android:text="@string/button_pause" />
-
-    <Button
-        android:id="@+id/buttonReset"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView5"
-        android:layout_marginTop="10dp"
-        android:layout_toRightOf="@+id/buttonPause"
-        android:text="@string/button_reset" />
+        android:text="@string/button_run_start" />
 
     <Button
         android:id="@+id/buttonSend"
@@ -112,7 +95,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/buttonRun"
+        android:layout_below="@+id/buttonRunStop"
         android:layout_marginTop="5dp" />
 
     <WebView
@@ -131,5 +114,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/buttonReset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/buttonRunStop"
+        android:layout_alignBottom="@+id/buttonRunStop"
+        android:layout_toLeftOf="@+id/buttonSend"
+        android:text="@string/button_reset" />
 
 </RelativeLayout>

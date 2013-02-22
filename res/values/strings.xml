@@ -1,25 +1,30 @@
 <resources>
 
+    <string name="textView1">Location: </string>
+    <string name="textView2">Average: </string>
+    <string name="textView3">Deviation: </string>
+    <string name="textView4">Number of positions: </string>
+    <string name="textView5">Altitude: </string>
     <string name="app_name">GeocachePlacer</string>
     <string name="activity_main_title">Geocache Placer</string>
-    <string name="button_run">Run</string>
+    <string name="button_run_start">Start</string>
+    <string name="button_run_stop">Stop</string>
     <string name="button_reset">Reset</string>
-    <string name="button_pause">Pause</string>
     <string name="button_send">Send</string>
-    <string name="current_position">Coordinates: </string>
-    <string name="average_position">Avg.Coordinates: </string>
-    <string name="delta_position">Deviation :</string>
-    <string name="number_of_runs">Number of coordinates:</string>
-    <string name="latitude">Altitude:</string>
+    <string name="current_position">Location: </string>
+    <string name="average_position">Average: </string>
+    <string name="delta_position">Deviation: </string>
+    <string name="number_of_runs">Number of locations: </string>
+    <string name="latitude">Altitude: </string>
     <string name="webviewArea">WebView</string>
     <string name="email">Emailadress</string>
-    <string name="email_summary">Please enter your emailadress</string>
-    <string name="menu_item_share_title">1234Title</string>
+    <string name="email_summary">Enter your emailadress</string>
+    <string name="menu_item_share_title">Share</string>
     <string name="menuitem_share">Share</string>
     <string name="menuitem_settings">Settings</string>
     <string name="menuitem_about">About</string>
     <string name="about_button_return">Back</string>
-    <string name="about_textview_body">Geocache Placer is a tool to help Geocachers getting a precise position for the Geocache they want to place. \n \nPress \"Run\" a couple of times until the Delta coordinates are close to 0.0000. The app is free to use and paid by the ADS, so please click on the ADS if you find them interesting. \n \nDeveloped by Rocologo@hotmail.com</string>
+    <string name="about_textview_body">Geocache Placer is a tool which helps Geocachers placing there own geocache with a precise location. \n \nPress \"Start\" a number of times, until the deviation is close to 0.00000. This app is free and paid by ADS, feel free to click on interesting ads. :-) \n \nDeveloped by Rocologo@hotmail.com</string>
     <string name="about_rate_app">Rate app on Google Play</string>
     <string name="about_problem_report">Problem report</string>
     <string name="about_title">About</string>
@@ -27,18 +32,20 @@
     <string name="problem_report">Geocache Placer Problem Report</string>
     <string name="problem_report_body">What phone/device do you use? \n</string>
     <string name="version">Version: unknown</string>
-    <string name="numberOfRunsTitle">Number of positions</string>
-    <string name="numberOfRunsTitle_summay">Enter the number of runs used for each average messurement.</string>
-
+    <string name="numberOfRunsTitle">Number of locations: </string>
+    <string name="numberOfRunsTitle_summay">Enter the number of locations you want to messure on.</string>
+    <string name="maptype">Maptype</string>
+<string name="maptype_summary">Choose the maptype</string>
+    
     <string-array name="numberOfRunNames">
-        <item>Until Delta Position is 0</item>
+        <item>Until deviation is close to 0</item>
         <item>1 position</item>
-        <item>Average of 5 positions</item>
-        <item>Average of 10 positions</item>
-        <item>Average of 25 positions</item>
-        <item>Average of 50 positions</item>
-        <item>Average of 100 positions</item>
-        <item>Average of 200 positions</item>
+        <item>5 positions</item>
+        <item>10 positions</item>
+        <item>25 positions</item>
+        <item>50 positions</item>
+        <item>100 positions</item>
+        <item>200 positions</item>
     </string-array>
     <string-array name="numberOfRunValues">
         <item>1000</item>
@@ -52,7 +59,7 @@
     </string-array>
 
     <string name="delay">Delay</string>
-    <string name="delay_summary">Set the delay between the messurements og coordinates.</string>
+    <string name="delay_summary">Delay between the messurements.</string>
 
     <string-array name="delayNames">
         <item>500 milliseconds</item>
@@ -65,6 +72,20 @@
         <item>1000</item>
         <item>5000</item>
         <item>10000</item>
+    </string-array>
+    <string-array name="maptypeNames">
+        <item>Mobile</item>
+        <item>Roadmap</item>
+        <item>Satellite</item>
+        <item>Hybrid</item>
+        <item>Terrain</item>
+    </string-array>
+    <string-array name="maptypeValues">
+        <item>mobile</item>
+        <item>roadmap</item>
+        <item>satellite</item>
+        <item>hybrid</item>
+        <item>terrain</item>
     </string-array>
 
 </resources>

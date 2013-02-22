@@ -93,9 +93,6 @@ public class MainActivity extends Activity implements OnClickListener,
 	    int dpWidth  = outMetrics.widthPixels / density;
 		mapsize=dpWidth+"x"+dpHeight/2;
 		Log.d(TAG, "dpWidth+Height=" + dpWidth + "," + dpHeight+" mapsize="+mapsize);
-	    //int screenwidth = getScreenWidth();
-		//int screenheight = getScreenHeight();
-		//Log.d(TAG, "ScreenWidth+Height=" + screenwidth + "," + screenheight+ " MAPSIZE="+mapsize);
 		
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		prefs.registerOnSharedPreferenceChangeListener(MainActivity.this);
@@ -368,39 +365,6 @@ public class MainActivity extends Activity implements OnClickListener,
 		//TODO: set summary to new text.
 	}
 
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-	@SuppressWarnings("deprecation")
-	public int getScreenWidth() {
-		int screenWidth = 0;
-		Point size = new Point();
-		WindowManager w = getWindowManager();
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-			// getSize implemented in API-13
-			w.getDefaultDisplay().getSize(size);
-			screenWidth = size.x;
-		} else {
-			Display d = w.getDefaultDisplay();
-			screenWidth = d.getWidth();
-		}
-		return screenWidth;
-	}
-
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-	@SuppressWarnings("deprecation")
-	public int getScreenHeight() {
-		int screenHeight = 0;
-		Point size = new Point();
-		WindowManager w = getWindowManager();
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-			// getSize implemented in API-13
-			w.getDefaultDisplay().getSize(size);
-			screenHeight = size.y;
-		} else {
-			Display d = w.getDefaultDisplay();
-			screenHeight = d.getHeight();
-		}
-		return screenHeight;
-	}
 	
 	@Override
 	protected void onDestroy() {

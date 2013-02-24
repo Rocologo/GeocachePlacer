@@ -4,8 +4,17 @@
     xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:configChanges="orientation|keyboardHidden"
     android:orientation="vertical"
     tools:context=".MainActivity" >
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true" />
 
     <TextView
         android:id="@+id/textView1"
@@ -78,46 +87,38 @@
         ads:testDevices="TEST_EMULATOR, TEST_DEVICE_ID, E8F87B6F49AB0A290619DB9574EE5733" >
     </com.google.ads.AdView>
 
-    <Button
-        android:id="@+id/buttonSend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/buttonReset"
-        android:layout_alignBottom="@+id/buttonReset"
-        android:layout_alignRight="@+id/adView"
-        android:text="@string/button_send" />
-
     <WebView
         android:id="@+id/webview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/adView" />
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="320dp" />
+
 
     <ZoomControls
         android:id="@+id/zoomControls1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/buttonSend"
-        android:layout_marginRight="75dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true" />
 
-    <ProgressBar
-        android:id="@+id/progressBar1"
-        style="?android:attr/progressBarStyleHorizontal"
+    <Button
+        android:id="@+id/buttonSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/zoomControls1"
-        android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@+id/webview" />
+        android:layout_alignBaseline="@+id/buttonRunStop"
+        android:layout_alignBottom="@+id/buttonRunStop"
+        android:layout_alignRight="@+id/progressBar1"
+        android:text="@string/button_send" />
 
     <Button
         android:id="@+id/buttonReset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/buttonRunStop"
-        android:layout_alignBottom="@+id/buttonRunStop"
+        android:layout_below="@+id/textView5"
         android:layout_toLeftOf="@+id/buttonSend"
-        android:text="@string/button_reset" />
+        android:text="@string/button_reset" 
+        android:layout_marginTop="10dp"
+        />
 
 </RelativeLayout>

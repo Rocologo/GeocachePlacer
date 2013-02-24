@@ -6,7 +6,6 @@ import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -66,7 +65,7 @@ public class GPSTracker extends Service implements LocationListener {
 			isNetworkEnabled=false;
 			if (!isGPSEnabled && !isNetworkEnabled) {
 				// no network provider is enabled
-				Log.d(TAG, "GPS and/or NetWORK is not enabled");
+				//Log.d(TAG, "GPS and/or NetWORK is not enabled");
 			} else {
 				this.canGetLocation = true;
 				// First get location from Network Provider
@@ -75,11 +74,11 @@ public class GPSTracker extends Service implements LocationListener {
 							LocationManager.NETWORK_PROVIDER,
 							MIN_TIME_BW_UPDATES,
 							MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-					Log.d(TAG, "getLocation: Location determined by NETWORK");
+					//Log.d(TAG, "getLocation: Location determined by NETWORK");
 					if (locationManager != null) {
 						location = locationManager
 								.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-						Log.d(TAG, "getLocation (NETWORK): " + location.toString());
+						//Log.d(TAG, "getLocation (NETWORK): " + location.toString());
 						if (location != null) {
 							latitude = location.getLatitude();
 							longitude = location.getLongitude();
@@ -94,11 +93,11 @@ public class GPSTracker extends Service implements LocationListener {
 								LocationManager.GPS_PROVIDER,
 								MIN_TIME_BW_UPDATES,
 								MIN_DISTANCE_CHANGE_FOR_UPDATES, this);						
-						Log.d(TAG, "getLocation: Location determined by GPS");
+						//Log.d(TAG, "getLocation: Location determined by GPS");
 						if (locationManager != null) {
 							location = locationManager
 									.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-							Log.d(TAG, "getLocation (GPS): " + location.toString());
+							//Log.d(TAG, "getLocation (GPS): " + location.toString());
 							if (location != null) {
 								latitude = location.getLatitude();
 								longitude = location.getLongitude();

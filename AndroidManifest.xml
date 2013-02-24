@@ -19,7 +19,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="dk.rocologo.geocacheplacer.MainActivity"
-            android:label="@string/activity_main_title" >
+            android:label="@string/activity_main_title"
+            android:configChanges="orientation|keyboardHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,11 +29,13 @@
         </activity>
         <activity
             android:name="dk.rocologo.geocacheplacer.PrefsActivity"
-            android:label="@string/title_activity_settings" >
+            android:label="@string/title_activity_settings"
+            android:configChanges="orientation|keyboardHidden" >
         </activity>
         <activity
             android:name="dk.rocologo.geocacheplacer.AboutActivity"
-            android:label="@string/about_activity_title" >
+            android:label="@string/about_activity_title"
+            android:configChanges="orientation|keyboardHidden" >
         </activity>
         <activity
             android:name="com.google.ads.AdActivity"

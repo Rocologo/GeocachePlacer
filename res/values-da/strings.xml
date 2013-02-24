@@ -35,8 +35,8 @@
     <string name="numberOfRunsTitle">Antal positioner</string>
     <string name="numberOfRunsTitle_summay">Indtast antallet af positioner der skal måles på.</string>
     <string name="maptype">Korttype</string>
-<string name="maptype_summary">Vælg korttypen</string>
-    
+    <string name="maptype_summary">Vælg korttypen</string>
+
     <string-array name="numberOfRunNames">
         <item>Intil afvigelsen er ~0</item>
         <item>1 position</item>
@@ -87,5 +87,8 @@
         <item>hybrid</item>
         <item>terrain</item>
     </string-array>
+
+    <string name="forceDisplayOn">Hold skærmen tændt</string>
+    <string name="forceDisplayOn_summary">Tving skærmen til at forblive tændt</string>
 
 </resources>

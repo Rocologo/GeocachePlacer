@@ -2,34 +2,38 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <ListPreference
-        android:defaultValue="5"
-        android:entries="@array/numberOfRunNames"
-        android:entryValues="@array/numberOfRunValues"
-        android:key="numberOfRuns"
-        android:summary="@string/numberOfRunsTitle_summay"
-        android:title="@string/numberOfRunsTitle" />
-
-    <EditTextPreference
-        android:inputType="textEmailAddress"
-        android:key="email"
-        android:summary="@string/email_summary"
-        android:title="@string/email" />
-
-    <ListPreference
         android:defaultValue="500"
         android:entries="@array/delayNames"
         android:entryValues="@array/delayValues"
         android:key="delay"
         android:summary="@string/delay_summary"
         android:title="@string/delay" />
-    
-        <ListPreference
-        android:defaultValue="mobile"
+    <ListPreference
+        android:defaultValue="5"
+        android:entries="@array/numberOfRunNames"
+        android:entryValues="@array/numberOfRunValues"
+        android:key="numberOfRuns"
+        android:summary="@string/numberOfRunsTitle_summay"
+        android:title="@string/numberOfRunsTitle" />
+    <ListPreference
+        android:defaultValue="satellite"
         android:entries="@array/maptypeNames"
         android:entryValues="@array/maptypeValues"
         android:key="maptype"
         android:summary="@string/maptype_summary"
         android:title="@string/maptype" />
-    
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="forceDisplayOn"
+        android:summary="@string/forceDisplayOn_summary"
+        android:summaryOn="@string/forceDisplayOn"
+        android:title="@string/forceDisplayOn" />
+
+    <EditTextPreference
+        android:inputType="textEmailAddress"
+        android:key="email"
+        android:summary="@string/email_summary"
+        android:title="@string/email" />
 
 </PreferenceScreen>

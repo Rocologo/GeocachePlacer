@@ -35,8 +35,8 @@
     <string name="numberOfRunsTitle">Number of locations: </string>
     <string name="numberOfRunsTitle_summay">Enter the number of locations you want to messure on.</string>
     <string name="maptype">Maptype</string>
-<string name="maptype_summary">Choose the maptype</string>
-    
+    <string name="maptype_summary">Choose the maptype</string>
+
     <string-array name="numberOfRunNames">
         <item>Until deviation is close to 0</item>
         <item>1 position</item>
@@ -87,5 +87,7 @@
         <item>hybrid</item>
         <item>terrain</item>
     </string-array>
+        <string name="forceDisplayOn">Force Display On</string>
+        <string name="forceDisplayOn_summary">Force the display to stay on</string>
 
 </resources>

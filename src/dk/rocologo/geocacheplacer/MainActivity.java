@@ -3,13 +3,16 @@ package dk.rocologo.geocacheplacer;
 import java.text.DecimalFormat;
 
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.res.Configuration;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -17,7 +20,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.ShareActionProvider;
@@ -37,20 +42,19 @@ public class MainActivity extends Activity implements OnClickListener,
 	ZoomControls zoomControls;
 	Boolean averageRunning = false;
 
-	double latitude; // Latitude
-	double longitude; // Longitude
+	double latitude;
+	double averageLatitude = 0;
+	double previousAverageLatitude = 0;
+	double deltaLatitude = 9999;
+	double longitude;
+	double averageLongitude = 0;
+	double previousAverageLongitude = 0;
+	double deltaLongitude = 9999;
 	double altitude;
-	String url = ""; // url to google maps
+	double averageAltitude = 0;
+	double previousAverageAltitude = 0;
+	double deltaAltitude = 9999;
 
-	double averageLatitude = 0, previousAverageLatitude = 0,
-			deltaLatitude = 9999; // Average of Latitude for a number of
-									// locations
-	double averageLongitude = 0, previousAverageLongitude = 0,
-			deltaLongitude = 9999; // Average of Longitude for a number of
-									// locations
-	double averageAltitude = 0, previousAverageAltitude = 0,
-			deltaAltitude = 9999; // Average of Alitude for a number of
-									// locations
 	Integer numberOfLocations = 0;
 
 	TextView textView1;
@@ -58,15 +62,13 @@ public class MainActivity extends Activity implements OnClickListener,
 	TextView textView3;
 	TextView textView4;
 	TextView textView5;
-	// final static String label1 = "Coordinates: ";
-	// final static String label2 = "Avg.Coordinates: ";
-	// final static String label3 = "Deviation : ";
-	// final static String label4 = "Number of coordinates: ";
-	// final static String label5 = "Altitude:  ";
 
-	String mapsize = "400x300";
-	String maptype;
-	int zoomFactor = 15;
+	int dpWidth;
+	int dpHeight;
+	int webViewHeight, webViewWidth;
+	int zoomFactor = 17;
+	int density;
+	Boolean forceDisplayOn;
 
 	Integer currentRun = 0;
 
@@ -80,18 +82,16 @@ public class MainActivity extends Activity implements OnClickListener,
 
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		prefs.registerOnSharedPreferenceChangeListener(MainActivity.this);
-		maptype = prefs.getString("maptype", "mobile");
 
 		Display display = getWindowManager().getDefaultDisplay();
 		DisplayMetrics outMetrics = new DisplayMetrics();
 		display.getMetrics(outMetrics);
-		int density = (int) getResources().getDisplayMetrics().density;
-		int dpHeight = outMetrics.heightPixels / density;
-		int dpWidth = outMetrics.widthPixels / density;
-		mapsize = dpWidth + "x" + dpHeight / 2;
-		Log.d(TAG, "dpWidth+Height=" + dpWidth + "," + dpHeight + " mapsize="
-				+ mapsize);
-		Log.d(TAG, "Label1:"+R.string.textView1);
+		density = (int) getResources().getDisplayMetrics().density;
+		dpHeight = outMetrics.heightPixels / density;
+		dpWidth = outMetrics.widthPixels / density;
+		// Log.d(TAG,"Density:"+density);
+		// Log.d(TAG, "dpWidth+Height=" + dpWidth + "," + dpHeight + " mapsize="
+		// + mapsize);
 
 		textView1 = (TextView) findViewById(R.id.textView1);
 		textView2 = (TextView) findViewById(R.id.textView2);
@@ -110,15 +110,16 @@ public class MainActivity extends Activity implements OnClickListener,
 		webView.getSettings().setJavaScriptEnabled(true);
 		webView.getSettings().setBuiltInZoomControls(false);
 
+		if (webViewHeight == 0) {
+			Log.d(TAG, "Loading dropbox url");
+			webView.loadUrl("https://dl.dropbox.com/u/36067670/Geocache%20Placer/Welcome.html");
+		}
+
 		gps = new GPSTracker(this);
 		gps.getLocation();
 		averageLatitude = gps.getLatitude();
 		averageLongitude = gps.getLongitude();
-
-		url = "http://maps.googleapis.com/maps/api/staticmap?center="
-				+ averageLatitude + "," + averageLongitude + "&zoom=0&size="
-				+ mapsize + "&maptype=" + maptype + "&sensor=true";
-		webView.loadUrl(url);
+		loadWebView(averageLatitude, averageLongitude);
 
 		textView1.setText(getString(R.string.textView1)
 				+ gps.decimalToDM(averageLatitude, averageLongitude));
@@ -142,19 +143,7 @@ public class MainActivity extends Activity implements OnClickListener,
 				if (zoomFactor < MAX_ZOOM) {
 					zoomControls.setIsZoomInEnabled(true);
 					zoomFactor++;
-					url = "http://maps.googleapis.com/maps/api/staticmap?center="
-							+ averageLatitude
-							+ ","
-							+ averageLongitude
-							+ "&zoom="
-							+ zoomFactor
-							+ "&size="
-							+ mapsize
-							+ "&maptype="
-							+ maptype
-							+ "&sensor=true&markers="
-							+ averageLatitude + "," + averageLongitude;
-					webView.loadUrl(url);
+					loadWebView(averageLatitude, averageLongitude);
 					Log.d(TAG, "ZoomIn: factor is set to " + zoomFactor);
 				}
 				if (zoomFactor == MAX_ZOOM) {
@@ -172,20 +161,7 @@ public class MainActivity extends Activity implements OnClickListener,
 				if (zoomFactor > MIN_ZOOM) {
 					zoomControls.setIsZoomOutEnabled(true);
 					zoomFactor--;
-					// http://maps.google.com/staticmap?center=55.224617,11.759217&zoom=17&size=512x512&maptype=terrain/&markers=55.224617,11.759217
-					url = "http://maps.googleapis.com/maps/api/staticmap?center="
-							+ averageLatitude
-							+ ","
-							+ averageLongitude
-							+ "&zoom="
-							+ zoomFactor
-							+ "&size="
-							+ mapsize
-							+ "&maptype="
-							+ maptype
-							+ "&sensor=true&markers="
-							+ averageLatitude + "," + averageLongitude;
-					webView.loadUrl(url);
+					loadWebView(averageLatitude, averageLongitude);
 					Log.d(TAG, "ZoomOut: factor is set to " + zoomFactor);
 				}
 				if (zoomFactor == MIN_ZOOM) {
@@ -195,6 +171,48 @@ public class MainActivity extends Activity implements OnClickListener,
 			}
 		});
 
+		webView.setWebViewClient(new WebViewClient() {
+
+			public void onPageFinished(WebView view, String url) {
+				super.onPageFinished(view, url);
+				if (webViewHeight == 0) {
+					webViewHeight = view.getHeight();
+					webViewWidth = view.getWidth();
+					Log.d(TAG, "OnPageFinished - Width,Height:" + webViewWidth
+							+ "," + webViewHeight);
+					loadWebView(averageLatitude, averageLongitude);
+				}
+			}
+
+			@Override
+			public void onLoadResource(WebView view, String url) {
+				super.onLoadResource(view, url);
+
+				if (webViewHeight == 0) {
+					webViewHeight = view.getHeight();
+					webViewWidth = view.getWidth();
+					Log.d(TAG, "onLoadResource - Width,Height:" + webViewWidth
+							+ "," + webViewHeight);
+					loadWebView(averageLatitude, averageLongitude);
+				}
+			}
+		});
+
+		if (prefs.getBoolean("forceDisplayOn", true)) {
+			getWindow()
+					.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		} else {
+			getWindow().addFlags(
+					WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON);
+		}
+	}
+
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		// webView.loadUrl("https://dl.dropbox.com/u/36067670/Geocache%20Placer/Welcome.html");
+		// loadWebView(averageLatitude, averageLongitude);
 	}
 
 	public void onClick(View v) {
@@ -245,9 +263,12 @@ public class MainActivity extends Activity implements OnClickListener,
 	public Intent shareTheResult() {
 		Intent sendIntent = new Intent();
 		sendIntent.setAction(Intent.ACTION_SEND);
-		sendIntent.putExtra(Intent.EXTRA_TEXT, "The average position was: \n"
-				+ gps.decimalToDM(averageLatitude, averageLongitude)
-				+ "\n\n\nGoogle maps: " + url);
+		sendIntent.putExtra(
+				Intent.EXTRA_TEXT,
+				"The average position was: \n"
+						+ gps.decimalToDM(averageLatitude, averageLongitude)
+						+ "\n\n\nGoogle maps: "
+						+ createUrl(averageLatitude, averageLongitude));
 		sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Geocache Placer");
 		sendIntent.setType("text/plain");
 		return sendIntent;
@@ -311,24 +332,20 @@ public class MainActivity extends Activity implements OnClickListener,
 
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
-			Log.d(TAG, "onPostExecute");
+			// Log.d(TAG, "onPostExecute");
 			textView1.setText(getString(R.string.textView1)
 					+ gps.decimalToDM(latitude, longitude));
 			textView2.setText(getString(R.string.textView2)
 					+ gps.decimalToDM(averageLatitude, averageLongitude));
 			textView3.setText(getString(R.string.textView3)
 					+ gps.decimalToDM(deltaLatitude, deltaLongitude));
-			textView4.setText(getString(R.string.textView4) + numberOfLocations);
+			textView4
+					.setText(getString(R.string.textView4) + numberOfLocations);
 			DecimalFormat df = new DecimalFormat("###0.00");
-			textView5.setText(getString(R.string.textView5) + df.format(averageAltitude)
-					+ " ± " + df.format(Math.abs(deltaAltitude)));
-			maptype = prefs.getString("maptype", "Mobile");
-			url = "http://maps.googleapis.com/maps/api/staticmap?center="
-					+ averageLatitude + "," + averageLongitude + "&zoom="
-					+ zoomFactor + "&size=" + mapsize + "&&maptype=" + maptype
-					+ "&sensor=true&markers=" + averageLatitude + ","
-					+ averageLongitude;
-			webView.loadUrl(url);
+			textView5.setText(getString(R.string.textView5)
+					+ df.format(averageAltitude) + " ± "
+					+ df.format(Math.abs(deltaAltitude)));
+			loadWebView(averageLatitude, averageLongitude);
 			Toast.makeText(
 					MainActivity.this,
 					"Average of " + numberOfLocations
@@ -393,18 +410,80 @@ public class MainActivity extends Activity implements OnClickListener,
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
 		// TODO: set summary to new text.
-		url = "http://maps.googleapis.com/maps/api/staticmap?center="
-				+ averageLatitude + "," + averageLongitude + "&zoom="
-				+ zoomFactor + "&size=" + mapsize + "&maptype=" + maptype
-				+ "&sensor=true&markers=" + averageLatitude + ","
-				+ averageLongitude;
-		webView.loadUrl(url);
+		if (key == "maptype") {
+			loadWebView(averageLatitude, averageLongitude);
+		} else if (key == "forceDisplayOn") {
+			if (prefs.getBoolean("forceDisplayOn", true)) {
+				getWindow().addFlags(
+						WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+			} else {
+				getWindow()
+						.addFlags(
+								WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON);
+			}
+		}
+	}
+
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		Log.d(TAG, "orientation changed: height=" + webViewHeight);
+		// Checks the orientation of the screen
+		if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+		} else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+			Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+		}
+		// webView = (WebView) findViewById(R.id.webview);
+		// webView.getSettings().setJavaScriptEnabled(true);
+		// webView.getSettings().setBuiltInZoomControls(false);
+		// webView.loadUrl("https://dl.dropbox.com/u/36067670/Geocache%20Placer/Welcome.html");
+
+		// gps = new GPSTracker(this);
+		// gps.getLocation();
+		// averageLatitude = gps.getLatitude();
+		// averageLongitude = gps.getLongitude();
+		// loadWebView(averageLatitude, averageLongitude);
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		gps.stopUsingGPS();
+	}
+
+	public void loadWebView(double latitude, double longitude) {
+		String url = createUrl(latitude, longitude);
+		Log.d(TAG, "loadWebView - Height=" + webViewHeight);
+		if (webViewHeight != 0) {
+			webView.loadUrl(url);
+			Log.d(TAG, "Loading google maps");
+		}
+
+	}
+
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+	public String createUrl(double latitude, double longitude) {
+		String url;
+		int width, height;
+		int display_mode = getResources().getConfiguration().orientation;
+		if (display_mode == 1) {
+			// Portrait
+			width = webViewWidth / density;
+			height = webViewHeight / density;
+			Log.d(TAG, "webView portrait width,height:" + width + "," + height);
+		} else {
+			// Landscape
+			width = webViewWidth / density;
+			height = webViewHeight / density;
+			Log.d(TAG, "webView landscape width,height:" + width + "," + height);
+		}
+		String maptype = prefs.getString("maptype", "satellite");
+		url = "http://maps.googleapis.com/maps/api/staticmap?center="
+				+ averageLatitude + "," + averageLongitude + "&zoom="
+				+ zoomFactor + "&size=" + width + "x" + height + "&maptype="
+				+ maptype + "&sensor=true&markers=" + averageLatitude + ","
+				+ averageLongitude;
+		return url;
 	}
 
 }

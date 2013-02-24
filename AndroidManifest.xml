@@ -2,10 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="dk.rocologo.geocacheplacer"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.01" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="10"
         android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />

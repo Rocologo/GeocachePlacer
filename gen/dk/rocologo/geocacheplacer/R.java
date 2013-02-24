@@ -35,9 +35,9 @@ public final class R {
         public static final int adView=0x7f0a0008;
         public static final int adView1=0x7f0a0000;
         public static final int adView2=0x7f0a0001;
-        public static final int buttonReset=0x7f0a000e;
-        public static final int buttonRunStop=0x7f0a000c;
-        public static final int buttonSend=0x7f0a000d;
+        public static final int buttonReset=0x7f0a000f;
+        public static final int buttonRunStop=0x7f0a000d;
+        public static final int buttonSend=0x7f0a000e;
         public static final int button_problem_report=0x7f0a0005;
         public static final int button_rate_app=0x7f0a0006;
         public static final int button_return=0x7f0a0007;
@@ -46,7 +46,7 @@ public final class R {
         public static final int item_share=0x7f0a0014;
         public static final int menu_item_share=0x7f0a0012;
         public static final int menu_settings=0x7f0a0013;
-        public static final int progressBar1=0x7f0a000f;
+        public static final int progressBar1=0x7f0a000c;
         public static final int textView1=0x7f0a0004;
         public static final int textView2=0x7f0a0003;
         public static final int textView3=0x7f0a0009;

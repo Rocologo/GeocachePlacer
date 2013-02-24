@@ -34,6 +34,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		OnSharedPreferenceChangeListener {
 
 	static final String TAG = "GeocachePlacer";
+	static final int INITIAL_ZOOMFACTOR=17;
 	SharedPreferences prefs;
 	private Button buttonRun, buttonReset, buttonSend;
 	ProgressBar progressBar;
@@ -66,7 +67,7 @@ public class MainActivity extends Activity implements OnClickListener,
 	int dpWidth;
 	int dpHeight;
 	int webViewHeight, webViewWidth;
-	int zoomFactor = 17;
+	int zoomFactor = INITIAL_ZOOMFACTOR;
 	int density;
 	Boolean forceDisplayOn;
 
@@ -89,9 +90,8 @@ public class MainActivity extends Activity implements OnClickListener,
 		density = (int) getResources().getDisplayMetrics().density;
 		dpHeight = outMetrics.heightPixels / density;
 		dpWidth = outMetrics.widthPixels / density;
-		// Log.d(TAG,"Density:"+density);
-		// Log.d(TAG, "dpWidth+Height=" + dpWidth + "," + dpHeight + " mapsize="
-		// + mapsize);
+		Log.d(TAG,"Density:"+density);
+		Log.d(TAG, "dpWidth+Height=" + dpWidth + "," + dpHeight);
 
 		textView1 = (TextView) findViewById(R.id.textView1);
 		textView2 = (TextView) findViewById(R.id.textView2);
@@ -129,6 +129,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		textView5.setText(getString(R.string.textView5) + "0");
 
 		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
+		progressBar.setProgress(0);
 
 		setShareIntent(shareTheResult());
 
@@ -243,7 +244,7 @@ public class MainActivity extends Activity implements OnClickListener,
 			averageAltitude = gps.getAltitude();
 			numberOfLocations = 0;
 			currentRun = 0;
-			zoomFactor = 15;
+			zoomFactor = INITIAL_ZOOMFACTOR;
 
 			textView1.setText(getString(R.string.textView1)
 					+ gps.decimalToDM(latitude, longitude));
@@ -271,6 +272,8 @@ public class MainActivity extends Activity implements OnClickListener,
 						+ createUrl(averageLatitude, averageLongitude));
 		sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Geocache Placer");
 		sendIntent.setType("text/plain");
+		// sendIntent.putExtra(Intent.EXTRA_EMAIL, prefs.getString("email",
+		// ""));
 		return sendIntent;
 	}
 
@@ -359,20 +362,22 @@ public class MainActivity extends Activity implements OnClickListener,
 
 	// implemention the menu
 
-	@SuppressLint("NewApi")
+	// TODO: test for need API version
+	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate options menu
+		Log.d(TAG, "API:" + Build.VERSION.SDK_INT);
 		getMenuInflater().inflate(R.menu.settings, menu);
 		// Inflate activity menu resource file.
-		getMenuInflater().inflate(R.menu.action_bar, menu);
-		// Locate MenuItem with ShareActionProvider
-		MenuItem menuItem = menu.findItem(R.id.menu_item_share);
-		// Fetch and store ShareActionProvider
-		shareActionProvider = (ShareActionProvider) menuItem
-				.getActionProvider();
-		shareActionProvider
-				.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
-		// Return true to display menu
+		if (Build.VERSION.SDK_INT >= 14) {
+			getMenuInflater().inflate(R.menu.action_bar, menu);
+			// Locate MenuItem with ShareActionProvider
+			MenuItem menuItem = menu.findItem(R.id.menu_item_share);
+			shareActionProvider = (ShareActionProvider) menuItem
+					.getActionProvider();
+			shareActionProvider
+					.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
+		}
 		return true;
 	}
 

@@ -23,11 +23,11 @@ public class AboutActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.about);
 		
 		try {
-			version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+			version = " "+getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
 		} catch (NameNotFoundException e) {
-			version = "Version: unknown";
+			version = " unknown";
 		}
-		((TextView) findViewById(R.id.version)).setText(version);
+		((TextView) findViewById(R.id.version)).setText(getString(R.string.about_version_label)+version);
 
 		buttonBack = (Button) findViewById(R.id.button_return);
 		buttonBack.setOnClickListener(this);

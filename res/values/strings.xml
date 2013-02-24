@@ -25,10 +25,11 @@
     <string name="menuitem_about">About</string>
     <string name="about_button_return">Back</string>
     <string name="about_textview_body">Geocache Placer is a tool which helps Geocachers placing there own geocache with a precise location. \n \nPress \"Start\" a number of times, until the deviation is close to 0.00000. This app is free and paid by ADS, feel free to click on interesting ads. :-) \n \nDeveloped by Rocologo@hotmail.com</string>
-    <string name="about_rate_app">Rate app on Google Play</string>
+    <string name="about_rate_app">Rate app</string>
     <string name="about_problem_report">Problem report</string>
     <string name="about_title">About</string>
     <string name="about_activity_title">Geocache Placer</string>
+    <string name="about_version_label">Version:</string>
     <string name="problem_report">Geocache Placer Problem Report</string>
     <string name="problem_report_body">What phone/device do you use? \n</string>
     <string name="version">Version: unknown</string>
@@ -87,7 +88,8 @@
         <item>hybrid</item>
         <item>terrain</item>
     </string-array>
-        <string name="forceDisplayOn">Force Display On</string>
-        <string name="forceDisplayOn_summary">Force the display to stay on</string>
+
+    <string name="forceDisplayOn">Force Display On</string>
+    <string name="forceDisplayOn_summary">Force the display to stay on</string>
 
 </resources>

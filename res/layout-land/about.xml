@@ -20,9 +20,8 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/adView1"
-        android:layout_alignRight="@id/adView1"
-        android:layout_below="@id/adView1"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/adView1"
         android:text="@string/about_title"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -30,9 +29,9 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/adView1"
-        android:layout_alignRight="@id/adView1"
-        android:layout_below="@id/textView1"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/adView1"
+        android:layout_below="@+id/textView1"
         android:text="@string/about_textview_body"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -40,8 +39,10 @@
         android:id="@+id/version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/textView2"
+        android:layout_alignBottom="@+id/adView1"
+        android:layout_marginBottom="14dp"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@+id/adView1"
         android:text="@string/version"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -50,10 +51,9 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/adView1"
+        android:layout_alignLeft="@+id/button_rate_app"
         android:layout_alignRight="@+id/button_rate_app"
-        android:layout_below="@id/version"
-        android:layout_marginTop="16dp"
+        android:layout_centerVertical="true"
         android:text="@string/about_problem_report" />
 
     <Button
@@ -61,8 +61,8 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/adView1"
-        android:layout_below="@id/button_problem_report"
+        android:layout_above="@+id/button_problem_report"
+        android:layout_alignRight="@+id/version"
         android:text="@string/about_rate_app" />
 
     <Button
@@ -70,20 +70,9 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@id/adView1"
-        android:layout_below="@id/button_problem_report"
+        android:layout_alignLeft="@+id/button_problem_report"
+        android:layout_alignRight="@+id/button_problem_report"
+        android:layout_below="@+id/button_problem_report"
         android:text="@string/about_button_return" />
-
-    <com.google.ads.AdView
-        android:id="@+id/adView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/adView1"
-        android:layout_alignParentBottom="true"
-        ads:adSize="BANNER"
-        ads:adUnitId="41329efae7754e33"
-        ads:loadAdOnCreate="true"
-        ads:testDevices="TEST_EMULATOR, TEST_DEVICE_ID, E8F87B6F49AB0A290619DB9574EE5733" >
-    </com.google.ads.AdView>
 
 </RelativeLayout>

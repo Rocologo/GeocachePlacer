@@ -2,6 +2,7 @@ package dk.rocologo.geocacheplacer;
 
 import java.text.DecimalFormat;
 
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,7 +35,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		OnSharedPreferenceChangeListener {
 
 	static final String TAG = "GeocachePlacer";
-	static final int INITIAL_ZOOMFACTOR=17;
+	static final int INITIAL_ZOOMFACTOR = 17;
 	SharedPreferences prefs;
 	private Button buttonRun, buttonReset, buttonSend;
 	ProgressBar progressBar;
@@ -90,7 +91,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		density = (int) getResources().getDisplayMetrics().density;
 		dpHeight = outMetrics.heightPixels / density;
 		dpWidth = outMetrics.widthPixels / density;
-		Log.d(TAG,"Density:"+density);
+		Log.d(TAG, "Density:" + density);
 		Log.d(TAG, "dpWidth+Height=" + dpWidth + "," + dpHeight);
 
 		textView1 = (TextView) findViewById(R.id.textView1);
@@ -212,9 +213,59 @@ public class MainActivity extends Activity implements OnClickListener,
 	protected void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
-		// webView.loadUrl("https://dl.dropbox.com/u/36067670/Geocache%20Placer/Welcome.html");
-		// loadWebView(averageLatitude, averageLongitude);
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onPause()
+	 */
+	@Override
+	protected void onPause() {
+		gps.stopUsingGPS();
+		super.onPause();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onRestart()
+	 */
+	@Override
+	protected void onRestart() {
+		gps.startUsingGPS(LocationManager.GPS_PROVIDER);
+		super.onRestart();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onResume()
+	 */
+	@Override
+	protected void onResume() {
+		gps.startUsingGPS(LocationManager.GPS_PROVIDER);
+		super.onResume();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onStop()
+	 */
+	@Override
+	protected void onStop() {
+		gps.stopUsingGPS();
+		super.onStop();
+	}
+
+	@Override
+	protected void onDestroy() {
+		gps.stopUsingGPS();
+		super.onDestroy();
+
+	}
+
 
 	public void onClick(View v) {
 		Integer clickedButton = v.getId();
@@ -263,6 +314,7 @@ public class MainActivity extends Activity implements OnClickListener,
 
 	public Intent shareTheResult() {
 		Intent sendIntent = new Intent();
+		String email=prefs.getString("email", "");
 		sendIntent.setAction(Intent.ACTION_SEND);
 		sendIntent.putExtra(
 				Intent.EXTRA_TEXT,
@@ -271,9 +323,8 @@ public class MainActivity extends Activity implements OnClickListener,
 						+ "\n\n\nGoogle maps: "
 						+ createUrl(averageLatitude, averageLongitude));
 		sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Geocache Placer");
+		sendIntent.putExtra(Intent.EXTRA_EMAIL,email);
 		sendIntent.setType("text/plain");
-		// sendIntent.putExtra(Intent.EXTRA_EMAIL, prefs.getString("email",
-		// ""));
 		return sendIntent;
 	}
 
@@ -361,8 +412,6 @@ public class MainActivity extends Activity implements OnClickListener,
 	}
 
 	// implemention the menu
-
-	// TODO: test for need API version
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate options menu
@@ -414,7 +463,6 @@ public class MainActivity extends Activity implements OnClickListener,
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
-		// TODO: set summary to new text.
 		if (key == "maptype") {
 			loadWebView(averageLatitude, averageLongitude);
 		} else if (key == "forceDisplayOn") {
@@ -448,12 +496,6 @@ public class MainActivity extends Activity implements OnClickListener,
 		// averageLatitude = gps.getLatitude();
 		// averageLongitude = gps.getLongitude();
 		// loadWebView(averageLatitude, averageLongitude);
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		gps.stopUsingGPS();
 	}
 
 	public void loadWebView(double latitude, double longitude) {

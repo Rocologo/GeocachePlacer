@@ -32,15 +32,12 @@ public class GPSTracker extends Service implements LocationListener {
 	private double latitude; // latitude
 	private double longitude; // longitude
 	private double altitude; // altitude
-	//private double averageLatitude; // Average latitude
-	//private double averageLongitude; // Average longitude
-	//private Integer numberOfLocations; 
 
 	// The minimum distance to change Updates in meters
-	private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 0; 
+	private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 0;
 
 	// The minimum time between updates in milliseconds
-	private static final long MIN_TIME_BW_UPDATES = 0;  
+	private static final long MIN_TIME_BW_UPDATES = 0;
 
 	// Declaring a Location Manager
 	protected LocationManager locationManager;
@@ -57,15 +54,13 @@ public class GPSTracker extends Service implements LocationListener {
 			// getting GPS status
 			isGPSEnabled = locationManager
 					.isProviderEnabled(LocationManager.GPS_PROVIDER);
-			//Criteria criteria = new Criteria();
-		    //criteria.setAccuracy(Criteria.ACCURACY_FINE);
-		    //String provider = locationManager.getBestProvider(criteria,true);
 			// getting network status
-			//isNetworkEnabled =locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-			isNetworkEnabled=false;
+			isNetworkEnabled
+			 =locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+			isNetworkEnabled = false;
 			if (!isGPSEnabled && !isNetworkEnabled) {
 				// no network provider is enabled
-				//Log.d(TAG, "GPS and/or NetWORK is not enabled");
+				// Log.d(TAG, "GPS and/or NetWORK is not enabled");
 			} else {
 				this.canGetLocation = true;
 				// First get location from Network Provider
@@ -74,36 +69,16 @@ public class GPSTracker extends Service implements LocationListener {
 							LocationManager.NETWORK_PROVIDER,
 							MIN_TIME_BW_UPDATES,
 							MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-					//Log.d(TAG, "getLocation: Location determined by NETWORK");
+					// Log.d(TAG,
+					// "getLocation: Location determined by NETWORK");
 					if (locationManager != null) {
-						location = locationManager
-								.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-						//Log.d(TAG, "getLocation (NETWORK): " + location.toString());
-						if (location != null) {
-							latitude = location.getLatitude();
-							longitude = location.getLongitude();
-							altitude = location.getAltitude();
-						}
+						startUsingGPS(LocationManager.NETWORK_PROVIDER);
 					}
 				}
 				// if GPS Enabled get lat/long using GPS Services
 				if (isGPSEnabled) {
 					if (location == null) {
-						locationManager.requestLocationUpdates(
-								LocationManager.GPS_PROVIDER,
-								MIN_TIME_BW_UPDATES,
-								MIN_DISTANCE_CHANGE_FOR_UPDATES, this);						
-						//Log.d(TAG, "getLocation: Location determined by GPS");
-						if (locationManager != null) {
-							location = locationManager
-									.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-							//Log.d(TAG, "getLocation (GPS): " + location.toString());
-							if (location != null) {
-								latitude = location.getLatitude();
-								longitude = location.getLongitude();
-								altitude = location.getAltitude();
-							}
-						}
+						startUsingGPS(LocationManager.GPS_PROVIDER);
 					}
 				}
 
@@ -116,29 +91,23 @@ public class GPSTracker extends Service implements LocationListener {
 		return location;
 	}
 
-	public Location getNextLocation(){
+	public Location getNextLocation() {
 		location = locationManager
 				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		return location;
 	}
-	
+
 	/**
 	 * Function to get latitude
 	 * */
 	public double getLatitude() {
 		if (location != null) {
-			latitude = location.getLatitude();		
-		} 
-		//Log.d(TAG,"getLatitude - Latitude:"+latitude + " location:"+location.toString());
+			latitude = location.getLatitude();
+		}
+		// Log.d(TAG,"getLatitude - Latitude:"+latitude +
+		// " location:"+location.toString());
 		return latitude;
 	}
-
-	/**
-	 * Function to get average latitude
-	 * */
-	// double getAverageLatitude() {
-	// return averageLatitude;
-	// }
 
 	/**
 	 * Function to get longitude
@@ -159,20 +128,6 @@ public class GPSTracker extends Service implements LocationListener {
 		}
 		return altitude;
 	}
-
-	/**
-	 * Function to get average longitude
-	 * */
-	// public double getAverageLongitude() {
-	// return averageLongitude;
-	// }
-
-	/**
-	 * Function to get the number of locations used in the average calculation
-	 * */
-	// public Integer getNumberOfLocations() {
-	// return numberOfLocations;
-	// }
 
 	/**
 	 * Function to check if best network provider
@@ -222,26 +177,6 @@ public class GPSTracker extends Service implements LocationListener {
 	}
 
 	/**
-	 * Reset the measurement of the average location
-	 * */
-	/*
-	 * public void resetAverageLocation() { Log.d(TAG, "resetAverageLocation");
-	 * averageLatitude = 0; averageLongitude = 0; numberOfLocations = 0; }
-	 */
-
-	/**
-	 * Update the average with the new location
-	 * */
-	/*
-	 * public void updateAverageLocation(double latitude, double longitude) {
-	 * //if (averageLatitude) Log.d(TAG, "updateAverageLocation");
-	 * averageLatitude = ((averageLatitude * numberOfLocations) + latitude) /
-	 * (numberOfLocations + 1); averageLongitude = ((averageLongitude *
-	 * numberOfLocations) + longitude) / (numberOfLocations + 1);
-	 * numberOfLocations++; }
-	 */
-
-	/**
 	 * Stop using GPS listener Calling this function will stop using GPS in your
 	 * app
 	 * */
@@ -251,9 +186,30 @@ public class GPSTracker extends Service implements LocationListener {
 		}
 	}
 
+	public void startUsingGPS(String provider) {
+		locationManager.requestLocationUpdates(provider,
+				MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+		// Log.d(TAG, "getLocation: Location determined by GPS");
+		if (locationManager != null) {
+			location = locationManager
+					.getLastKnownLocation(provider);
+			// Log.d(TAG, "getLocation (GPS): " + location.toString());
+			if (location != null) {
+				latitude = location.getLatitude();
+				longitude = location.getLongitude();
+				altitude = location.getAltitude();
+			}
+		}
+
+		// getting GPS status
+		isGPSEnabled = locationManager
+				.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+	}
+
 	@Override
 	public void onLocationChanged(Location loc) {
-		//ignore
+		// ignore
 	}
 
 	@Override
@@ -268,7 +224,8 @@ public class GPSTracker extends Service implements LocationListener {
 
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		//Log.d(TAG, "onStatusChanged");
+		Log.d(TAG, "onStatusChanged: provider:" + provider + " - status:"
+				+ status);
 	}
 
 	@Override
@@ -321,15 +278,15 @@ public class GPSTracker extends Service implements LocationListener {
 
 		DecimalFormat df = new DecimalFormat("00.00000");
 		if (coord1 < 0) {
-			output1 = "S " + (-degrees1) + "° " + df.format(-decimalMinutes1);
+			output1 = "S " + (-degrees1) + "° " + df.format(-decimalMinutes1)+"'";
 		} else {
-			output1 = "N " + degrees1 + "° " + df.format(decimalMinutes1);
+			output1 = "N " + degrees1 + "° " + df.format(decimalMinutes1)+"'";
 		}
 
 		if (coord2 < 0) {
-			output2 = "W " + (-degrees2) + "° " + df.format(-decimalMinutes2);
+			output2 = "W " + (-degrees2) + "° " + df.format(-decimalMinutes2)+"'";
 		} else {
-			output2 = "E " + degrees2 + "° " + df.format(decimalMinutes2);
+			output2 = "E " + degrees2 + "° " + df.format(decimalMinutes2)+"'";
 		}
 
 		return output1 + " " + output2;

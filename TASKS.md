@@ -2,36 +2,38 @@
 
 ## I gang
 
-### Modernisering og Google Play-publicering
-- [x] Migrere Eclipse/Ant → Gradle
-- [x] Opdatere targetSdk til 35
-- [x] Tilføje runtime GPS-tilladelse
-- [x] Migrere AdMob til ny SDK (play-services-ads:25.0.0)
-- [x] Implementere OpenStreetMap/Leaflet som kortalternativ
-- [x] Migrere til AndroidX (AppCompat, Preference)
-- [x] Verificere projektet kompilerer (BUILD SUCCESSFUL via Gradle CLI)
-- [ ] Teste på fysisk Android-enhed (GPS, kort, AdMob)
-- [ ] Indsætte rigtige AdMob IDs (Application ID + Ad Unit IDs)
+### Google Play-publicering
 - [ ] Opsætte keystore og signere release APK/AAB
+- [ ] Teste på fysisk Android-enhed (GPS, kort, AdMob)
 - [ ] Publicere til Google Play
 
 ## Kommende
 
-### Google Maps support
-- [ ] Finde/oprette Google Maps API-nøgle (Google Cloud Console)
-- [ ] Implementere Google Maps som alternativ til OpenStreetMap
-- [ ] Tilbyde brugeren valg mellem OSM og Google Maps i indstillinger
-
 ### Forbedringer (nice-to-have)
-- [ ] Migrere `android.preference.PreferenceManager` til AndroidX
 - [ ] Tilføje offline-besked i WebView hvis ingen internetforbindelse
 - [ ] Forbedre GPS-nøjagtighed: brug `onLocationChanged` aktivt i stedet for `getLastKnownLocation`
 - [ ] Tilføje mulighed for at kopiere koordinater til clipboard
 - [ ] Mørkt tema support
+- [ ] Begræns Google Maps API-nøgle i Cloud Console med SHA-1 fingerprint
 
 ## Afsluttet
 
 - [x] Kildekode hentet fra GitHub (Rocologo/GeocachePlacer)
-- [x] Fuld kodeanalyse
-- [x] Migreringsplan udarbejdet
-- [x] Alle filer oprettet (22 filer)
+- [x] Fuld kodeanalyse og migreringsplan
+- [x] Migreret Eclipse/Ant → Gradle (AGP 8.10.0 / Gradle 8.11.1)
+- [x] Opdateret targetSdk til 35, minSdk til 23
+- [x] Tilføjet runtime GPS-tilladelse
+- [x] Migreret til AndroidX (AppCompat, Core, Preference)
+- [x] AdMob migreret til play-services-ads:25.0.0
+- [x] OpenStreetMap + Leaflet.js implementeret (lokal bundle, ingen CDN)
+- [x] Topografisk kort (OpenTopoMap) og satellit (ESRI) tilføjet
+- [x] Google Maps implementeret som native MapView
+- [x] Korttype-skift i indstillinger (OSM/Topo/Satellit/Google Maps)
+- [x] GPS-cirkler på kort (live-opdatering via evaluateJavascript)
+- [x] Follow-toggle knap (kort følger/låser position)
+- [x] Koordinatformat: DM / DD / DMS
+- [x] Aktuel position vises ved opstart og efter Reset
+- [x] AdMob: test-IDs i debug, produktions-IDs i release (via local.properties)
+- [x] Google Maps API-nøgle via local.properties (ikke i repo)
+- [x] .gitignore oprettet, ingen private nøgler i repository
+- [x] Pushet til GitHub (Rocologo/GeocachePlacer)

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Måling -->
+    <PreferenceCategory android:title="@string/pref_category_measurement">
+
+        <ListPreference
+            android:key="numberOfRuns"
+            android:title="@string/numberOfRunsTitle"
+            android:summary="%s"
+            android:entries="@array/numberOfRunNames"
+            android:entryValues="@array/numberOfRunValues"
+            android:defaultValue="5" />
+
+        <ListPreference
+            android:key="delay"
+            android:title="@string/delay"
+            android:summary="%s"
+            android:entries="@array/delayNames"
+            android:entryValues="@array/delayValues"
+            android:defaultValue="500" />
+
+        <ListPreference
+            android:key="coordinateFormat"
+            android:title="@string/pref_coord_format_title"
+            android:summary="%s"
+            android:entries="@array/coordFormatNames"
+            android:entryValues="@array/coordFormatValues"
+            android:defaultValue="DM" />
+
+    </PreferenceCategory>
+
+    <!-- Kort -->
+    <PreferenceCategory android:title="@string/pref_category_map">
+
+        <ListPreference
+            android:key="mapType"
+            android:title="@string/pref_map_type_title"
+            android:summary="%s"
+            android:entries="@array/mapTypeNames"
+            android:entryValues="@array/mapTypeValues"
+            android:defaultValue="standard" />
+
+    </PreferenceCategory>
+
+    <!-- Generelt -->
+    <PreferenceCategory android:title="@string/pref_category_general">
+
+        <SwitchPreferenceCompat
+            android:key="keepScreenOn"
+            android:title="@string/pref_keep_screen_on_title"
+            android:summary="@string/pref_keep_screen_on_summary"
+            android:defaultValue="true" />
+
+        <EditTextPreference
+            android:inputType="textEmailAddress"
+            android:key="email"
+            android:title="@string/email"
+            android:summary="@string/email_summary" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

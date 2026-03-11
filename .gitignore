@@ -1,0 +1,16 @@
+# Local properties — indeholder API-nøgler og SDK-sti, må ALDRIG committes
+local.properties
+
+# Gradle build output
+.gradle/
+build/
+app/build/
+
+# Android Studio
+.idea/
+*.iml
+.DS_Store
+
+# Keystore-filer — må aldrig i version control
+*.jks
+*.keystore

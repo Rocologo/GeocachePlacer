@@ -1,0 +1,54 @@
+plugins {
+    id 'com.android.application'
+}
+
+def localProps = new Properties()
+def localPropsFile = rootProject.file('local.properties')
+if (localPropsFile.exists()) localProps.load(localPropsFile.newDataInputStream())
+
+android {
+    namespace 'dk.rocologo.geocacheplacer'
+    compileSdk 36
+
+    defaultConfig {
+        applicationId "dk.rocologo.geocacheplacer"
+        minSdk 23
+        targetSdk 35
+        versionCode 2
+        versionName "2.0"
+    }
+
+    buildTypes {
+        debug {
+            manifestPlaceholders = [
+                admobAppId : "ca-app-pub-3940256099942544~3347511713",
+                mapsApiKey : localProps.getProperty('MAPS_API_KEY', 'MISSING_KEY')
+            ]
+            resValue "string", "admob_banner_id", "ca-app-pub-3940256099942544/6300978111"
+        }
+        release {
+            manifestPlaceholders = [
+                admobAppId : localProps.getProperty('ADMOB_APP_ID', 'MISSING_KEY'),
+                mapsApiKey : localProps.getProperty('MAPS_API_KEY', 'MISSING_KEY')
+            ]
+            resValue "string", "admob_banner_id", localProps.getProperty('ADMOB_BANNER_ID', 'MISSING_KEY')
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation 'androidx.core:core:1.17.0'
+    implementation 'androidx.preference:preference:1.2.1'
+
+    // Google AdMob — erstat AD_UNIT_ID og APPLICATION_ID med dine egne fra AdMob-konsollen
+    implementation 'com.google.android.gms:play-services-ads:25.0.0'
+    implementation 'com.google.android.gms:play-services-maps:18.2.0'
+}

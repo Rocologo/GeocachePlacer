@@ -101,16 +101,22 @@
 
     <!-- Arrays: korttype -->
     <string-array name="mapTypeNames">
-        <item>Standard (OpenStreetMap)</item>
-        <item>Topografi (OpenTopoMap)</item>
-        <item>Satellit (ESRI)</item>
-        <item>Google Maps</item>
+        <item>Google Maps — Normal</item>
+        <item>Google Maps — Satellit</item>
+        <item>Google Maps — Terræn</item>
+        <item>Google Maps — Hybrid</item>
+        <item>OpenStreetMap — Standard</item>
+        <item>OpenStreetMap — Topografi</item>
+        <item>OpenStreetMap — Satellit (ESRI)</item>
     </string-array>
     <string-array name="mapTypeValues">
+        <item>gm_normal</item>
+        <item>gm_satellite</item>
+        <item>gm_terrain</item>
+        <item>gm_hybrid</item>
         <item>standard</item>
         <item>topo</item>
-        <item>satellite</item>
-        <item>googlemaps</item>
+        <item>osm_satellite</item>
     </string-array>
 
 </resources>

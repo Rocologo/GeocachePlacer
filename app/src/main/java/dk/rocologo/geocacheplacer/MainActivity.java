@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
         buttonFollow.setOnCheckedChangeListener((btn, isChecked) -> {
             followMap = isChecked;
             if (followMap && numberOfLocations > 0) {
-                if ("googlemaps".equals(currentMapType) && googleMap != null) {
+                if (isGoogleMapsType(currentMapType) && googleMap != null) {
                     googleMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(averageLatitude, averageLongitude)));
                 } else {
                     webView.evaluateJavascript("panTo(" + averageLatitude + "," + averageLongitude + ");", null);
@@ -161,30 +161,20 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
         zoomControls = findViewById(R.id.zoomControls1);
         zoomControls.setZoomSpeed(10);
         zoomControls.setOnZoomInClickListener(v -> {
-            final int MAX_ZOOM = 19;
-            if (zoomFactor < MAX_ZOOM) {
-                zoomFactor++;
-                if ("googlemaps".equals(currentMapType) && googleMap != null) {
-                    googleMap.animateCamera(CameraUpdateFactory.zoomIn());
-                } else {
-                    loadMap(averageLatitude, averageLongitude, zoomFactor);
-                }
+            if (isGoogleMapsType(currentMapType) && googleMap != null) {
+                googleMap.animateCamera(CameraUpdateFactory.zoomIn());
+            } else {
+                zoomFactor = Math.min(zoomFactor + 1, 19);
+                loadMap(averageLatitude, averageLongitude, zoomFactor);
             }
-            zoomControls.setIsZoomInEnabled(zoomFactor < MAX_ZOOM);
-            zoomControls.setIsZoomOutEnabled(true);
         });
         zoomControls.setOnZoomOutClickListener(v -> {
-            final int MIN_ZOOM = 3;
-            if (zoomFactor > MIN_ZOOM) {
-                zoomFactor--;
-                if ("googlemaps".equals(currentMapType) && googleMap != null) {
-                    googleMap.animateCamera(CameraUpdateFactory.zoomOut());
-                } else {
-                    loadMap(averageLatitude, averageLongitude, zoomFactor);
-                }
+            if (isGoogleMapsType(currentMapType) && googleMap != null) {
+                googleMap.animateCamera(CameraUpdateFactory.zoomOut());
+            } else {
+                zoomFactor = Math.max(zoomFactor - 1, 3);
+                loadMap(averageLatitude, averageLongitude, zoomFactor);
             }
-            zoomControls.setIsZoomOutEnabled(zoomFactor > MIN_ZOOM);
-            zoomControls.setIsZoomInEnabled(true);
         });
 
         // Hold skærm tændt hvis sat i preferences
@@ -397,26 +387,34 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
         }
     }
 
+    private int getGoogleMapType() {
+        switch (prefs.getString("mapType", "gm_normal")) {
+            case "gm_satellite": return GoogleMap.MAP_TYPE_SATELLITE;
+            case "gm_terrain":   return GoogleMap.MAP_TYPE_TERRAIN;
+            case "gm_hybrid":    return GoogleMap.MAP_TYPE_HYBRID;
+            default:             return GoogleMap.MAP_TYPE_NORMAL;
+        }
+    }
+
+    private boolean isGoogleMapsType(String type) {
+        return type.startsWith("gm_");
+    }
+
     private void loadMap(double lat, double lon, int zoom) {
         mapInitialized = false;
-        currentMapType = prefs.getString("mapType", "standard");
+        currentMapType = prefs.getString("mapType", "gm_normal");
+        if (lat == 0 && lon == 0) { lat = 56.0; lon = 10.5; zoom = 7; }
 
-        if ("googlemaps".equals(currentMapType)) {
+        if (isGoogleMapsType(currentMapType)) {
             webView.setVisibility(View.GONE);
             mapView.setVisibility(View.VISIBLE);
-            updateGoogleMapFull(lat == 0 && lon == 0 ? 56.0 : lat,
-                                lat == 0 && lon == 0 ? 10.5 : lon,
-                                lat == 0 && lon == 0 ? 7 : zoom);
+            updateGoogleMapFull(lat, lon, zoom);
             return;
         }
+
+        // OpenStreetMap via Leaflet
         webView.setVisibility(View.VISIBLE);
         mapView.setVisibility(View.GONE);
-        if (lat == 0 && lon == 0) {
-            lat = 56.0;
-            lon = 10.5;
-            zoom = 7;
-        }
-
         if (leafletCssCache == null) leafletCssCache = readAsset("leaflet.css");
         if (leafletJsCache == null) leafletJsCache = readAsset("leaflet.js");
 
@@ -426,7 +424,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
                 tileUrl = "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png";
                 attribution = "&copy; OpenTopoMap";
                 break;
-            case "satellite":
+            case "osm_satellite":
                 tileUrl = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
                 attribution = "&copy; Esri";
                 break;
@@ -436,7 +434,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
                 break;
         }
 
-        // Eksisterende målepunkter til genindlæsning (korttype-skift, zoom)
         StringBuilder pointsJs = new StringBuilder("var pts=[");
         for (double[] pt : measurementPoints) {
             pointsJs.append("[").append(pt[0]).append(",").append(pt[1]).append("],");
@@ -463,12 +460,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
                 pinIconJs +
                 "var map=L.map('map',{zoomControl:false}).setView([" + lat + "," + lon + "]," + zoom + ");" +
                 "L.tileLayer('" + tileUrl + "',{maxZoom:19,attribution:'" + attribution + "'}).addTo(map);" +
-                // Genrender eksisterende cirkler ved reload
                 pointsJs +
                 "var circles=[];" +
                 "pts.forEach(function(p){var c=L.circleMarker(p,{radius:8,color:'#e74c3c',weight:2,fillColor:'#e74c3c',fillOpacity:0.4}).addTo(map);circles.push(c);});" +
                 "var avgMarker=L.marker([" + lat + "," + lon + "],{icon:pinIcon}).addTo(map);" +
-                // JS-hjælpefunktioner til live-opdatering
                 "function addCircle(la,lo){var c=L.circleMarker([la,lo],{radius:8,color:'#e74c3c',weight:2,fillColor:'#e74c3c',fillOpacity:0.4}).addTo(map);circles.push(c);}" +
                 "function updatePin(la,lo){if(avgMarker)map.removeLayer(avgMarker);avgMarker=L.marker([la,lo],{icon:pinIcon}).addTo(map);}" +
                 "function panTo(la,lo){map.panTo([la,lo]);}" +
@@ -478,7 +473,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
     }
 
     private void updateMapJS(double pointLat, double pointLon, double avgLat, double avgLon) {
-        if ("googlemaps".equals(currentMapType)) {
+        if (isGoogleMapsType(currentMapType)) {
             if (googleMap == null) return;
             Marker m = googleMap.addMarker(new MarkerOptions()
                     .position(new LatLng(pointLat, pointLon))
@@ -492,21 +487,17 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
             if (followMap) {
                 googleMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(avgLat, avgLon)));
             }
-            return;
-        }
-        if (!mapInitialized) {
-            loadMap(avgLat, avgLon, zoomFactor);
-            return;
-        }
-        webView.evaluateJavascript("addCircle(" + pointLat + "," + pointLon + ");", null);
-        webView.evaluateJavascript("updatePin(" + avgLat + "," + avgLon + ");", null);
-        if (followMap) {
-            webView.evaluateJavascript("panTo(" + avgLat + "," + avgLon + ");", null);
+        } else {
+            if (!mapInitialized) { loadMap(avgLat, avgLon, zoomFactor); return; }
+            webView.evaluateJavascript("addCircle(" + pointLat + "," + pointLon + ");", null);
+            webView.evaluateJavascript("updatePin(" + avgLat + "," + avgLon + ");", null);
+            if (followMap) webView.evaluateJavascript("panTo(" + avgLat + "," + avgLon + ");", null);
         }
     }
 
     private void updateGoogleMapFull(double lat, double lon, int zoom) {
         if (googleMap == null) return;
+        googleMap.setMapType(getGoogleMapType());
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), zoom));
         if (googleAverageMarker != null) { googleAverageMarker.remove(); googleAverageMarker = null; }
         for (Marker m : googleMeasurementMarkers) m.remove();

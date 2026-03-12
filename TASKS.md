@@ -4,7 +4,7 @@
 
 ### Google Play-publicering
 - [ ] Opsætte keystore og signere release APK/AAB
-- [ ] Teste på fysisk Android-enhed (GPS, kort, AdMob)
+- [x] Teste på fysisk Android-enhed — installeret og verificeret på Samsung Galaxy S23 Ultra
 - [ ] Publicere til Google Play
 
 ## Kommende
@@ -37,3 +37,8 @@
 - [x] Google Maps API-nøgle via local.properties (ikke i repo)
 - [x] .gitignore oprettet, ingen private nøgler i repository
 - [x] Pushet til GitHub (Rocologo/GeocachePlacer)
+- [x] GPS-cirkler: skiftet fra pins til geografiske cirkler (røde målinger, blå gennemsnit)
+- [x] Kortvisning ved opstart zoomer til telefonens GPS-position
+- [x] OSM-korttyper gendannet (Standard, Topografi, Satellit)
+- [x] gradlew.bat + gradle-wrapper.jar tilføjet — projektet bygger fra kommandolinje
+- [x] Git multi-konto løst: credential.useHttpPath=true (Rocologo vs zenturaclj)

@@ -1,5 +1,27 @@
 # Changelog
 
+## [3.0.1] — 2026-03-12 — Bugfixes og polering
+
+### Kort
+- Kortvisning ved opstart zoomer nu ind på telefonens GPS-position (fix: `getMapAsync`-callback brugte forkert betingelse `"googlemaps"` i stedet for `isGoogleMapsType()`)
+- OSM-korttyper gendannet: Standard, Topografi (OpenTopoMap), Satellit (ESRI) var utilsigtet fjernet
+- Google Maps som standard korttype (`gm_normal`)
+
+### GPS-cirkler
+- Målepunkter vises som geografiske cirkler (r=8m) i stedet for pins
+- Røde cirkler for individuelle målinger, blå cirkel + blå pin for gennemsnitsposition
+- Reset rydder korrekt alle cirkler og markører
+
+### Byggesystem
+- `gradlew.bat` og `gradle-wrapper.jar` tilføjet til repository (manglede, build krævede Android Studio)
+- `credential.useHttpPath=true` sat lokalt — Rocologo-konto og zenturaclj-konto blander sig ikke ved push
+
+### Dokumentation
+- `REQUIREMENTS.md` oprettet — brugervending kravspecifikation
+- `CLAUDE.md` oprettet — projektinstruktioner til Claude
+
+---
+
 ## [3.0.0] — 2026-03-11 — Fuldt moderniseret
 
 ### Kort

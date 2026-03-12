@@ -39,7 +39,7 @@
             android:summary="%s"
             android:entries="@array/mapTypeNames"
             android:entryValues="@array/mapTypeValues"
-            android:defaultValue="standard" />
+            android:defaultValue="gm_normal" />
 
     </PreferenceCategory>
 

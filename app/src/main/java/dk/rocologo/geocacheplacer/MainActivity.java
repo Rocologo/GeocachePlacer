@@ -37,6 +37,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -89,7 +91,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
     private boolean mapInitialized = false;
     private MapView mapView;
     private GoogleMap googleMap;
-    private final java.util.List<Marker> googleMeasurementMarkers = new java.util.ArrayList<>();
+    private final java.util.List<Circle> googleMeasurementCircles = new java.util.ArrayList<>();
+    private Circle googleAverageCircle;
     private Marker googleAverageMarker;
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -268,8 +271,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
             progressBar.setProgress(0);
             averageRunning = false;
             measurementPoints.clear();
-            for (Marker m : googleMeasurementMarkers) m.remove();
-            googleMeasurementMarkers.clear();
+            for (Circle c : googleMeasurementCircles) c.remove();
+            googleMeasurementCircles.clear();
+            if (googleAverageCircle != null) { googleAverageCircle.remove(); googleAverageCircle = null; }
             if (googleAverageMarker != null) { googleAverageMarker.remove(); googleAverageMarker = null; }
             showCurrentPosition();
             setShareIntent(shareTheResult());
@@ -475,15 +479,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
     private void updateMapJS(double pointLat, double pointLon, double avgLat, double avgLon) {
         if (isGoogleMapsType(currentMapType)) {
             if (googleMap == null) return;
-            Marker m = googleMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(pointLat, pointLon))
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-                    .anchor(0.5f, 0.5f));
-            if (m != null) googleMeasurementMarkers.add(m);
-            if (googleAverageMarker != null) googleAverageMarker.remove();
-            googleAverageMarker = googleMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(avgLat, avgLon))
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+            addGoogleMeasurementCircle(pointLat, pointLon);
+            updateGoogleAverage(avgLat, avgLon);
             if (followMap) {
                 googleMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(avgLat, avgLon)));
             }
@@ -495,23 +492,49 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
         }
     }
 
+    private void addGoogleMeasurementCircle(double lat, double lon) {
+        Circle c = googleMap.addCircle(new CircleOptions()
+                .center(new LatLng(lat, lon))
+                .radius(8)
+                .strokeColor(0xFFE74C3C)
+                .strokeWidth(2)
+                .fillColor(0x66E74C3C));
+        googleMeasurementCircles.add(c);
+    }
+
+    private void updateGoogleAverage(double lat, double lon) {
+        if (googleAverageCircle != null) googleAverageCircle.remove();
+        if (googleAverageMarker != null) googleAverageMarker.remove();
+        googleAverageCircle = googleMap.addCircle(new CircleOptions()
+                .center(new LatLng(lat, lon))
+                .radius(8)
+                .strokeColor(0xFF2980B9)
+                .strokeWidth(3)
+                .fillColor(0xCC3498DB));
+        googleAverageMarker = googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(lat, lon))
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                .anchor(0.5f, 1.0f));
+    }
+
     private void updateGoogleMapFull(double lat, double lon, int zoom) {
         if (googleMap == null) return;
         googleMap.setMapType(getGoogleMapType());
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), zoom));
+        if (googleAverageCircle != null) { googleAverageCircle.remove(); googleAverageCircle = null; }
         if (googleAverageMarker != null) { googleAverageMarker.remove(); googleAverageMarker = null; }
-        for (Marker m : googleMeasurementMarkers) m.remove();
-        googleMeasurementMarkers.clear();
+        for (Circle c : googleMeasurementCircles) c.remove();
+        googleMeasurementCircles.clear();
         for (double[] pt : measurementPoints) {
-            Marker m = googleMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(pt[0], pt[1]))
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-                    .anchor(0.5f, 0.5f));
-            if (m != null) googleMeasurementMarkers.add(m);
+            addGoogleMeasurementCircle(pt[0], pt[1]);
         }
-        googleAverageMarker = googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(lat, lon))
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+        if (!measurementPoints.isEmpty()) {
+            updateGoogleAverage(lat, lon);
+        } else {
+            googleAverageMarker = googleMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(lat, lon))
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+        }
     }
 
     public Intent shareTheResult() {

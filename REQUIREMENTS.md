@@ -12,6 +12,11 @@ Geocachere der ønsker at placere en præcis cache-position.
 
 ---
 
+## GPS
+- App'en bruger telefonens indbyggede GPS (ikke netværksposition)
+- Hver måling tages med `getLastKnownLocation(GPS_PROVIDER)`
+- Brugeren skal acceptere runtime-tilladelse til lokation (ACCESS_FINE_LOCATION)
+
 ## Kortvisning
 
 ### Korttyper

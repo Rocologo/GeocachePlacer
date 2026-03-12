@@ -93,6 +93,13 @@ public class GPSTracker extends Service implements LocationListener {
         return longitude;
     }
 
+    public float getAccuracy() {
+        if (location != null && location.hasAccuracy()) {
+            return location.getAccuracy();
+        }
+        return Float.MAX_VALUE;
+    }
+
     public double getAltitude() {
         if (location != null) {
             altitude = location.getAltitude();

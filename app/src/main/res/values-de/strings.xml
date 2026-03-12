@@ -1,0 +1,92 @@
+<resources>
+
+    <string name="app_name">GeocachePlacer</string>
+    <string name="activity_main_title">Geocache Placer</string>
+    <string name="title_activity_settings">Einstellungen</string>
+    <string name="button_run">Start</string>
+    <string name="button_reset">Zurücksetzen</string>
+    <string name="button_pause">Pause</string>
+    <string name="button_send">Teilen</string>
+    <string name="current_position">Koordinaten: </string>
+    <string name="average_position">Durchschn.Koordinaten: </string>
+    <string name="delta_position">Abweichung:</string>
+    <string name="number_of_runs">Anzahl Koordinaten:</string>
+    <string name="altitude">Höhe:</string>
+    <string name="email">E-Mail-Adresse</string>
+    <string name="email_summary">E-Mail-Adresse eingeben</string>
+    <string name="menuitem_share">Teilen</string>
+    <string name="menuitem_settings">Einstellungen</string>
+    <string name="menuitem_about">Über</string>
+    <string name="about_button_return">Zurück</string>
+    <string name="about_textview_body">Geocache Placer ist ein Werkzeug, das Geocachern hilft, eine genaue Position für den Geocache zu ermitteln, den sie verstecken möchten.\n\nDrücke \"Start\" mehrmals, bis die Delta-Koordinaten nahe 0.0000 sind. Die App ist kostenlos und wird durch Werbung finanziert.\n\nEntwickelt von Rocologo@hotmail.com</string>
+    <string name="about_rate_app">App bei Google Play bewerten</string>
+    <string name="about_problem_report">Fehlerbericht</string>
+    <string name="about_title">Über</string>
+    <string name="about_activity_title">Geocache Placer</string>
+    <string name="problem_report">Geocache Placer Fehlerbericht</string>
+    <string name="problem_report_body">Gerät: %1$s\n\nBitte beschreibe das Problem:\n</string>
+    <string name="version">Version: unbekannt</string>
+
+    <!-- Messung -->
+    <string name="numberOfRunsTitle">Anzahl der Positionen</string>
+    <string name="numberOfRunsTitle_summay">Anzahl der Messungen pro Durchschnitt auswählen.</string>
+    <string name="delay">Verzögerung</string>
+    <string name="delay_summary">Verzögerung zwischen den Messungen.</string>
+
+    <!-- Koordinatenformat -->
+    <string name="pref_coord_format_title">Koordinatenformat</string>
+    <string name="pref_coord_format_summary">Auswählen, wie Koordinaten angezeigt werden</string>
+
+    <!-- Karte -->
+    <string name="pref_map_type_title">Kartentyp</string>
+    <string name="pref_map_type_summary">Hintergrundkarte auswählen</string>
+    <string name="menuitem_map_standard">Standard</string>
+    <string name="menuitem_map_topo">Topographie</string>
+    <string name="menuitem_map_satellite">Satellit</string>
+
+    <!-- Allgemein -->
+    <string name="pref_keep_screen_on_title">Bildschirm eingeschaltet lassen</string>
+    <string name="pref_keep_screen_on_summary">Verhindert, dass der Bildschirm während der Messung ausgeht</string>
+    <string name="pref_category_measurement">Messung</string>
+    <string name="pref_category_map">Karte</string>
+    <string name="pref_category_general">Allgemein</string>
+
+    <!-- Arrays: Anzahl Positionen -->
+    <string-array name="numberOfRunNames">
+        <item>Bis Delta = 0</item>
+        <item>1 Position</item>
+        <item>Durchschnitt aus 5 Positionen</item>
+        <item>Durchschnitt aus 10 Positionen</item>
+        <item>Durchschnitt aus 25 Positionen</item>
+        <item>Durchschnitt aus 50 Positionen</item>
+        <item>Durchschnitt aus 100 Positionen</item>
+        <item>Durchschnitt aus 200 Positionen</item>
+    </string-array>
+
+    <!-- Arrays: Verzögerung -->
+    <string-array name="delayNames">
+        <item>500 Millisekunden</item>
+        <item>1 Sekunde</item>
+        <item>5 Sekunden</item>
+        <item>10 Sekunden</item>
+    </string-array>
+
+    <!-- Arrays: Koordinatenformat -->
+    <string-array name="coordFormatNames">
+        <item>D°M.mmm (Grad + Dezimalminuten)</item>
+        <item>DD.ddddd (Dezimalgrad)</item>
+        <item>D°M\'S\" (Grad Minuten Sekunden)</item>
+    </string-array>
+
+    <!-- Arrays: Kartentyp -->
+    <string-array name="mapTypeNames">
+        <item>Google Maps — Normal</item>
+        <item>Google Maps — Satellit</item>
+        <item>Google Maps — Gelände</item>
+        <item>Google Maps — Hybrid</item>
+        <item>OpenStreetMap — Standard</item>
+        <item>OpenStreetMap — Topographie</item>
+        <item>OpenStreetMap — Satellit (ESRI)</item>
+    </string-array>
+
+</resources>

@@ -10,6 +10,12 @@ Geocachere der ønsker at placere en præcis cache-position.
 - Android 6.0+ (API 23+)
 - Kræver GPS og internetforbindelse (til kortvisning)
 
+## Sprog
+- App'en oversættes automatisk baseret på telefonens sprogindstilling
+- Understøttede sprog: Dansk (standard), Engelsk, Tysk, Fransk, Polsk, Spansk
+- Oversættelser vedligeholdes i `res/values-XX/strings.xml` (XX = da/en/de/fr/pl/es)
+- Dansk er fallback-sprog hvis telefonen bruger et ikke-understøttet sprog
+
 ---
 
 ## GPS

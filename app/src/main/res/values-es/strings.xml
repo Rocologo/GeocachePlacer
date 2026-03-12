@@ -1,0 +1,92 @@
+<resources>
+
+    <string name="app_name">GeocachePlacer</string>
+    <string name="activity_main_title">Geocache Placer</string>
+    <string name="title_activity_settings">Ajustes</string>
+    <string name="button_run">Iniciar</string>
+    <string name="button_reset">Restablecer</string>
+    <string name="button_pause">Pausa</string>
+    <string name="button_send">Compartir</string>
+    <string name="current_position">Coordenadas: </string>
+    <string name="average_position">Prom.Coordenadas: </string>
+    <string name="delta_position">Desviación:</string>
+    <string name="number_of_runs">Número de coordenadas:</string>
+    <string name="altitude">Altitud:</string>
+    <string name="email">Dirección de e-mail</string>
+    <string name="email_summary">Introduce tu dirección de e-mail</string>
+    <string name="menuitem_share">Compartir</string>
+    <string name="menuitem_settings">Ajustes</string>
+    <string name="menuitem_about">Acerca de</string>
+    <string name="about_button_return">Volver</string>
+    <string name="about_textview_body">Geocache Placer es una herramienta para ayudar a los Geocacheros a obtener una posición precisa para el Geocache que desean colocar.\n\nPulsa \"Iniciar\" varias veces hasta que las coordenadas Delta estén cerca de 0.0000. La app es gratuita y financiada por anuncios.\n\nDesarrollado por Rocologo@hotmail.com</string>
+    <string name="about_rate_app">Valorar app en Google Play</string>
+    <string name="about_problem_report">Informe de problema</string>
+    <string name="about_title">Acerca de</string>
+    <string name="about_activity_title">Geocache Placer</string>
+    <string name="problem_report">Informe de problema Geocache Placer</string>
+    <string name="problem_report_body">Dispositivo: %1$s\n\nPor favor describe el problema:\n</string>
+    <string name="version">Versión: desconocida</string>
+
+    <!-- Medición -->
+    <string name="numberOfRunsTitle">Número de posiciones</string>
+    <string name="numberOfRunsTitle_summay">Seleccionar número de mediciones por promedio.</string>
+    <string name="delay">Retardo</string>
+    <string name="delay_summary">Retardo entre mediciones.</string>
+
+    <!-- Formato de coordenadas -->
+    <string name="pref_coord_format_title">Formato de coordenadas</string>
+    <string name="pref_coord_format_summary">Seleccionar cómo se muestran las coordenadas</string>
+
+    <!-- Mapa -->
+    <string name="pref_map_type_title">Tipo de mapa</string>
+    <string name="pref_map_type_summary">Seleccionar mapa de fondo</string>
+    <string name="menuitem_map_standard">Estándar</string>
+    <string name="menuitem_map_topo">Topografía</string>
+    <string name="menuitem_map_satellite">Satélite</string>
+
+    <!-- General -->
+    <string name="pref_keep_screen_on_title">Mantener pantalla encendida</string>
+    <string name="pref_keep_screen_on_summary">Impide que la pantalla se apague durante la medición</string>
+    <string name="pref_category_measurement">Medición</string>
+    <string name="pref_category_map">Mapa</string>
+    <string name="pref_category_general">General</string>
+
+    <!-- Arrays: número de posiciones -->
+    <string-array name="numberOfRunNames">
+        <item>Hasta Delta = 0</item>
+        <item>1 posición</item>
+        <item>Promedio de 5 posiciones</item>
+        <item>Promedio de 10 posiciones</item>
+        <item>Promedio de 25 posiciones</item>
+        <item>Promedio de 50 posiciones</item>
+        <item>Promedio de 100 posiciones</item>
+        <item>Promedio de 200 posiciones</item>
+    </string-array>
+
+    <!-- Arrays: retardo -->
+    <string-array name="delayNames">
+        <item>500 milisegundos</item>
+        <item>1 segundo</item>
+        <item>5 segundos</item>
+        <item>10 segundos</item>
+    </string-array>
+
+    <!-- Arrays: formato de coordenadas -->
+    <string-array name="coordFormatNames">
+        <item>D°M.mmm (Grados + Minutos decimales)</item>
+        <item>DD.ddddd (Grados decimales)</item>
+        <item>D°M\'S\" (Grados Minutos Segundos)</item>
+    </string-array>
+
+    <!-- Arrays: tipo de mapa -->
+    <string-array name="mapTypeNames">
+        <item>Google Maps — Normal</item>
+        <item>Google Maps — Satélite</item>
+        <item>Google Maps — Terreno</item>
+        <item>Google Maps — Híbrido</item>
+        <item>OpenStreetMap — Estándar</item>
+        <item>OpenStreetMap — Topografía</item>
+        <item>OpenStreetMap — Satélite (ESRI)</item>
+    </string-array>
+
+</resources>

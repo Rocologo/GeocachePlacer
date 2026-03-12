@@ -14,3 +14,6 @@ app/build/
 # Keystore-filer — må aldrig i version control
 *.jks
 *.keystore
+
+# Claude Code lokale indstillinger
+.claude/

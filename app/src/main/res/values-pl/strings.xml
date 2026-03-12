@@ -1,0 +1,92 @@
+<resources>
+
+    <string name="app_name">GeocachePlacer</string>
+    <string name="activity_main_title">Geocache Placer</string>
+    <string name="title_activity_settings">Ustawienia</string>
+    <string name="button_run">Start</string>
+    <string name="button_reset">Resetuj</string>
+    <string name="button_pause">Pauza</string>
+    <string name="button_send">Udostępnij</string>
+    <string name="current_position">Współrzędne: </string>
+    <string name="average_position">Śr.Współrzędne: </string>
+    <string name="delta_position">Odchylenie:</string>
+    <string name="number_of_runs">Liczba współrzędnych:</string>
+    <string name="altitude">Wysokość:</string>
+    <string name="email">Adres e-mail</string>
+    <string name="email_summary">Wpisz swój adres e-mail</string>
+    <string name="menuitem_share">Udostępnij</string>
+    <string name="menuitem_settings">Ustawienia</string>
+    <string name="menuitem_about">O aplikacji</string>
+    <string name="about_button_return">Wstecz</string>
+    <string name="about_textview_body">Geocache Placer to narzędzie pomagające Geocacherom uzyskać dokładną pozycję dla skrzynki, którą chcą ukryć.\n\nNaciśnij \"Start\" kilka razy, aż współrzędne Delta będą bliskie 0.0000. Aplikacja jest bezpłatna i finansowana z reklam.\n\nOpracowane przez Rocologo@hotmail.com</string>
+    <string name="about_rate_app">Oceń aplikację w Google Play</string>
+    <string name="about_problem_report">Zgłoś problem</string>
+    <string name="about_title">O aplikacji</string>
+    <string name="about_activity_title">Geocache Placer</string>
+    <string name="problem_report">Raport o problemie Geocache Placer</string>
+    <string name="problem_report_body">Urządzenie: %1$s\n\nProszę opisać problem:\n</string>
+    <string name="version">Wersja: nieznana</string>
+
+    <!-- Pomiar -->
+    <string name="numberOfRunsTitle">Liczba pozycji</string>
+    <string name="numberOfRunsTitle_summay">Wybierz liczbę pomiarów na średnią.</string>
+    <string name="delay">Opóźnienie</string>
+    <string name="delay_summary">Opóźnienie między pomiarami.</string>
+
+    <!-- Format współrzędnych -->
+    <string name="pref_coord_format_title">Format współrzędnych</string>
+    <string name="pref_coord_format_summary">Wybierz sposób wyświetlania współrzędnych</string>
+
+    <!-- Mapa -->
+    <string name="pref_map_type_title">Typ mapy</string>
+    <string name="pref_map_type_summary">Wybierz mapę tła</string>
+    <string name="menuitem_map_standard">Standardowa</string>
+    <string name="menuitem_map_topo">Topografia</string>
+    <string name="menuitem_map_satellite">Satelita</string>
+
+    <!-- Ogólne -->
+    <string name="pref_keep_screen_on_title">Utrzymuj ekran włączony</string>
+    <string name="pref_keep_screen_on_summary">Zapobiega wyłączeniu ekranu podczas pomiaru</string>
+    <string name="pref_category_measurement">Pomiar</string>
+    <string name="pref_category_map">Mapa</string>
+    <string name="pref_category_general">Ogólne</string>
+
+    <!-- Arrays: liczba pozycji -->
+    <string-array name="numberOfRunNames">
+        <item>Aż Delta = 0</item>
+        <item>1 pozycja</item>
+        <item>Średnia z 5 pozycji</item>
+        <item>Średnia z 10 pozycji</item>
+        <item>Średnia z 25 pozycji</item>
+        <item>Średnia z 50 pozycji</item>
+        <item>Średnia z 100 pozycji</item>
+        <item>Średnia z 200 pozycji</item>
+    </string-array>
+
+    <!-- Arrays: opóźnienie -->
+    <string-array name="delayNames">
+        <item>500 milisekund</item>
+        <item>1 sekunda</item>
+        <item>5 sekund</item>
+        <item>10 sekund</item>
+    </string-array>
+
+    <!-- Arrays: format współrzędnych -->
+    <string-array name="coordFormatNames">
+        <item>D°M.mmm (Stopnie + Minuty dziesiętne)</item>
+        <item>DD.ddddd (Stopnie dziesiętne)</item>
+        <item>D°M\'S\" (Stopnie Minuty Sekundy)</item>
+    </string-array>
+
+    <!-- Arrays: typ mapy -->
+    <string-array name="mapTypeNames">
+        <item>Google Maps — Normalny</item>
+        <item>Google Maps — Satelita</item>
+        <item>Google Maps — Teren</item>
+        <item>Google Maps — Hybrydowy</item>
+        <item>OpenStreetMap — Standardowa</item>
+        <item>OpenStreetMap — Topografia</item>
+        <item>OpenStreetMap — Satelita (ESRI)</item>
+    </string-array>
+
+</resources>

@@ -152,8 +152,17 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
             googleMap = gMap;
             googleMap.getUiSettings().setZoomControlsEnabled(false);
             googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-            if ("googlemaps".equals(currentMapType)) {
-                updateGoogleMapFull(averageLatitude, averageLongitude, zoomFactor);
+            // VIGTIGT: brug isGoogleMapsType() — ikke "googlemaps".equals() — korttypen er fx "gm_normal"
+            // VIGTIGT: brug GPS-position, ikke averageLatitude/averageLongitude (er 0,0 ved opstart)
+            if (isGoogleMapsType(currentMapType)) {
+                double initLat = averageLatitude;
+                double initLon = averageLongitude;
+                if (gps != null && (gps.getLatitude() != 0 || gps.getLongitude() != 0)) {
+                    initLat = gps.getLatitude();
+                    initLon = gps.getLongitude();
+                }
+                if (initLat == 0 && initLon == 0) { initLat = 56.0; initLon = 10.5; }
+                updateGoogleMapFull(initLat, initLon, zoomFactor);
             }
         });
 
@@ -236,6 +245,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
         double curLon = gps.getLongitude();
         if (curLat != 0 || curLon != 0) {
             textView1.setText(label1 + formatCoords(curLat, curLon));
+            float accuracy = gps.getAccuracy();
+            if (accuracy <= 20) zoomFactor = 18;
+            else if (accuracy <= 100) zoomFactor = 16;
+            else zoomFactor = 14;
             loadMap(curLat, curLon, zoomFactor);
         } else {
             textView1.setText(label1 + "—");
@@ -466,9 +479,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
                 "L.tileLayer('" + tileUrl + "',{maxZoom:19,attribution:'" + attribution + "'}).addTo(map);" +
                 pointsJs +
                 "var circles=[];" +
-                "pts.forEach(function(p){var c=L.circleMarker(p,{radius:8,color:'#e74c3c',weight:2,fillColor:'#e74c3c',fillOpacity:0.4}).addTo(map);circles.push(c);});" +
+                "pts.forEach(function(p){var c=L.circleMarker(p,{radius:8,color:'#e74c3c',weight:2,fillColor:'#e74c3c',fillOpacity:0}).addTo(map);circles.push(c);});" +
                 "var avgMarker=L.marker([" + lat + "," + lon + "],{icon:pinIcon}).addTo(map);" +
-                "function addCircle(la,lo){var c=L.circleMarker([la,lo],{radius:8,color:'#e74c3c',weight:2,fillColor:'#e74c3c',fillOpacity:0.4}).addTo(map);circles.push(c);}" +
+                "function addCircle(la,lo){var c=L.circleMarker([la,lo],{radius:8,color:'#e74c3c',weight:2,fillColor:'#e74c3c',fillOpacity:0}).addTo(map);circles.push(c);}" +
                 "function updatePin(la,lo){if(avgMarker)map.removeLayer(avgMarker);avgMarker=L.marker([la,lo],{icon:pinIcon}).addTo(map);}" +
                 "function panTo(la,lo){map.panTo([la,lo]);}" +
                 "function clearMap(){circles.forEach(function(c){map.removeLayer(c);});circles=[];if(avgMarker){map.removeLayer(avgMarker);avgMarker=null;}}" +
@@ -498,7 +511,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
                 .radius(8)
                 .strokeColor(0xFFE74C3C)
                 .strokeWidth(2)
-                .fillColor(0x66E74C3C));
+                .fillColor(0x00000000));
         googleMeasurementCircles.add(c);
     }
 
@@ -510,7 +523,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
                 .radius(8)
                 .strokeColor(0xFF2980B9)
                 .strokeWidth(3)
-                .fillColor(0xCC3498DB));
+                .fillColor(0x00000000));
         googleAverageMarker = googleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(lat, lon))
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))

@@ -51,6 +51,8 @@
     <!-- Mapa -->
     <string name="pref_map_type_title">Typ mapy</string>
     <string name="pref_map_type_summary">Wybierz mapę tła</string>
+    <string name="pref_auto_zoom_title">Auto-zoom</string>
+    <string name="pref_auto_zoom_summary">Automatycznie przybliżaj gdy dokładność pomiaru rośnie</string>
     <string name="menuitem_map_standard">Standardowa</string>
     <string name="menuitem_map_topo">Topografia</string>
     <string name="menuitem_map_satellite">Satelita</string>

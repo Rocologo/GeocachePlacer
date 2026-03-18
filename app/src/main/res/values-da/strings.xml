@@ -51,6 +51,8 @@
     <!-- Kort -->
     <string name="pref_map_type_title">Korttype</string>
     <string name="pref_map_type_summary">Vælg baggrundskort</string>
+    <string name="pref_auto_zoom_title">Auto-zoom</string>
+    <string name="pref_auto_zoom_summary">Zoom automatisk ind når målenøjagtigheden forbedres</string>
     <string name="menuitem_map_standard">Standard</string>
     <string name="menuitem_map_topo">Topografi</string>
     <string name="menuitem_map_satellite">Satellit</string>

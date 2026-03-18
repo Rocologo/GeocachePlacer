@@ -46,6 +46,8 @@
     <string name="pref_coord_format_summary">Kies hoe coördinaten worden weergegeven</string>
     <string name="pref_map_type_title">Kaarttype</string>
     <string name="pref_map_type_summary">Kies achtergrondkaart</string>
+    <string name="pref_auto_zoom_title">Auto-zoom</string>
+    <string name="pref_auto_zoom_summary">Automatisch inzoomen als de meetnauwkeurigheid verbetert</string>
     <string name="menuitem_map_standard">Standaard</string>
     <string name="menuitem_map_topo">Topografie</string>
     <string name="menuitem_map_satellite">Satelliet</string>

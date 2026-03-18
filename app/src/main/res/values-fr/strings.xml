@@ -51,6 +51,8 @@
     <!-- Carte -->
     <string name="pref_map_type_title">Type de carte</string>
     <string name="pref_map_type_summary">Sélectionner la carte de fond</string>
+    <string name="pref_auto_zoom_title">Zoom auto</string>
+    <string name="pref_auto_zoom_summary">Zoomer automatiquement quand la précision augmente</string>
     <string name="menuitem_map_standard">Standard</string>
     <string name="menuitem_map_topo">Topographie</string>
     <string name="menuitem_map_satellite">Satellite</string>

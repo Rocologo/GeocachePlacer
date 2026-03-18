@@ -369,6 +369,22 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
                         textView5.setText(label5 + df.format(alt) + " +- " + df.format(dAlt));
                     }
                     textView6.setText(label6 + sats);
+                    if (count >= 2 && prefs.getBoolean("autoZoom", true)) {
+                        double maxDelta = Math.max(Math.abs(dLat), Math.abs(dLon));
+                        int newZoom;
+                        if (maxDelta < 0.00001) newZoom = 20;
+                        else if (maxDelta < 0.0001) newZoom = 19;
+                        else if (maxDelta < 0.001) newZoom = 17;
+                        else if (maxDelta < 0.01) newZoom = 15;
+                        else newZoom = 13;
+                        if (newZoom != zoomFactor) {
+                            zoomFactor = newZoom;
+                            if (isGoogleMapsType(currentMapType) && googleMap != null) {
+                                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                                        new LatLng(avgLat, avgLon), zoomFactor));
+                            }
+                        }
+                    }
                     measurementPoints.add(new double[]{pointLat, pointLon});
                     updateMapJS(pointLat, pointLon, avgLat, avgLon);
                 });

@@ -51,6 +51,8 @@
     <!-- Karte -->
     <string name="pref_map_type_title">Kartentyp</string>
     <string name="pref_map_type_summary">Hintergrundkarte auswählen</string>
+    <string name="pref_auto_zoom_title">Auto-Zoom</string>
+    <string name="pref_auto_zoom_summary">Automatisch hineinzoomen wenn die Messgenauigkeit steigt</string>
     <string name="menuitem_map_standard">Standard</string>
     <string name="menuitem_map_topo">Topographie</string>
     <string name="menuitem_map_satellite">Satellit</string>
@@ -86,7 +88,7 @@
     <string-array name="coordFormatNames">
         <item>D°M.mmm (Grad + Dezimalminuten)</item>
         <item>DD.ddddd (Dezimalgrad)</item>
-        <item>D°M'S" (Grad Minuten Sekunden)</item>
+        <item>D°M\'S\" (Grad Minuten Sekunden)</item>
     </string-array>
 
     <!-- Arrays: Kartentyp -->

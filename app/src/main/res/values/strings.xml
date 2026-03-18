@@ -52,6 +52,8 @@
     <!-- Map -->
     <string name="pref_map_type_title">Map type</string>
     <string name="pref_map_type_summary">Choose background map</string>
+    <string name="pref_auto_zoom_title">Auto-zoom</string>
+    <string name="pref_auto_zoom_summary">Automatically zoom in as measurement accuracy improves</string>
     <string name="menuitem_map_standard">Standard</string>
     <string name="menuitem_map_topo">Topography</string>
     <string name="menuitem_map_satellite">Satellite</string>

@@ -41,6 +41,12 @@
             android:entryValues="@array/mapTypeValues"
             android:defaultValue="gm_satellite" />
 
+        <SwitchPreferenceCompat
+            android:key="autoZoom"
+            android:title="@string/pref_auto_zoom_title"
+            android:summary="@string/pref_auto_zoom_summary"
+            android:defaultValue="true" />
+
     </PreferenceCategory>
 
     <!-- Generelt -->

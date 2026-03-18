@@ -24,21 +24,20 @@
             android:layout_height="match_parent"
             android:visibility="gone" />
 
-        <!-- Follow-toggle nederst-venstre: ● = følger position, ○ = låst -->
-        <ToggleButton
+        <!-- Follow-knap øverst-højre, rund -->
+        <ImageButton
             android:id="@+id/buttonFollow"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_gravity="bottom|start"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="top|end"
             android:layout_margin="12dp"
-            android:textOn="●"
-            android:textOff="○"
-            android:textSize="20sp"
-            android:padding="0dp"
-            android:checked="true"
-            android:background="@android:drawable/btn_default" />
+            android:src="@drawable/ic_my_location"
+            android:scaleType="centerInside"
+            android:background="@drawable/bg_circle_button"
+            android:padding="7dp"
+            android:contentDescription="Følg position" />
 
-        <!-- Zoom-knapper oven på kortet -->
+        <!-- Zoom-knapper nederst-højre -->
         <ZoomControls
             android:id="@+id/zoomControls1"
             android:layout_width="wrap_content"
@@ -106,6 +105,15 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/altitude"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:singleLine="true" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Satellites: —"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:singleLine="true" />
 

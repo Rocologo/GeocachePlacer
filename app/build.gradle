@@ -14,8 +14,20 @@ android {
         applicationId "dk.rocologo.geocacheplacer"
         minSdk 23
         targetSdk 35
-        versionCode 130
-        versionName "3.0"
+        versionCode 131
+        versionName "3.0.1"
+    }
+
+    signingConfigs {
+        release {
+            def ksFile = localProps.getProperty('KEYSTORE_FILE', '')
+            if (ksFile) {
+                storeFile file(ksFile)
+                storePassword localProps.getProperty('KEYSTORE_PASSWORD', '')
+                keyAlias localProps.getProperty('KEY_ALIAS', '')
+                keyPassword localProps.getProperty('KEY_PASSWORD', '')
+            }
+        }
     }
 
     buildTypes {
@@ -32,6 +44,7 @@ android {
                 mapsApiKey : localProps.getProperty('MAPS_API_KEY', 'MISSING_KEY')
             ]
             resValue "string", "admob_banner_id", localProps.getProperty('ADMOB_BANNER_ID', 'MISSING_KEY')
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

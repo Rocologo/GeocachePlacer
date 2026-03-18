@@ -7,6 +7,14 @@
     <string name="button_reset">Réinitialiser</string>
     <string name="button_pause">Pause</string>
     <string name="button_send">Partager</string>
+
+    <string name="label_pos">Pos: </string>
+    <string name="label_avg">Moy: </string>
+    <string name="label_dev">Écart: </string>
+    <string name="label_count">Nombre: </string>
+    <string name="label_alt">Alt: </string>
+    <string name="label_sat">Sat: </string>
+
     <string name="current_position">Coordonnées : </string>
     <string name="average_position">Moy.Coordonnées : </string>
     <string name="delta_position">Écart :</string>
@@ -16,7 +24,10 @@
     <string name="email_summary">Saisir votre adresse e-mail</string>
     <string name="menuitem_share">Partager</string>
     <string name="menuitem_settings">Paramètres</string>
+    <string name="menuitem_help">Aide</string>
     <string name="menuitem_about">À propos</string>
+    <string name="help_activity_title">Aide</string>
+    <string name="help_text"><b>Geocache Placer</b> vous aide à trouver une position GPS précise pour votre géocache en calculant la moyenne de nombreuses mesures.\n\n<b>Comment utiliser l\'application :</b>\n\n<b>1. Attendre le signal GPS</b>\nÀ l\'ouverture, votre position actuelle (Pos) et le nombre de satellites (Sat) sont affichés. Plus de satellites = meilleure précision. Attendez au moins 8–10.\n\n<b>2. Appuyez sur Démarrer</b>\nL\'application commence à mesurer les positions GPS. Chaque mesure apparaît comme un cercle rouge sur la carte.\n\n<b>3. Suivre les résultats</b>\n• <b>Pos</b> — dernière mesure GPS\n• <b>Moy</b> — moyenne de toutes les mesures (cercle bleu)\n• <b>Écart</b> — écart entre la dernière et la précédente moyenne\n• <b>Nombre</b> — nombre de mesures effectuées\n• <b>Alt</b> — altitude au-dessus du niveau de la mer\n• <b>Sat</b> — nombre de satellites GPS utilisés\n\nQuand l\'écart est proche de 0, la position est précise.\n\n<b>4. Boutons</b>\n• <b>Démarrer</b> — démarrer/continuer la mesure\n• <b>Pause</b> — mettre en pause\n• <b>Réinitialiser</b> — effacer toutes les mesures\n• <b>Partager</b> — partager la position par SMS, e-mail, etc.\n\n<b>5. La carte</b>\n• Cercles rouges = mesures individuelles\n• Cercle bleu + marqueur = position moyenne\n• Bouton réticule en haut : activer/désactiver le suivi\n• Boutons +/- : zoom avant/arrière\n\n<b>6. Paramètres</b>\nDans le menu → Paramètres vous pouvez modifier :\n• Nombre de positions par série\n• Délai entre les mesures\n• Format des coordonnées (DM, DD ou DMS)\n• Type de carte (Google Maps ou OpenStreetMap)\n\n<b>Conseils :</b>\n• Restez immobile pendant la mesure pour de meilleurs résultats\n• Lancez plusieurs fois — plus de mesures = meilleure moyenne\n• Utilisez la vue satellite pour voir exactement où placer la cache</string>
     <string name="about_button_return">Retour</string>
     <string name="about_textview_body">Geocache Placer est un outil pour aider les Géocacheurs à obtenir une position précise pour la Géocache qu\'ils souhaitent placer.\n\nAppuyez sur \"Démarrer\" plusieurs fois jusqu\'à ce que les coordonnées Delta soient proches de 0.0000. L\'application est gratuite et financée par la publicité.\n\nDéveloppé par Rocologo@hotmail.com</string>
     <string name="about_rate_app">Évaluer l\'app sur Google Play</string>

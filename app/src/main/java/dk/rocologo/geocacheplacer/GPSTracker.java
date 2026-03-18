@@ -6,9 +6,11 @@ import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.GnssStatus;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
@@ -33,6 +35,17 @@ public class GPSTracker extends Service implements LocationListener {
     private static final long MIN_TIME_BW_UPDATES = 0;
 
     protected LocationManager locationManager;
+    private volatile int satelliteCount = 0;
+    private GnssStatus.Callback gnssCallback;
+    private LocationCallback locationCallback;
+
+    public interface LocationCallback {
+        void onLocationUpdated(Location loc);
+    }
+
+    public void setLocationCallback(LocationCallback cb) {
+        this.locationCallback = cb;
+    }
 
     public GPSTracker(MainActivity mainActivity) {
         this.mContext = mainActivity;
@@ -55,6 +68,19 @@ public class GPSTracker extends Service implements LocationListener {
                         MIN_DISTANCE_CHANGE_FOR_UPDATES,
                         this);
                 Log.d(TAG, "getLocation: GPS aktiveret");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    gnssCallback = new GnssStatus.Callback() {
+                        @Override
+                        public void onSatelliteStatusChanged(GnssStatus status) {
+                            int used = 0;
+                            for (int i = 0; i < status.getSatelliteCount(); i++) {
+                                if (status.usedInFix(i)) used++;
+                            }
+                            satelliteCount = used;
+                        }
+                    };
+                    locationManager.registerGnssStatusCallback(gnssCallback);
+                }
                 if (locationManager != null) {
                     location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                     if (location != null) {
@@ -123,15 +149,28 @@ public class GPSTracker extends Service implements LocationListener {
         alertDialog.show();
     }
 
+    public int getSatelliteCount() {
+        return satelliteCount;
+    }
+
     public void stopUsingGPS() {
         if (locationManager != null) {
             locationManager.removeUpdates(GPSTracker.this);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && gnssCallback != null) {
+                locationManager.unregisterGnssStatusCallback(gnssCallback);
+            }
         }
     }
 
     @Override
     public void onLocationChanged(Location loc) {
-        // Ignoreres — vi bruger getLastKnownLocation
+        this.location = loc;
+        this.latitude = loc.getLatitude();
+        this.longitude = loc.getLongitude();
+        this.altitude = loc.getAltitude();
+        if (locationCallback != null) {
+            locationCallback.onLocationUpdated(loc);
+        }
     }
 
     @Override

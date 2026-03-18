@@ -1,0 +1,133 @@
+<resources>
+
+    <string name="app_name">GeocachePlacer</string>
+    <string name="activity_main_title">Geocache Placer</string>
+    <string name="title_activity_settings">Indstillinger</string>
+    <string name="button_run">Kør</string>
+    <string name="button_reset">Nulstil</string>
+    <string name="button_pause">Pause</string>
+    <string name="button_send">Del</string>
+
+    <!-- Labels til info-boksen -->
+    <string name="label_pos">Pos: </string>
+    <string name="label_avg">Gns: </string>
+    <string name="label_dev">Afv: </string>
+    <string name="label_count">Antal: </string>
+    <string name="label_alt">Højde: </string>
+    <string name="label_sat">Sat: </string>
+    <string name="current_position">Koordinater: </string>
+    <string name="average_position">Gns.Koordinater: </string>
+    <string name="delta_position">Afvigelse:</string>
+    <string name="number_of_runs">Antal koordinater:</string>
+    <string name="altitude">Højde:</string>
+    <string name="email">E-mailadresse</string>
+    <string name="email_summary">Indtast din e-mailadresse</string>
+    <string name="menuitem_share">Del</string>
+    <string name="menuitem_settings">Indstillinger</string>
+    <string name="menuitem_help">Hjælp</string>
+    <string name="menuitem_about">Om</string>
+    <string name="help_activity_title">Hjælp</string>
+    <string name="help_text"><b>Geocache Placer</b> hjælper dig med at finde en præcis GPS-position til din geocache ved at tage gennemsnittet af mange målinger.\n\n<b>Sådan bruger du appen:</b>\n\n<b>1. Vent på GPS-signal</b>\nNår appen åbner, vises din aktuelle position (Pos) og antal satellitter (Sat). Flere satellitter = bedre nøjagtighed. Vent gerne til der er mindst 8–10.\n\n<b>2. Tryk Run ▶</b>\nAppen begynder at måle GPS-positioner. Hver måling vises som en rød cirkel på kortet.\n\n<b>3. Følg med i resultatet</b>\n• <b>Pos</b> — seneste GPS-måling\n• <b>Avg</b> — gennemsnit af alle målinger (blå cirkel)\n• <b>Dev</b> — afvigelse mellem seneste gennemsnit og forrige\n• <b>Count</b> — antal målinger taget\n• <b>Alt</b> — højde over havet\n• <b>Sat</b> — antal GPS-satellitter brugt\n\nNår Dev er tæt på 0, er positionen præcis.\n\n<b>4. Knapper</b>\n• <b>Run</b> — start/fortsæt måling\n• <b>Pause</b> — sæt måling på pause\n• <b>Reset</b> — nulstil alle målinger\n• <b>Del</b> — del positionen via SMS, mail osv.\n\n<b>5. Kortet</b>\n• Røde cirkler = individuelle målinger\n• Blå cirkel + markør = gennemsnitsposition\n• Crosshair-knap øverst: slå kortfølgning til/fra\n• +/- knapper: zoom ind/ud\n\n<b>6. Indstillinger</b>\nI menuen → Indstillinger kan du ændre:\n• Antal positioner pr. kørsel\n• Forsinkelse mellem målinger\n• Koordinatformat (DM, DD eller DMS)\n• Korttype (Google Maps eller OpenStreetMap)\n\n<b>Tips:</b>\n• Stå stille under måling for bedst resultat\n• Kør Run flere gange — jo flere målinger, jo bedre gennemsnit\n• Brug satellit-kortet til at se præcis hvor cachen skal ligge</string>
+    <string name="about_button_return">Tilbage</string>
+    <string name="about_textview_body">Geocache Placer er et værktøj til at hjælpe Geocachere med at få en præcis position for den Geocache de vil placere.\n\nTryk \"Run\" et par gange indtil Delta-koordinaterne er tæt på 0.0000. Appen er gratis og finansieres af reklamer.\n\nUdviklet af Rocologo@hotmail.com</string>
+    <string name="about_rate_app">Bedøm app på Google Play</string>
+    <string name="about_problem_report">Fejlrapport</string>
+    <string name="about_title">Om</string>
+    <string name="about_activity_title">Geocache Placer</string>
+    <string name="problem_report">Geocache Placer Fejlrapport</string>
+    <string name="problem_report_body">Enhed: %1$s\n\nBeskriv venligst problemet:\n</string>
+    <string name="version">Version: ukendt</string>
+
+    <!-- Måling -->
+    <string name="numberOfRunsTitle">Antal positioner</string>
+    <string name="numberOfRunsTitle_summay">Vælg antal målinger per gennemsnit.</string>
+    <string name="delay">Forsinkelse</string>
+    <string name="delay_summary">Forsinkelse mellem målinger.</string>
+
+    <!-- Koordinatformat -->
+    <string name="pref_coord_format_title">Koordinatformat</string>
+    <string name="pref_coord_format_summary">Vælg hvordan koordinater vises</string>
+
+    <!-- Kort -->
+    <string name="pref_map_type_title">Korttype</string>
+    <string name="pref_map_type_summary">Vælg baggrundskort</string>
+    <string name="menuitem_map_standard">Standard</string>
+    <string name="menuitem_map_topo">Topografi</string>
+    <string name="menuitem_map_satellite">Satellit</string>
+
+    <!-- Generelt -->
+    <string name="pref_keep_screen_on_title">Hold skærm tændt</string>
+    <string name="pref_keep_screen_on_summary">Forhindrer skærmen i at slukke under måling</string>
+    <string name="pref_category_measurement">Måling</string>
+    <string name="pref_category_map">Kort</string>
+    <string name="pref_category_general">Generelt</string>
+
+    <!-- Arrays: antal positioner -->
+    <string-array name="numberOfRunNames">
+        <item>Indtil Delta = 0</item>
+        <item>1 position</item>
+        <item>Gennemsnit af 5 positioner</item>
+        <item>Gennemsnit af 10 positioner</item>
+        <item>Gennemsnit af 25 positioner</item>
+        <item>Gennemsnit af 50 positioner</item>
+        <item>Gennemsnit af 100 positioner</item>
+        <item>Gennemsnit af 200 positioner</item>
+    </string-array>
+    <string-array name="numberOfRunValues">
+        <item>1000</item>
+        <item>1</item>
+        <item>5</item>
+        <item>10</item>
+        <item>25</item>
+        <item>50</item>
+        <item>100</item>
+        <item>200</item>
+    </string-array>
+
+    <!-- Arrays: forsinkelse -->
+    <string-array name="delayNames">
+        <item>500 millisekunder</item>
+        <item>1 sekund</item>
+        <item>5 sekunder</item>
+        <item>10 sekunder</item>
+    </string-array>
+    <string-array name="delayValues">
+        <item>500</item>
+        <item>1000</item>
+        <item>5000</item>
+        <item>10000</item>
+    </string-array>
+
+    <!-- Arrays: koordinatformat -->
+    <string-array name="coordFormatNames">
+        <item>D°M.mmm (Grader + Decimal Minutter)</item>
+        <item>DD.ddddd (Decimal Grader)</item>
+        <item>D°M\'S\" (Grader Minutter Sekunder)</item>
+    </string-array>
+    <string-array name="coordFormatValues">
+        <item>DM</item>
+        <item>DD</item>
+        <item>DMS</item>
+    </string-array>
+
+    <!-- Arrays: korttype -->
+    <string-array name="mapTypeNames">
+        <item>Google Maps — Normal</item>
+        <item>Google Maps — Satellit</item>
+        <item>Google Maps — Terræn</item>
+        <item>Google Maps — Hybrid</item>
+        <item>OpenStreetMap — Standard</item>
+        <item>OpenStreetMap — Topografi</item>
+        <item>OpenStreetMap — Satellit (ESRI)</item>
+    </string-array>
+    <string-array name="mapTypeValues">
+        <item>gm_normal</item>
+        <item>gm_satellite</item>
+        <item>gm_terrain</item>
+        <item>gm_hybrid</item>
+        <item>standard</item>
+        <item>topo</item>
+        <item>osm_satellite</item>
+    </string-array>
+
+</resources>

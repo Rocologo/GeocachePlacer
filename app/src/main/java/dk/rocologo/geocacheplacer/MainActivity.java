@@ -20,7 +20,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 import android.widget.ZoomControls;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -72,12 +71,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
     int currentRun = 0;
     int zoomFactor = 16;
 
-    TextView textView1, textView2, textView3, textView4, textView5;
-    final static String label1 = "Coordinates: ";
-    final static String label2 = "Avg.Coordinates: ";
-    final static String label3 = "Deviation : ";
-    final static String label4 = "Number of coordinates: ";
-    final static String label5 = "Altitude:  ";
+    TextView textView1, textView2, textView3, textView4, textView5, textView6;
+    private String label1, label2, label3, label4, label5, label6;
 
     private ShareActionProvider shareActionProvider;
     private ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -86,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
     private String leafletCssCache = null;
     private String leafletJsCache = null;
     private final java.util.List<double[]> measurementPoints = new java.util.ArrayList<>();
-    private ToggleButton buttonFollow;
+    private android.widget.ImageButton buttonFollow;
     private boolean followMap = true;
     private boolean mapInitialized = false;
     private MapView mapView;
@@ -106,11 +101,19 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         prefs.registerOnSharedPreferenceChangeListener(this);
 
+        label1 = getString(R.string.label_pos);
+        label2 = getString(R.string.label_avg);
+        label3 = getString(R.string.label_dev);
+        label4 = getString(R.string.label_count);
+        label5 = getString(R.string.label_alt);
+        label6 = getString(R.string.label_sat);
+
         textView1 = findViewById(R.id.textView1);
         textView2 = findViewById(R.id.textView2);
         textView3 = findViewById(R.id.textView3);
         textView4 = findViewById(R.id.textView4);
         textView5 = findViewById(R.id.textView5);
+        textView6 = findViewById(R.id.textView6);
 
         buttonRun = findViewById(R.id.buttonRun);
         buttonRun.setOnClickListener(this);
@@ -135,8 +138,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
         });
 
         buttonFollow = findViewById(R.id.buttonFollow);
-        buttonFollow.setOnCheckedChangeListener((btn, isChecked) -> {
-            followMap = isChecked;
+        buttonFollow.setOnClickListener(v -> {
+            followMap = !followMap;
+            buttonFollow.setImageResource(followMap ? R.drawable.ic_my_location : R.drawable.ic_location_searching);
             if (followMap && numberOfLocations > 0) {
                 if (isGoogleMapsType(currentMapType) && googleMap != null) {
                     googleMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(averageLatitude, averageLongitude)));
@@ -236,6 +240,18 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
 
     private void initializeGPS() {
         gps = new GPSTracker(this);
+        gps.setLocationCallback(loc -> mainHandler.post(() -> {
+            textView1.setText(label1 + formatCoords(loc.getLatitude(), loc.getLongitude()));
+            textView6.setText(label6 + gps.getSatelliteCount());
+            if (!averageRunning && numberOfLocations == 0) {
+                if (isGoogleMapsType(currentMapType) && googleMap != null) {
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLng(
+                            new LatLng(loc.getLatitude(), loc.getLongitude())));
+                } else if (mapInitialized) {
+                    webView.evaluateJavascript("panTo(" + loc.getLatitude() + "," + loc.getLongitude() + ");", null);
+                }
+            }
+        }));
         showCurrentPosition();
     }
 
@@ -258,6 +274,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
         textView3.setText(label3 + "—");
         textView4.setText(label4 + "0");
         textView5.setText(label5 + "—");
+        int sats = gps.getSatelliteCount();
+        textView6.setText(label6 + (sats > 0 ? sats : "—"));
     }
 
     @Override
@@ -333,9 +351,24 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
                 final double pointLon = longitude;
                 final double avgLat = averageLatitude;
                 final double avgLon = averageLongitude;
+                final double dLat = deltaLatitude;
+                final double dLon = deltaLongitude;
+                final double alt = averageAltitude;
+                final double dAlt = deltaAltitude;
+                final int count = numberOfLocations;
                 final int progress = currentRun;
+                final int sats = gps.getSatelliteCount();
                 mainHandler.post(() -> {
                     progressBar.setProgress(progress);
+                    textView1.setText(label1 + formatCoords(pointLat, pointLon));
+                    textView4.setText(label4 + count);
+                    if (count >= 2) {
+                        textView2.setText(label2 + formatCoords(avgLat, avgLon));
+                        textView3.setText(label3 + formatCoords(dLat, dLon));
+                        DecimalFormat df = new DecimalFormat("###0.00");
+                        textView5.setText(label5 + df.format(alt) + " +- " + df.format(dAlt));
+                    }
+                    textView6.setText(label6 + sats);
                     measurementPoints.add(new double[]{pointLat, pointLon});
                     updateMapJS(pointLat, pointLon, avgLat, avgLon);
                 });
@@ -405,7 +438,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
     }
 
     private int getGoogleMapType() {
-        switch (prefs.getString("mapType", "gm_normal")) {
+        switch (prefs.getString("mapType", "gm_satellite")) {
             case "gm_satellite": return GoogleMap.MAP_TYPE_SATELLITE;
             case "gm_terrain":   return GoogleMap.MAP_TYPE_TERRAIN;
             case "gm_hybrid":    return GoogleMap.MAP_TYPE_HYBRID;
@@ -419,7 +452,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
 
     private void loadMap(double lat, double lon, int zoom) {
         mapInitialized = false;
-        currentMapType = prefs.getString("mapType", "gm_normal");
+        currentMapType = prefs.getString("mapType", "gm_satellite");
         if (lat == 0 && lon == 0) { lat = 56.0; lon = 10.5; zoom = 7; }
 
         if (isGoogleMapsType(currentMapType)) {
@@ -565,12 +598,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.settings, menu);
-        getMenuInflater().inflate(R.menu.action_bar, menu);
-        MenuItem menuItem = menu.findItem(R.id.menu_item_share);
-        shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
-        if (shareActionProvider != null) {
-            shareActionProvider.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
-        }
         return true;
     }
 
@@ -585,6 +612,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
         int id = item.getItemId();
         if (id == R.id.item_settings) {
             startActivity(new Intent(this, PrefsActivity.class));
+            return true;
+        } else if (id == R.id.item_help) {
+            startActivity(new Intent(this, HelpActivity.class));
             return true;
         } else if (id == R.id.item_about) {
             startActivity(new Intent(this, AboutActivity.class));

@@ -7,6 +7,14 @@
     <string name="button_reset">Zurücksetzen</string>
     <string name="button_pause">Pause</string>
     <string name="button_send">Teilen</string>
+
+    <string name="label_pos">Pos: </string>
+    <string name="label_avg">Mittel: </string>
+    <string name="label_dev">Abw: </string>
+    <string name="label_count">Anzahl: </string>
+    <string name="label_alt">Höhe: </string>
+    <string name="label_sat">Sat: </string>
+
     <string name="current_position">Koordinaten: </string>
     <string name="average_position">Durchschn.Koordinaten: </string>
     <string name="delta_position">Abweichung:</string>
@@ -16,7 +24,10 @@
     <string name="email_summary">E-Mail-Adresse eingeben</string>
     <string name="menuitem_share">Teilen</string>
     <string name="menuitem_settings">Einstellungen</string>
+    <string name="menuitem_help">Hilfe</string>
     <string name="menuitem_about">Über</string>
+    <string name="help_activity_title">Hilfe</string>
+    <string name="help_text"><b>Geocache Placer</b> hilft Ihnen, eine präzise GPS-Position für Ihren Geocache zu finden, indem viele Messungen gemittelt werden.\n\n<b>So verwenden Sie die App:</b>\n\n<b>1. Auf GPS-Signal warten</b>\nBeim Öffnen der App werden Ihre aktuelle Position (Pos) und die Anzahl der Satelliten (Sat) angezeigt. Mehr Satelliten = bessere Genauigkeit. Warten Sie auf mindestens 8–10.\n\n<b>2. Start drücken</b>\nDie App beginnt GPS-Positionen zu messen. Jede Messung wird als roter Kreis auf der Karte angezeigt.\n\n<b>3. Ergebnisse verfolgen</b>\n• <b>Pos</b> — letzte GPS-Messung\n• <b>Mittel</b> — Durchschnitt aller Messungen (blauer Kreis)\n• <b>Abw</b> — Abweichung zwischen letztem und vorherigem Durchschnitt\n• <b>Anzahl</b> — Anzahl der Messungen\n• <b>Höhe</b> — Höhe über dem Meeresspiegel\n• <b>Sat</b> — Anzahl der verwendeten GPS-Satelliten\n\nWenn Abw nahe 0 ist, ist die Position genau.\n\n<b>4. Schaltflächen</b>\n• <b>Start</b> — Messung starten/fortsetzen\n• <b>Pause</b> — Messung pausieren\n• <b>Zurücksetzen</b> — alle Messungen löschen\n• <b>Teilen</b> — Position per SMS, E-Mail usw. teilen\n\n<b>5. Die Karte</b>\n• Rote Kreise = einzelne Messungen\n• Blauer Kreis + Markierung = Durchschnittsposition\n• Fadenkreuz-Taste oben: Kartenverfolgung ein/ausschalten\n• +/- Tasten: hinein-/herauszoomen\n\n<b>6. Einstellungen</b>\nIm Menü → Einstellungen können Sie ändern:\n• Anzahl der Positionen pro Durchlauf\n• Verzögerung zwischen Messungen\n• Koordinatenformat (DM, DD oder DMS)\n• Kartentyp (Google Maps oder OpenStreetMap)\n\n<b>Tipps:</b>\n• Stehen Sie still während der Messung für beste Ergebnisse\n• Führen Sie Start mehrmals aus — mehr Messungen = besserer Durchschnitt\n• Verwenden Sie die Satellitenkarte um genau zu sehen wo der Cache liegen soll</string>
     <string name="about_button_return">Zurück</string>
     <string name="about_textview_body">Geocache Placer ist ein Werkzeug, das Geocachern hilft, eine genaue Position für den Geocache zu ermitteln, den sie verstecken möchten.\n\nDrücke \"Start\" mehrmals, bis die Delta-Koordinaten nahe 0.0000 sind. Die App ist kostenlos und wird durch Werbung finanziert.\n\nEntwickelt von Rocologo@hotmail.com</string>
     <string name="about_rate_app">App bei Google Play bewerten</string>
@@ -75,7 +86,7 @@
     <string-array name="coordFormatNames">
         <item>D°M.mmm (Grad + Dezimalminuten)</item>
         <item>DD.ddddd (Dezimalgrad)</item>
-        <item>D°M\'S\" (Grad Minuten Sekunden)</item>
+        <item>D°M'S" (Grad Minuten Sekunden)</item>
     </string-array>
 
     <!-- Arrays: Kartentyp -->

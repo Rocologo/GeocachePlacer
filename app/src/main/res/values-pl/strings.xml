@@ -7,6 +7,14 @@
     <string name="button_reset">Resetuj</string>
     <string name="button_pause">Pauza</string>
     <string name="button_send">Udostępnij</string>
+
+    <string name="label_pos">Poz: </string>
+    <string name="label_avg">Śr: </string>
+    <string name="label_dev">Odch: </string>
+    <string name="label_count">Ilość: </string>
+    <string name="label_alt">Wys: </string>
+    <string name="label_sat">Sat: </string>
+
     <string name="current_position">Współrzędne: </string>
     <string name="average_position">Śr.Współrzędne: </string>
     <string name="delta_position">Odchylenie:</string>
@@ -16,7 +24,10 @@
     <string name="email_summary">Wpisz swój adres e-mail</string>
     <string name="menuitem_share">Udostępnij</string>
     <string name="menuitem_settings">Ustawienia</string>
+    <string name="menuitem_help">Pomoc</string>
     <string name="menuitem_about">O aplikacji</string>
+    <string name="help_activity_title">Pomoc</string>
+    <string name="help_text"><b>Geocache Placer</b> pomaga znaleźć dokładną pozycję GPS dla Twojego geocache\'a, uśredniając wiele pomiarów.\n\n<b>Jak korzystać z aplikacji:</b>\n\n<b>1. Poczekaj na sygnał GPS</b>\nPo otwarciu aplikacji wyświetlana jest Twoja aktualna pozycja (Poz) i liczba satelitów (Sat). Więcej satelitów = lepsza dokładność. Poczekaj na co najmniej 8–10.\n\n<b>2. Naciśnij Start</b>\nAplikacja zaczyna mierzyć pozycje GPS. Każdy pomiar pojawia się jako czerwone kółko na mapie.\n\n<b>3. Śledź wyniki</b>\n• <b>Poz</b> — ostatni pomiar GPS\n• <b>Śr</b> — średnia wszystkich pomiarów (niebieskie kółko)\n• <b>Odch</b> — odchylenie między ostatnią a poprzednią średnią\n• <b>Ilość</b> — liczba wykonanych pomiarów\n• <b>Wys</b> — wysokość nad poziomem morza\n• <b>Sat</b> — liczba używanych satelitów GPS\n\nGdy Odch jest bliskie 0, pozycja jest dokładna.\n\n<b>4. Przyciski</b>\n• <b>Start</b> — rozpocznij/kontynuuj pomiar\n• <b>Pauza</b> — wstrzymaj pomiar\n• <b>Resetuj</b> — wyczyść wszystkie pomiary\n• <b>Udostępnij</b> — udostępnij pozycję przez SMS, e-mail itp.\n\n<b>5. Mapa</b>\n• Czerwone kółka = pojedyncze pomiary\n• Niebieskie kółko + znacznik = średnia pozycja\n• Przycisk celownika u góry: włącz/wyłącz śledzenie na mapie\n• Przyciski +/-: przybliż/oddal\n\n<b>6. Ustawienia</b>\nW menu → Ustawienia możesz zmienić:\n• Liczbę pozycji na serię\n• Opóźnienie między pomiarami\n• Format współrzędnych (DM, DD lub DMS)\n• Typ mapy (Google Maps lub OpenStreetMap)\n\n<b>Wskazówki:</b>\n• Stój nieruchomo podczas pomiaru dla najlepszych wyników\n• Uruchom Start wielokrotnie — więcej pomiarów = lepsza średnia\n• Użyj mapy satelitarnej aby zobaczyć dokładnie gdzie umieścić skrytkę</string>
     <string name="about_button_return">Wstecz</string>
     <string name="about_textview_body">Geocache Placer to narzędzie pomagające Geocacherom uzyskać dokładną pozycję dla skrzynki, którą chcą ukryć.\n\nNaciśnij \"Start\" kilka razy, aż współrzędne Delta będą bliskie 0.0000. Aplikacja jest bezpłatna i finansowana z reklam.\n\nOpracowane przez Rocologo@hotmail.com</string>
     <string name="about_rate_app">Oceń aplikację w Google Play</string>

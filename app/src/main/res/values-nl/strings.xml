@@ -1,0 +1,82 @@
+<resources>
+
+    <string name="app_name">GeocachePlacer</string>
+    <string name="activity_main_title">Geocache Placer</string>
+    <string name="title_activity_settings">Instellingen</string>
+    <string name="button_run">Start</string>
+    <string name="button_reset">Resetten</string>
+    <string name="button_pause">Pauze</string>
+    <string name="button_send">Delen</string>
+
+    <string name="label_pos">Pos: </string>
+    <string name="label_avg">Gem: </string>
+    <string name="label_dev">Afw: </string>
+    <string name="label_count">Aantal: </string>
+    <string name="label_alt">Hoogte: </string>
+    <string name="label_sat">Sat: </string>
+
+    <string name="current_position">Coördinaten: </string>
+    <string name="average_position">Gem.Coördinaten: </string>
+    <string name="delta_position">Afwijking:</string>
+    <string name="number_of_runs">Aantal coördinaten:</string>
+    <string name="altitude">Hoogte:</string>
+    <string name="email">E-mailadres</string>
+    <string name="email_summary">Voer uw e-mailadres in</string>
+    <string name="menuitem_share">Delen</string>
+    <string name="menuitem_settings">Instellingen</string>
+    <string name="menuitem_help">Help</string>
+    <string name="menuitem_about">Over</string>
+    <string name="help_activity_title">Help</string>
+    <string name="help_text"><b>Geocache Placer</b> helpt u een nauwkeurige GPS-positie te vinden voor uw geocache door het gemiddelde van vele metingen te berekenen.\n\n<b>Zo gebruikt u de app:</b>\n\n<b>1. Wacht op GPS-signaal</b>\nBij het openen worden uw huidige positie (Pos) en het aantal satellieten (Sat) weergegeven. Meer satellieten = betere nauwkeurigheid. Wacht op minimaal 8–10.\n\n<b>2. Druk op Start</b>\nDe app begint GPS-posities te meten. Elke meting verschijnt als een rode cirkel op de kaart.\n\n<b>3. Volg de resultaten</b>\n• <b>Pos</b> — laatste GPS-meting\n• <b>Gem</b> — gemiddelde van alle metingen (blauwe cirkel)\n• <b>Afw</b> — afwijking tussen laatste en vorige gemiddelde\n• <b>Aantal</b> — aantal uitgevoerde metingen\n• <b>Hoogte</b> — hoogte boven zeeniveau\n• <b>Sat</b> — aantal gebruikte GPS-satellieten\n\nWanneer Afw dicht bij 0 is, is de positie nauwkeurig.\n\n<b>4. Knoppen</b>\n• <b>Start</b> — meting starten/hervatten\n• <b>Pauze</b> — meting pauzeren\n• <b>Resetten</b> — alle metingen wissen\n• <b>Delen</b> — positie delen via SMS, e-mail, enz.\n\n<b>5. De kaart</b>\n• Rode cirkels = individuele metingen\n• Blauwe cirkel + markering = gemiddelde positie\n• Dradenkruis-knop bovenaan: kaartvolgfunctie aan/uit\n• +/- knoppen: in-/uitzoomen\n\n<b>6. Instellingen</b>\nIn het menu → Instellingen kunt u wijzigen:\n• Aantal posities per reeks\n• Vertraging tussen metingen\n• Coördinatenformaat (DM, DD of DMS)\n• Kaarttype (Google Maps of OpenStreetMap)\n\n<b>Tips:</b>\n• Sta stil tijdens meting voor de beste resultaten\n• Voer Start meerdere keren uit — meer metingen = beter gemiddelde\n• Gebruik de satellietkaart om precies te zien waar de cache moet liggen</string>
+    <string name="about_button_return">Terug</string>
+    <string name="about_textview_body">Geocache Placer is een hulpmiddel om geocachers te helpen een nauwkeurige positie te vinden voor de geocache die ze willen plaatsen.\n\nDruk meerdere keren op \"Start\" totdat de afwijkingscoördinaten dicht bij 0.0000 zijn. De app is gratis en wordt gefinancierd door advertenties.\n\nOntwikkeld door Rocologo@hotmail.com</string>
+    <string name="about_rate_app">App beoordelen op Google Play</string>
+    <string name="about_problem_report">Foutmelding</string>
+    <string name="about_title">Over</string>
+    <string name="about_activity_title">Geocache Placer</string>
+    <string name="problem_report">Geocache Placer Foutmelding</string>
+    <string name="problem_report_body">Apparaat: %1$s\n\nBeschrijf het probleem:\n</string>
+    <string name="version">Versie: onbekend</string>
+
+    <string name="numberOfRunsTitle">Aantal posities</string>
+    <string name="numberOfRunsTitle_summay">Kies het aantal metingen per gemiddelde.</string>
+    <string name="delay">Vertraging</string>
+    <string name="delay_summary">Vertraging tussen metingen.</string>
+    <string name="pref_coord_format_title">Coördinatenformaat</string>
+    <string name="pref_coord_format_summary">Kies hoe coördinaten worden weergegeven</string>
+    <string name="pref_map_type_title">Kaarttype</string>
+    <string name="pref_map_type_summary">Kies achtergrondkaart</string>
+    <string name="menuitem_map_standard">Standaard</string>
+    <string name="menuitem_map_topo">Topografie</string>
+    <string name="menuitem_map_satellite">Satelliet</string>
+    <string name="pref_keep_screen_on_title">Scherm aan houden</string>
+    <string name="pref_keep_screen_on_summary">Voorkomt dat het scherm uitgaat tijdens meting</string>
+    <string name="pref_category_measurement">Meting</string>
+    <string name="pref_category_map">Kaart</string>
+    <string name="pref_category_general">Algemeen</string>
+
+    <string-array name="numberOfRunNames">
+        <item>Tot Delta = 0</item>
+        <item>1 positie</item>
+        <item>Gemiddelde van 5 posities</item>
+        <item>Gemiddelde van 10 posities</item>
+        <item>Gemiddelde van 25 posities</item>
+        <item>Gemiddelde van 50 posities</item>
+        <item>Gemiddelde van 100 posities</item>
+        <item>Gemiddelde van 200 posities</item>
+    </string-array>
+
+    <string-array name="delayNames">
+        <item>500 milliseconden</item>
+        <item>1 seconde</item>
+        <item>5 seconden</item>
+        <item>10 seconden</item>
+    </string-array>
+
+    <string-array name="coordFormatNames">
+        <item>D°M.mmm (Graden + Decimale Minuten)</item>
+        <item>DD.ddddd (Decimale Graden)</item>
+        <item>D°M\'S\" (Graden Minuten Seconden)</item>
+    </string-array>
+
+</resources>

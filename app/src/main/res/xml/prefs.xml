@@ -10,7 +10,7 @@
             android:summary="%s"
             android:entries="@array/numberOfRunNames"
             android:entryValues="@array/numberOfRunValues"
-            android:defaultValue="5" />
+            android:defaultValue="10" />
 
         <ListPreference
             android:key="delay"
@@ -18,7 +18,7 @@
             android:summary="%s"
             android:entries="@array/delayNames"
             android:entryValues="@array/delayValues"
-            android:defaultValue="500" />
+            android:defaultValue="5000" />
 
         <ListPreference
             android:key="coordinateFormat"
@@ -39,7 +39,7 @@
             android:summary="%s"
             android:entries="@array/mapTypeNames"
             android:entryValues="@array/mapTypeValues"
-            android:defaultValue="gm_normal" />
+            android:defaultValue="gm_satellite" />
 
     </PreferenceCategory>
 
@@ -51,12 +51,6 @@
             android:title="@string/pref_keep_screen_on_title"
             android:summary="@string/pref_keep_screen_on_summary"
             android:defaultValue="true" />
-
-        <EditTextPreference
-            android:inputType="textEmailAddress"
-            android:key="email"
-            android:title="@string/email"
-            android:summary="@string/email_summary" />
 
     </PreferenceCategory>
 

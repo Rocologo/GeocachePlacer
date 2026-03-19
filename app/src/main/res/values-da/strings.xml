@@ -9,12 +9,13 @@
     <string name="button_send">Del</string>
 
     <!-- Labels til info-boksen -->
-    <string name="label_pos">Pos: </string>
-    <string name="label_avg">Gns: </string>
-    <string name="label_dev">Afv: </string>
-    <string name="label_count">Antal: </string>
-    <string name="label_alt">Højde: </string>
-    <string name="label_sat">Sat: </string>
+    <string name="label_pos">Position:</string>
+    <string name="label_avg">Gennemsnit:</string>
+    <string name="label_dev">Afvigelse:</string>
+    <string name="label_count">N:</string>
+    <string name="label_alt">Højde:</string>
+    <string name="label_sat">Sat:</string>
+    <string name="label_alt_dev">Afv:</string>
     <string name="current_position">Koordinater: </string>
     <string name="average_position">Gns.Koordinater: </string>
     <string name="delta_position">Afvigelse:</string>

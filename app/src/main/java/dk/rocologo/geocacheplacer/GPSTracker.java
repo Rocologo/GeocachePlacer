@@ -202,17 +202,17 @@ public class GPSTracker extends Service implements LocationListener {
         int lonDeg = (int) absLon;
         double latMin = (absLat - latDeg) * 60;
         double lonMin = (absLon - lonDeg) * 60;
-        DecimalFormat df = new DecimalFormat("00.00000");
-        return latDir + " " + latDeg + "° " + df.format(latMin) + "  " +
-               lonDir + " " + lonDeg + "° " + df.format(lonMin);
+        DecimalFormat df = new DecimalFormat("00.000");
+        return String.format("%s %02d° %s, %s %03d° %s",
+                latDir, latDeg, df.format(latMin),
+                lonDir, lonDeg, df.format(lonMin));
     }
 
     public String decimalToDD(double lat, double lon) {
         String latDir = lat < 0 ? "S" : "N";
         String lonDir = lon < 0 ? "W" : "E";
-        DecimalFormat df = new DecimalFormat("###0.00000");
-        return latDir + " " + df.format(Math.abs(lat)) + "°  " +
-               lonDir + " " + df.format(Math.abs(lon)) + "°";
+        return String.format("%s %09.5f°, %s %010.5f°",
+                latDir, Math.abs(lat), lonDir, Math.abs(lon));
     }
 
     public String decimalToDMS(double lat, double lon) {
@@ -226,9 +226,9 @@ public class GPSTracker extends Service implements LocationListener {
         int lonMin = (int) ((absLon - lonDeg) * 60);
         double latSec = ((absLat - latDeg) * 60 - latMin) * 60;
         double lonSec = ((absLon - lonDeg) * 60 - lonMin) * 60;
-        DecimalFormat df = new DecimalFormat("00.00");
-        DecimalFormat di = new DecimalFormat("00");
-        return latDir + " " + latDeg + "° " + di.format(latMin) + "' " + df.format(latSec) + "\"  " +
-               lonDir + " " + lonDeg + "° " + di.format(lonMin) + "' " + df.format(lonSec) + "\"";
+        DecimalFormat df = new DecimalFormat("00.0");
+        return String.format("%s %02d° %02d' %s\", %s %03d° %02d' %s\"",
+                latDir, latDeg, latMin, df.format(latSec),
+                lonDir, lonDeg, lonMin, df.format(lonSec));
     }
 }

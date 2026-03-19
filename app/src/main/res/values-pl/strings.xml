@@ -8,12 +8,13 @@
     <string name="button_pause">Pauza</string>
     <string name="button_send">Udostępnij</string>
 
-    <string name="label_pos">Poz: </string>
-    <string name="label_avg">Śr: </string>
-    <string name="label_dev">Odch: </string>
-    <string name="label_count">Ilość: </string>
-    <string name="label_alt">Wys: </string>
-    <string name="label_sat">Sat: </string>
+    <string name="label_pos">Pozycja:</string>
+    <string name="label_avg">Średnia:</string>
+    <string name="label_dev">Odchylenie:</string>
+    <string name="label_count">N:</string>
+    <string name="label_alt">Wys:</string>
+    <string name="label_sat">Sat:</string>
+    <string name="label_alt_dev">Odch:</string>
 
     <string name="current_position">Współrzędne: </string>
     <string name="average_position">Śr.Współrzędne: </string>

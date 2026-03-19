@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
     int zoomFactor = 16;
 
     TextView textView1, textView2, textView3, textView4, textView5, textView6;
-    private String label1, label2, label3, label4, label5, label6;
+    private String label4, label5, label6, labelAltDev;
 
     private ShareActionProvider shareActionProvider;
     private ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -101,12 +101,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         prefs.registerOnSharedPreferenceChangeListener(this);
 
-        label1 = getString(R.string.label_pos);
-        label2 = getString(R.string.label_avg);
-        label3 = getString(R.string.label_dev);
-        label4 = getString(R.string.label_count);
-        label5 = getString(R.string.label_alt);
-        label6 = getString(R.string.label_sat);
+        label4 = getString(R.string.label_count) + " ";
+        label5 = getString(R.string.label_alt) + " ";
+        label6 = getString(R.string.label_sat) + " ";
+        labelAltDev = getString(R.string.label_alt_dev) + " ";
 
         textView1 = findViewById(R.id.textView1);
         textView2 = findViewById(R.id.textView2);
@@ -241,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
     private void initializeGPS() {
         gps = new GPSTracker(this);
         gps.setLocationCallback(loc -> mainHandler.post(() -> {
-            textView1.setText(label1 + formatCoords(loc.getLatitude(), loc.getLongitude()));
+            textView1.setText(formatCoords(loc.getLatitude(), loc.getLongitude()));
             textView6.setText(label6 + gps.getSatelliteCount());
             if (!averageRunning && numberOfLocations == 0) {
                 if (isGoogleMapsType(currentMapType) && googleMap != null) {
@@ -260,18 +258,18 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
         double curLat = gps.getLatitude();
         double curLon = gps.getLongitude();
         if (curLat != 0 || curLon != 0) {
-            textView1.setText(label1 + formatCoords(curLat, curLon));
+            textView1.setText(formatCoords(curLat, curLon));
             float accuracy = gps.getAccuracy();
             if (accuracy <= 20) zoomFactor = 18;
             else if (accuracy <= 100) zoomFactor = 16;
             else zoomFactor = 14;
             loadMap(curLat, curLon, zoomFactor);
         } else {
-            textView1.setText(label1 + "—");
+            textView1.setText("—");
             loadMap(0, 0, zoomFactor);
         }
-        textView2.setText(label2 + "—");
-        textView3.setText(label3 + "—");
+        textView2.setText("—");
+        textView3.setText("—");
         textView4.setText(label4 + "0");
         textView5.setText(label5 + "—");
         int sats = gps.getSatelliteCount();
@@ -360,13 +358,13 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
                 final int sats = gps.getSatelliteCount();
                 mainHandler.post(() -> {
                     progressBar.setProgress(progress);
-                    textView1.setText(label1 + formatCoords(pointLat, pointLon));
+                    textView1.setText(formatCoords(pointLat, pointLon));
                     textView4.setText(label4 + count);
                     if (count >= 2) {
-                        textView2.setText(label2 + formatCoords(avgLat, avgLon));
-                        textView3.setText(label3 + formatCoords(dLat, dLon));
+                        textView2.setText(formatCoords(avgLat, avgLon));
+                        textView3.setText(formatCoords(dLat, dLon));
                         DecimalFormat df = new DecimalFormat("###0.00");
-                        textView5.setText(label5 + df.format(alt) + " +- " + df.format(dAlt));
+                        textView5.setText(label5 + df.format(alt) + " " + labelAltDev + df.format(dAlt));
                     }
                     textView6.setText(label6 + sats);
                     if (count >= 2 && prefs.getBoolean("autoZoom", true)) {
@@ -414,13 +412,13 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
 
             mainHandler.post(() -> {
                 if (gps != null) {
-                    textView1.setText(label1 + formatCoords(finalCurLat, finalCurLon));
-                    textView2.setText(label2 + formatCoords(finalLat, finalLon));
-                    textView3.setText(label3 + formatCoords(finalDeltaLat, finalDeltaLon));
+                    textView1.setText(formatCoords(finalCurLat, finalCurLon));
+                    textView2.setText(formatCoords(finalLat, finalLon));
+                    textView3.setText(formatCoords(finalDeltaLat, finalDeltaLon));
                 }
                 textView4.setText(label4 + finalCount);
                 DecimalFormat df = new DecimalFormat("###0.00");
-                textView5.setText(label5 + df.format(finalAlt) + " +- " + df.format(finalDeltaAlt));
+                textView5.setText(label5 + df.format(finalAlt) + " " + labelAltDev + df.format(finalDeltaAlt));
                 loadMap(finalLat, finalLon, zoomFactor);
                 Toast.makeText(MainActivity.this,
                         "Gennemsnit af " + finalCount + " positioner er beregnet.",
@@ -647,9 +645,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener,
             loadMap(averageLatitude, averageLongitude, zoomFactor);
         } else if ("coordinateFormat".equals(key)) {
             if (numberOfLocations > 0) {
-                textView1.setText(label1 + formatCoords(latitude, longitude));
-                textView2.setText(label2 + formatCoords(averageLatitude, averageLongitude));
-                textView3.setText(label3 + formatCoords(deltaLatitude, deltaLongitude));
+                textView1.setText(formatCoords(latitude, longitude));
+                textView2.setText(formatCoords(averageLatitude, averageLongitude));
+                textView3.setText(formatCoords(deltaLatitude, deltaLongitude));
             } else {
                 showCurrentPosition();
             }

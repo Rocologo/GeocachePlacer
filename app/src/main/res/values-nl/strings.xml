@@ -8,12 +8,13 @@
     <string name="button_pause">Pauze</string>
     <string name="button_send">Delen</string>
 
-    <string name="label_pos">Pos: </string>
-    <string name="label_avg">Gem: </string>
-    <string name="label_dev">Afw: </string>
-    <string name="label_count">Aantal: </string>
-    <string name="label_alt">Hoogte: </string>
-    <string name="label_sat">Sat: </string>
+    <string name="label_pos">Positie:</string>
+    <string name="label_avg">Gemiddelde:</string>
+    <string name="label_dev">Afwijking:</string>
+    <string name="label_count">N:</string>
+    <string name="label_alt">Hoogte:</string>
+    <string name="label_sat">Sat:</string>
+    <string name="label_alt_dev">Afw:</string>
 
     <string name="current_position">Coördinaten: </string>
     <string name="average_position">Gem.Coördinaten: </string>

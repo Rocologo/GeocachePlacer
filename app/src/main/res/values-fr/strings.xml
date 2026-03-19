@@ -8,12 +8,13 @@
     <string name="button_pause">Pause</string>
     <string name="button_send">Partager</string>
 
-    <string name="label_pos">Pos: </string>
-    <string name="label_avg">Moy: </string>
-    <string name="label_dev">Écart: </string>
-    <string name="label_count">Nombre: </string>
-    <string name="label_alt">Alt: </string>
-    <string name="label_sat">Sat: </string>
+    <string name="label_pos">Position:</string>
+    <string name="label_avg">Moyenne:</string>
+    <string name="label_dev">Écart:</string>
+    <string name="label_count">N:</string>
+    <string name="label_alt">Alt:</string>
+    <string name="label_sat">Sat:</string>
+    <string name="label_alt_dev">Écart:</string>
 
     <string name="current_position">Coordonnées : </string>
     <string name="average_position">Moy.Coordonnées : </string>

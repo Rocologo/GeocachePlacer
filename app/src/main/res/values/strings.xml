@@ -9,12 +9,13 @@
     <string name="button_send">Share</string>
 
     <!-- Labels for info box -->
-    <string name="label_pos">Pos: </string>
-    <string name="label_avg">Avg: </string>
-    <string name="label_dev">Dev: </string>
-    <string name="label_count">Count: </string>
-    <string name="label_alt">Alt: </string>
-    <string name="label_sat">Sat: </string>
+    <string name="label_pos">Position:</string>
+    <string name="label_avg">Average:</string>
+    <string name="label_dev">Deviation:</string>
+    <string name="label_count">N:</string>
+    <string name="label_alt">Alt:</string>
+    <string name="label_alt_dev">Dev:</string>
+    <string name="label_sat">Sat:</string>
 
     <string name="current_position">Coordinates: </string>
     <string name="average_position">Avg.Coordinates: </string>

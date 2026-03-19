@@ -58,35 +58,81 @@
         android:paddingTop="6dp"
         android:paddingBottom="4dp">
 
-        <TextView
-            android:id="@+id/textView1"
+        <!-- Linje 1: Position -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/current_position"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="#FFFFFF"
-            android:singleLine="true" />
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_pos"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#AAFFFFFF"
+                android:fontFamily="monospace" />
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#FFFFFF"
+                android:fontFamily="monospace"
+                android:singleLine="true" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/textView2"
+        <!-- Linje 2: Gennemsnit -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:text="@string/average_position"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="#FFFFFF"
-            android:singleLine="true" />
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_avg"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#AAFFFFFF"
+                android:fontFamily="monospace" />
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#FFFFFF"
+                android:fontFamily="monospace"
+                android:singleLine="true" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/textView3"
+        <!-- Linje 3: Afvigelse -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:text="@string/delta_position"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="#FFFFFF"
-            android:singleLine="true" />
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_dev"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#AAFFFFFF"
+                android:fontFamily="monospace" />
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#FFFFFF"
+                android:fontFamily="monospace"
+                android:singleLine="true" />
+        </LinearLayout>
 
+        <!-- Linje 4: Antal, Højde, Afv, Sat -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -95,12 +141,11 @@
 
             <TextView
                 android:id="@+id/textView4"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/number_of_runs"
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="10sp"
                 android:textColor="#FFFFFF"
+                android:fontFamily="monospace"
                 android:singleLine="true" />
 
             <TextView
@@ -108,19 +153,19 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/altitude"
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:gravity="center"
+                android:textSize="10sp"
                 android:textColor="#FFFFFF"
+                android:fontFamily="monospace"
                 android:singleLine="true" />
 
             <TextView
                 android:id="@+id/textView6"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Satellites: —"
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="10sp"
                 android:textColor="#FFFFFF"
+                android:fontFamily="monospace"
                 android:singleLine="true" />
 
         </LinearLayout>

@@ -6,7 +6,7 @@ Opdateret: 2026-03-12
 
 | Komponent | Status | Note |
 |---|---|---|
-| Gradle-struktur | ✅ | AGP 8.10.0 / Gradle 8.11.1, gradlew.bat tilføjet |
+| Gradle-struktur | ✅ | AGP 8.10.0 / Gradle 8.11.1, gradlew + gradlew.bat, bygger på Linux |
 | AndroidManifest.xml | ✅ | targetSdk 35, runtime permissions |
 | Java-kildekode | ✅ | 5 klasser, BUILD SUCCESSFUL |
 | OpenStreetMap/Leaflet | ✅ | Lokal bundle, ingen CDN |

@@ -4,8 +4,8 @@ Byg debug-APK og installer på Samsung Galaxy S23 Ultra via ADB.
 
 - Projekt: GeocachePlacer (Android)
 - Enhed: Samsung Galaxy S23 Ultra, serienummer R5CW10QH46N
-- ADB-sti: `C:\Users\clj\AppData\Local\Android\Sdk\platform-tools\adb.exe`
-- Gradlew: `gradlew.bat` i projektrodmappen
+- ADB-sti: `~/Android/Sdk/platform-tools/adb`
+- Gradlew: `./gradlew` i projektrodmappen
 
 ## Din opgave
 
@@ -15,7 +15,7 @@ Udfør disse trin i rækkefølge:
 
 Kør:
 ```
-C:\Users\clj\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
+~/Android/Sdk/platform-tools/adb devices
 ```
 
 Tjek om `R5CW10QH46N` vises som `device`. Hvis ikke:
@@ -28,7 +28,7 @@ Fortsæt kun hvis enheden er tilgængelig.
 
 Kør fra projektrodmappen:
 ```
-cmd /c gradlew.bat :app:assembleDebug
+./gradlew :app:assembleDebug
 ```
 
 Vent på "BUILD SUCCESSFUL". Hvis build fejler: vis fejlbesked og stop — ret ikke koden automatisk, men rapporter fejlen til brugeren.
@@ -37,7 +37,7 @@ Vent på "BUILD SUCCESSFUL". Hvis build fejler: vis fejlbesked og stop — ret i
 
 Kør:
 ```
-C:\Users\clj\AppData\Local\Android\Sdk\platform-tools\adb.exe -s R5CW10QH46N install -r app\build\outputs\apk\debug\app-debug.apk
+~/Android/Sdk/platform-tools/adb -s R5CW10QH46N install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
 Vent på "Success".

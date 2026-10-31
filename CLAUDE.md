@@ -22,18 +22,32 @@ Læs altid `REQUIREMENTS.md` inden kodeændringer. Alle ændringer skal overhold
 
 ### Versionering
 - `versionCode` i `app/build.gradle` skal øges ved hver release-build
-- Aktuelt: versionCode 130, versionName "3.0"
+- Aktuelt: versionCode 131, versionName "3.0.1"
 
 ## Byggesystem
-- Gradle wrapper: `C:\Users\clj\AppData\Local\gradle-8.11.1\bin\gradle.bat`
-- Android SDK: `C:\Users\clj\AppData\Local\Android\Sdk`
-- Build: `:app:assembleDebug` / `:app:assembleRelease`
-- ADB: `C:\Users\clj\AppData\Local\Android\Sdk\platform-tools\adb.exe`
+- Udviklingsmaskine: omarchy-cosmos (Arch Linux), projektet i `~/Projects/GeocachePlacer`
+- Java: OpenJDK 21
+- Gradle wrapper: `./gradlew` (Gradle 8.11.1); `gradlew.bat` beholdes til Windows
+- Android SDK: `~/Android/Sdk` (sat via `sdk.dir` i `local.properties`)
+- Build: `./gradlew :app:assembleDebug` / `./gradlew :app:assembleRelease`
+- ADB: `~/Android/Sdk/platform-tools/adb`
+- Release-keystore forventes i `~/.android/geocacheplacer-upload.jks` (ikke flyttet fra Windows endnu)
 
 ## Test
 - Emulator: AVD "GeocacheTest" (Pixel 6, Android 35)
 - Fysisk enhed: Samsung Galaxy S23 Ultra, forbindes via WiFi ADB
   - IP varierer (typisk 192.168.2.x), port vises under Indstillinger → Udviklerindstillinger → Trådløs fejlretning
+
+## Main developer og forholdet til de andre projekter
+
+Denne session er **main developer** for GeocachePlacer — den eneste der skriver kode i dette repo.
+
+omarchy-cosmos rummer kun Christians private projekter, hver med sin egen main developer:
+`admin-ai` (Private Admin AI — administrator), `GeocachePlacer`, `RocTrading`, `minecraft-plugins`.
+
+- Skriv ikke kode i andre projekter, og lad ikke andre skrive kode her. Hører en opgave til et andet projekt, så sig det til Christian, eller skriv til det projekts session.
+- Sessioner må gerne tale sammen (ListAgents / SendMessage), når det giver mening — fx for at dele viden eller koordinere.
+- Admin AI (sessionen i ~/Projects/admin-ai) er administrator for maskinen og må overdrage opgaver og give kontekst, men skriver heller ikke kode her.
 
 ## Dokumentation der skal vedligeholdes
 Ved alle større ændringer — opdater disse filer:
